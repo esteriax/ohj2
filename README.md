@@ -1,6 +1,7 @@
-# pohja
+# Kirjaloki-ohjelma 2026
 
-Pohja kevään 2020 harjoitustöiden GIT-repoille
+** Ohjelmointi 2 -kurssin harjoitustyö **
 
-Lue käyttöohjeet TIMistä: <https://tim.jyu.fi/view/kurssit/tie/ohj2/tyokalut/git/ohj2git#fork>
+Työn suunnitelma: https://tim.jyu.fi/view/kurssit/tie/ohj2/2023s/ht/heespari#Wy3QHQ7D1rre
 
+Tekijä: Heta Parikka
