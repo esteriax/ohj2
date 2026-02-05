@@ -9,6 +9,9 @@ import javafx.scene.control.Alert.AlertType;
  *
  */
 public class Kirjaloki2GUIController {
+    /**
+     * dialogi, joka kertoo ettei toimi vielä
+     */
     public void eiToimi() {
         Alert alert = new Alert(AlertType.INFORMATION);
           alert.setTitle("Huomautus");
