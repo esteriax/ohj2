@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane expanded="true" maxWidth="320.0" minWidth="320.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjaloki.ModalControllerh">
+   <header>
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Kirjailija">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Label>
+   </header>
+   <content>
+      <GridPane minWidth="-Infinity">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="-Infinity" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="nimi">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <Label text="syntymävuosi" GridPane.rowIndex="1" />
+            <Label text="suosikki" GridPane.rowIndex="2" />
+            <TextField promptText="Anne Kytömäki" GridPane.columnIndex="1" />
+            <TextField promptText="2020" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField promptText="historialliset romaanit" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="OK" />
+      <ButtonType fx:constant="CANCEL" />
+   </buttonTypes>
+</DialogPane>
