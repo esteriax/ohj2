@@ -23,33 +23,33 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="fxKirjaloki2.Kirjaloki2GUIController">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjaloki2.Kirjaloki2GUIController">
     <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="Tiedosto">
             <items>
-              <MenuItem mnemonicParsing="false" text="Tallenna">
+              <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Avaa">
+                  <MenuItem mnemonicParsing="false" onAction="#handleAvaa" text="Avaa">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Uusi kirja">
+                  <MenuItem mnemonicParsing="false" onAction="#eiToimi" text="Uusi kirja">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Tulosta">
+                  <MenuItem mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Lopeta">
+                  <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -58,15 +58,16 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" text="Lisää uusi kirja" />
-                  <MenuItem mnemonicParsing="false" text="Muokkaa tietoja" />
-                  <MenuItem mnemonicParsing="false" text="Poista kirja" />
+              <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Lisää uusi kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirjaa" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirja" text="Poista kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirjailija" text="Muokkaa kirjailija" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Apua">
             <items>
-              <MenuItem mnemonicParsing="false" text="Apua" />
-                  <MenuItem mnemonicParsing="false" text="Tietoja" />
+              <MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTietoja" text="Tietoja" />
             </items>
           </Menu>
         </menus>
@@ -86,7 +87,7 @@
                            <VBox.margin>
                               <Insets left="5.0" right="5.0" top="5.0" />
                            </VBox.margin></Label>
-                        <TextField maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="hae...">
+                        <TextField maxWidth="200.0" minWidth="200.0" onAction="#handleHakuehto" prefWidth="200.0" promptText="hae...">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin></TextField>
@@ -99,7 +100,7 @@
                            <VBox.margin>
                               <Insets left="5.0" right="5.0" />
                            </VBox.margin></Label>
-                        <ScrollPane fx:id="panelKirja" maxWidth="200.0" minWidth="200.0" prefHeight="300.0" prefWidth="200.0">
+                        <ScrollPane maxWidth="200.0" minWidth="200.0" prefHeight="300.0" prefWidth="200.0">
                            <content>
                               <ListChooser minWidth="200.0" rivit="Kirja1&#10;Kirja2&#10;Kirja3">
                                  <padding>
@@ -126,12 +127,12 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>
                      <children>
-                        <Button mnemonicParsing="false" text="Uusi kirja">
+                        <Button mnemonicParsing="false" onAction="#handleUusiKirja" text="Uusi kirja">
                            <tooltip>
                               <Tooltip text="vrw" />
                            </tooltip>
                         </Button>
-                        <Button mnemonicParsing="false" text="Tallenna" />
+                        <Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
                      </children>
                   </HBox>
                </bottom>
@@ -206,7 +207,7 @@
                <bottom>
                   <HBox BorderPane.alignment="CENTER">
                      <children>
-                        <Button mnemonicParsing="false" text="Lisää kirjailija">
+                        <Button mnemonicParsing="false" onAction="#handleUusiKirjailija" text="Lisää kirjailija">
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin></Button>

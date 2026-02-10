@@ -1,71 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonType?>
-<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<DialogPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"> 
-   <content>
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
-         <top>
-            <Label alignment="CENTER" prefWidth="400.0" text="versio 1.1&#10;Heta Parikka&#10;" textAlignment="CENTER" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" />
-               </padding>
-               <BorderPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </BorderPane.margin>
-            </Label>
-         </top>
-         <bottom>
-            <TextField fx:id="textVastaus" text="käyttäjä" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="10.0" />
-               </BorderPane.margin>
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-            </TextField>
-         </bottom>
+<BorderPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.mit.fxgui.ModalController">
+
+    <!-- HEADER (DialogPane.header) -->
+    <top>
+        <Label alignment="CENTER" text="Kirjalokin tiedot" textAlignment="CENTER">
+            <font>
+                <Font size="60.0" />
+            </font>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="20.0" />
+            </padding>
+        </Label>
+    </top>
+
+    <!-- CONTENT (DialogPane.content) -->
+    <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0">
          <center>
-            <Label alignment="BOTTOM_CENTER" text="käyttäjä" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <BorderPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </BorderPane.margin>
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </Label>
+                <Label alignment="CENTER" prefWidth="400.0" text="versio 1.1&#10;Heta Parikka&#10;" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                    <font>
+                        <Font size="30.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                    </padding>
+                    <BorderPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </BorderPane.margin>
+                </Label>
          </center>
-      </BorderPane>
-   </content>
-   <header>
-      <Label alignment="CENTER" text="Kirjalokin tiedot" textAlignment="CENTER">
-         <font>
-            <Font size="50.0" />
-         </font>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="20.0" />
-         </padding>
-      </Label>
-   </header>
-   <graphic>
-      <Button mnemonicParsing="false" onAction="#handleOK" text="Button" />
-   </graphic>
-   <buttonTypes>
-      <ButtonType fx:constant="OK" />
-      <ButtonType fx:constant="CANCEL" />
-   </buttonTypes>
-</DialogPane>
+
+        </BorderPane>
+    </center>
+
+    <!-- FOOTER (DialogPane.graphic + buttonTypes korvattu) -->
+    <bottom>
+        <HBox alignment="CENTER" spacing="10.0">
+            <padding>
+                <Insets bottom="10.0" top="10.0" />
+            </padding>
+
+            <Button onAction="#handleDefaultOK" text="OK" />
+            <Button onAction="#handleDefaultCancel" text="Cancel" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

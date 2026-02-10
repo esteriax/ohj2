@@ -1,6 +1,7 @@
 package fxKirjaloki2;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -18,12 +19,15 @@ public class Kirjaloki2Main extends Application {
         try {
             FXMLLoader ldr = new FXMLLoader(getClass().getResource("Kirjaloki2GUIView.fxml"));
             final Pane root = ldr.load();
-            //final Kirjaloki2GUIController kirjaloki2Ctrl = (Kirjaloki2GUIController) ldr.getController();
+            final Kirjaloki2GUIController kirjaloki2Ctrl = (Kirjaloki2GUIController) ldr.getController();
+            
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("kirjaloki2.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Kirjaloki");
             primaryStage.show();
+            
+            if (!kirjaloki2Ctrl.avaa()) Platform.exit();
         } catch(Exception e) {
             e.printStackTrace();
         }

@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="497.0" prefWidth="354.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjaloki.TulostusController">
+<BorderPane prefHeight="497.0" prefWidth="354.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.mit.fxgui.ModalController">
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
-            <Button mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta" />
-          <Button defaultButton="true" mnemonicParsing="false" onAction="#handleOK" text="OK" />
+            <Button mnemonicParsing="false" onAction="#handleDefaultCancel" text="Cancel" />
+          <Button defaultButton="true" mnemonicParsing="false" onAction="#handleDefaultOK" text="OK" />
         </buttons>
          <padding>
             <Insets right="10.0" />
@@ -20,7 +20,7 @@
       </ButtonBar>
    </bottom>
    <center>
-      <TextArea fx:id="tulostusAlue" prefHeight="200.0" prefWidth="200.0" text="Valitut kirjat&#10;--------------------------------------------------------------------------------------------&#10;kirjaid       : 1&#10;nimi          : El tiempo entre costuras&#10;kirjailijaid  : 1&#10;julkaisuvuosi : 2009&#10;genre         : h&#10;tähdet        : -/5&#10;lukupvm       :  -&#10;lisätiedot    : &#10;&#10;&#10;&#10;&#10;&#10;----------------------------------------------&#10;Mummon kirjaloki&#10;Hetan kirjaloki&#10;&#10;&#10;&#10;----------------------------------------------&#10;kirjaid       : 1&#10;nimi          : El tiempo entre costuras&#10;kirjailijaid  : 1&#10;julkaisuvuosi : 2009&#10;genre         : h&#10;tähdet        : -/5&#10;lukupvm       :  -&#10;lisätiedot    : &#10;&#10;&#10;&#10;&#10;&#10;----------------------------------------------&#10;Mummon kirjaloki&#10;Hetan kirjalokikirjaid       : 1&#10;nimi          : El tiempo entre costuras&#10;kirjailijaid  : 1&#10;julkaisuvuosi : 2009&#10;genre         : h&#10;tähdet        : -/5&#10;lukupvm       :  -&#10;lisätiedot    : &#10;&#10;&#10;&#10;&#10;&#10;----------------------------------------------&#10;Mummon kirjaloki&#10;Hetan kirjaloki" BorderPane.alignment="CENTER">
+      <TextArea prefHeight="200.0" prefWidth="200.0" text="Valitut kirjat&#10;--------------------------------------------------------------------------------------------&#10;kirjaid       : 1&#10;nimi          : El tiempo entre costuras&#10;kirjailijaid  : 1&#10;julkaisuvuosi : 2009&#10;genre         : h&#10;tähdet        : -/5&#10;lukupvm       :  -&#10;lisätiedot    : &#10;&#10;&#10;&#10;&#10;&#10;----------------------------------------------&#10;Mummon kirjaloki&#10;Hetan kirjaloki&#10;&#10;&#10;&#10;----------------------------------------------&#10;kirjaid       : 1&#10;nimi          : El tiempo entre costuras&#10;kirjailijaid  : 1&#10;julkaisuvuosi : 2009&#10;genre         : h&#10;tähdet        : -/5&#10;lukupvm       :  -&#10;lisätiedot    : &#10;&#10;&#10;&#10;&#10;&#10;----------------------------------------------&#10;Mummon kirjaloki&#10;Hetan kirjalokikirjaid       : 1&#10;nimi          : El tiempo entre costuras&#10;kirjailijaid  : 1&#10;julkaisuvuosi : 2009&#10;genre         : h&#10;tähdet        : -/5&#10;lukupvm       :  -&#10;lisätiedot    : &#10;&#10;&#10;&#10;&#10;&#10;----------------------------------------------&#10;Mummon kirjaloki&#10;Hetan kirjaloki" BorderPane.alignment="CENTER">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
