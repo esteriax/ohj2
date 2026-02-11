@@ -13,7 +13,6 @@
 
 <BorderPane maxWidth="320.0" minWidth="320.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.mit.fxgui.ModalController">
 
-    <!-- HEADER (DialogPane.header) -->
     <top>
         <Label alignment="CENTER" contentDisplay="CENTER" text="Kirja">
             <font>
@@ -24,8 +23,6 @@
             </padding>
         </Label>
     </top>
-
-    <!-- CONTENT (DialogPane.content) -->
     <center>
         <GridPane prefWidth="200.0">
 
@@ -61,8 +58,6 @@
 
         </GridPane>
     </center>
-
-    <!-- FOOTER (DialogPane.buttonTypes korvattu) -->
     <bottom>
         <HBox alignment="CENTER" spacing="10.0">
             <padding>
