@@ -71,6 +71,8 @@ public class AloitusViewController implements ModalControllerInterface<String>{
     //--------------------------------------------------------------------------------------------------------------------
     
     
+
+
     /**
      * Luodaan kirjalokin nimen kysymisdialogi ja palautetaan siihen kirjoitettu nimi tai null
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle

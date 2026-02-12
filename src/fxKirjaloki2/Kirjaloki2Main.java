@@ -27,6 +27,11 @@ public class Kirjaloki2Main extends Application {
             primaryStage.setTitle("Kirjaloki");
             primaryStage.show();
             
+            primaryStage.setOnCloseRequest((event) -> {
+                if ( !kirjaloki2Ctrl.voikoSulkea() ) event.consume();
+            });
+
+            
             if (!kirjaloki2Ctrl.avaa()) Platform.exit();
         } catch(Exception e) {
             e.printStackTrace();

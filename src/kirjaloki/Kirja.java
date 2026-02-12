@@ -1,0 +1,131 @@
+/**
+ * 
+ */
+package kirjaloki;
+import java.io.*;
+import kirjaloki.Kirja;
+
+
+/**
+ * Kirjalokin Kirja-luokka
+ * @author heta
+ */
+public class Kirja {
+    
+    private int kirjaid;
+    private String nimi = "";
+    private String kirjailija = "";
+    private int julkaisuvuosi = 0;
+    private String genre = "";
+    private int tahdet = 0;
+    private String lukupvm = "";
+    private String lisatiedot = "";
+    
+    
+    private static int seuraavaNro = 1;
+    
+    
+    /**
+     * @return jäsenen nimi
+     * @example
+     * <pre name="test">
+     *   Kirja margarita = new Kirja();
+     *   margarita.vastaaMargarita();
+     *   margarita.getNimi() === "Margarita";
+     * </pre>
+     */
+    public String getNimi() {
+        return nimi;
+
+    }
+    
+    /**
+     * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
+     * @param apuid kirjan nimi
+     */
+
+    public void vastaaMargarita(int apuid) {
+            nimi = "Margarita";
+            kirjailija = "Anni Kytömäki";
+            kirjaid = apuid;
+            julkaisuvuosi = 2020;
+            genre = "historiallinen romaani";
+            tahdet = 5;
+            lukupvm = "23.02.2022";
+            lisatiedot = "Todellinen helmi, voitti Finlandia-palkinnon";
+        }
+    /**
+     * Tulostetaan kirjan tiedot
+     * @param out tietovirta johon tulostetaan
+     */
+    public void tulosta(PrintStream out) {
+        out.println(String.format("%03d", kirjaid) + " " + nimi);
+        out.println("Julkaisuvuosi: " + julkaisuvuosi);
+        out.println("Kirjailija: " + kirjailija);
+        out.println("Genre: " + genre);
+        out.println("Tähdet: " + tahdet + "/5");
+        out.println("Luettu: " + lukupvm);
+        out.println("Lisätiedot: " + lisatiedot);
+    }
+    
+    /**
+     * Tulostetaan kirjan tiedot
+     * @param os tietovirta johon tulostetaan
+     */
+    public void tulosta(OutputStream os) {
+        tulosta(new PrintStream(os));
+
+    }
+
+    
+    /**
+     * Palauttaa kirjan tunnusnumeron.
+     * @return kirjan tunnusnumeron
+     * @example
+     * <pre name="test">
+     *   Kirja kirja1 = new Kirja();
+     *   kirja1.getTunnusNro() === 0;
+     *   kirja1.rekisteroi();
+     *   Kirja kirja2 = new Kirja();
+     *   kirja2.rekisteroi();
+     *   int n1 = kirja1.getTunnusNro();
+     *   int n2 = kirja2.getTunnusNro();
+     *   n1 === n2-1;
+     * </pre>
+     */
+     public int rekisteroi() {
+         kirjaid = seuraavaNro;
+         seuraavaNro++;
+         return kirjaid;
+
+        }
+
+
+     /**
+      * Palauttaa kirjan tunnusnumeron.
+      * @return kirjan tunnusnumero
+      */
+     public int getTunnusNro() {
+         return kirjaid;
+        }
+
+    
+    /**
+     * Testataan Kirja-luokkaa
+     * @param args ei käytössä
+     */
+    public static void main(String[] args) {
+        
+        Kirja margarita = new Kirja();
+        Kirja kirja = new Kirja();
+
+        margarita.rekisteroi();
+        kirja.rekisteroi();
+        //margarita.vastaaMargarita(1);
+        margarita.tulosta(System.out);
+        kirja.tulosta(System.out);
+         
+
+    }
+
+}

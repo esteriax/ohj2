@@ -1,21 +1,34 @@
 package fxKirjaloki2;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import fi.jyu.mit.fxgui.ComboBoxChooser;
+import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 /**
  * @author heta
- * @version 30.1.2026
+ * @version 12.2.2026
  *
  */
 public class Kirjaloki2GUIController implements Initializable {
     
+    @FXML private ComboBoxChooser<String> cbKentat;
+    @FXML private TextField hakuehto;
+    @FXML private Label labelVirhe;
+    private String kirjalokinnimi = "Heta";
     
     /**
      * Avaa aloitusview:n, josta voi vaihtaa käyttäjää
@@ -24,22 +37,12 @@ public class Kirjaloki2GUIController implements Initializable {
         avaa();
     }
     
-    /*
-     * TODO naytaVirhe-ohjelma, plus id-tarkistus
-     */
-    @FXML private void handleHakuehto() {
-        eiToimi();
-        /*String hakukentta = cbKentat.getSelectedText();
-        String ehto = hakuehto.getText(); 
-        if ( ehto.isEmpty() )
-            naytaVirhe(null);
-        else
-            naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
-            */
-    }
     
+    /*
+     * Tallentaa syötetyt tiedot.
+     */
     @FXML private void handleTallenna() {
-        eiToimi();
+        tallenna();
 
     }
     
@@ -47,7 +50,8 @@ public class Kirjaloki2GUIController implements Initializable {
      * Lopettaa ohjelman ja tallentaa mahdollisesti tallentamattomat tiedot.
      */
     @FXML private void handleLopeta() {
-        eiToimi();
+        tallenna();
+        Platform.exit();
 
     }
     
@@ -72,7 +76,7 @@ public class Kirjaloki2GUIController implements Initializable {
      * Aukaisee harjoitustyön suunnitelmasivun timistä
      */
      @FXML private void handleApua() {
-        eiToimi();
+         avustus();
      }
      
     
@@ -103,6 +107,23 @@ public class Kirjaloki2GUIController implements Initializable {
     
     //--------------------------------------------------------------------------------------------------------------------
     
+    
+    /**
+     * Tietojen tallennus
+     */
+    private void tallenna() {
+        Dialogs.showMessageDialog("Tallennetetaan! Mutta ei toimi vielä");
+    }
+    
+    /**
+     * Tarkistetaan onko tallennus tehty
+     * @return true jos saa sulkea sovelluksen, false jos ei
+     */
+    public boolean voikoSulkea() {
+        tallenna();
+        return true;
+    }
+    
     /**
      * dialogi, joka kertoo ettei toimi vielä
      */
@@ -120,11 +141,76 @@ public class Kirjaloki2GUIController implements Initializable {
      * @return true jos onnistui, false jos kenttä jäi täyttämättä
      */
     public boolean avaa() {
-        String uusinimi = AloitusViewController.kysyNimi(null, "heta");
+        String uusinimi = AloitusViewController.kysyNimi(null, kirjalokinnimi);
         if (uusinimi == null) return false;
-        //luetiedosto(uusinimi);
+        lueTiedosto(uusinimi);
         return true;
     }
+    
+    /*
+     * Antaa hakulaatikkoon syötetyn tekstin mukaisen hakutuloksen
+     */
+    @FXML private void handleHakuehto() {
+        String hakukentta = cbKentat.getSelectedText();
+        String ehto = hakuehto.getText(); 
+        if ( ehto.isEmpty() )
+            naytaVirhe(null);
+        else
+            naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
+            
+    }
+    
+    /*
+     * Näyttää tekstikentän virheen käyttöliittymässä, mikäli syöte ei ole oikeellinen. 
+     * @param virhe viesti, joka näytetään virhekentässä
+     */
+    private void naytaVirhe(String virhe) {
+        if ( virhe == null || virhe.isEmpty() ) {
+            labelVirhe.setText("");
+            labelVirhe.getStyleClass().removeAll("virhe");
+            return;
+        }
+        labelVirhe.setText(virhe);
+        labelVirhe.getStyleClass().add("virhe");
+    }
+    
+    /**
+     * Alustaa kirjalokin lukemalla sen valitun nimisestä tiedostosta
+     * @param nimi tiedosto josta kerhon tiedot luetaan
+     */
+    protected void lueTiedosto(String nimi) {
+        kirjalokinnimi = nimi;
+        setTitle("Kirjaloki: " + kirjalokinnimi);
+        String virhe = "Ei osata lukea vielä";  // TODO: tähän oikea tiedoston lukeminen
+         //if (virhe != null) 
+            Dialogs.showMessageDialog(virhe);
+    }
+    
+    /**
+     * Ohjelman käyttöohje TIM-suuunnitelmasivulla
+     */
+    private void avustus() {
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2023s/ht/heespari#mtypuo4cyMgg");
+            desktop.browse(uri);
+        } catch (URISyntaxException e) {
+            return;
+        } catch (IOException e) {
+            return;
+        }
+    }
+
+
+    /*
+     * Asettaa otsikon elementille.
+     */
+    private void setTitle(String title) {
+        ModalController.getStage(hakuehto).setTitle(title);
+        
+    }
+
+
 
    
 }

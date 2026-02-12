@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjaloki2.AloitusViewController">
+<BorderPane prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: #ADD8E6" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjaloki2.AloitusViewController">
 
     <top>
         <Label alignment="CENTER" text="Tervetuloa kirjalokiin" textAlignment="CENTER">
             <font>
-                <Font size="45.0" />
+                <Font name="System Italic" size="45.0" />
             </font>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="20.0" />
@@ -22,7 +22,7 @@
         </Label>
     </top>
     <center>
-        <BorderPane>
+        <BorderPane style="-fx-background-color: #ADD8E6 -fx-background-colorf #ADD8E6">
 
             <top>
                 <Label alignment="CENTER" prefWidth="400.0" text="versio&#10;Heta Parikka&#10;" textAlignment="CENTER" BorderPane.alignment="CENTER">
@@ -58,7 +58,7 @@
                         <Cursor fx:constant="TEXT" />
                     </cursor>
                     <BorderPane.margin>
-                        <Insets bottom="10.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" />
                     </BorderPane.margin>
                 </TextField>
             </bottom>

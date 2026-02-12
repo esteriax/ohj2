@@ -12,7 +12,6 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -22,13 +21,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjaloki2.Kirjaloki2GUIController">
+<BorderPane style="-fx-background-color: #ADD8E6" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjaloki2.Kirjaloki2GUIController">
     <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="Tiedosto">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#eiToimi" text="Tallenna">
+              <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -38,7 +37,7 @@
                         <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#eiToimi" text="Uusi kirja">
+                  <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Uusi kirja">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -48,7 +47,7 @@
                         <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#eiToimi" text="Lopeta">
+                  <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -57,9 +56,9 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#eiToimi" text="Lisää uusi kirja" />
+              <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Lisää uusi kirja" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirjaa" />
-                  <MenuItem mnemonicParsing="false" onAction="#eiToimi" text="Poista kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirja" text="Poista kirja" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirjailija" text="Muokkaa kirjailija" />
             </items>
           </Menu>
@@ -73,6 +72,9 @@
          <BorderPane.margin>
             <Insets top="5.0" />
          </BorderPane.margin>
+         <opaqueInsets>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </opaqueInsets>
       </MenuBar>
    </top>
    <center>
@@ -89,11 +91,11 @@
                            <font>
                               <Font size="14.0" />
                            </font></Label>
-                        <TextField maxWidth="200.0" minWidth="200.0" onAction="#handleHakuehto" prefWidth="200.0" promptText="hae...">
+                        <TextField fx:id="hakuehto" maxWidth="200.0" minWidth="200.0" onAction="#handleHakuehto" prefWidth="200.0" promptText="hae...">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin></TextField>
-                        <ComboBoxChooser maxWidth="200.0" minWidth="200.0" prefWidth="200.0" rivit="nimi&#10;kirjailija&#10;julkaisuvuosi&#10;genre&#10;tähdet&#10;oma arvostelu">
+                        <ComboBoxChooser fx:id="cbKentat" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" rivit="nimi&#10;kirjailija&#10;julkaisuvuosi&#10;genre&#10;tähdet&#10;oma arvostelu">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin>
@@ -154,46 +156,59 @@
             <children>
                 <Label text="nimi">
                            <padding>
-                              <Insets bottom="5.0" top="15.0" />
-                           </padding></Label>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                           <GridPane.margin>
+                              <Insets top="5.0" />
+                           </GridPane.margin></Label>
                 <Label text="syntymävuosi" GridPane.rowIndex="1">
                            <padding>
                               <Insets bottom="5.0" top="5.0" />
-                           </padding></Label>
+                           </padding>
+                           <GridPane.margin>
+                              <Insets top="5.0" />
+                           </GridPane.margin></Label>
                 <Label text="suosikki" GridPane.rowIndex="2">
                            <padding>
                               <Insets bottom="5.0" top="5.0" />
-                           </padding></Label>
+                           </padding>
+                           <GridPane.margin>
+                              <Insets top="5.0" />
+                           </GridPane.margin></Label>
 
-                <TextField promptText="Anni Kytömäki" GridPane.columnIndex="1" />
-                <TextField promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField promptText="kyllä" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField promptText="Anni Kytömäki" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" top="5.0" />
+                           </GridPane.margin></TextField>
+                <TextField promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" />
+                           </GridPane.margin></TextField>
+                <TextField promptText="kyllä" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" />
+                           </GridPane.margin></TextField>
             </children>
 
         </GridPane>
                </center>
-               <bottom>
-                  <HBox BorderPane.alignment="CENTER">
-                     <children>
-                        <HBox>
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#handleUusiKirjailija" text="Uusi kirjailija">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button mnemonicParsing="false" onAction="#eiToimi" text="Tallenna">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
-                     </children></HBox>
-               </bottom>
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
+               <bottom>
+                  <HBox prefWidth="250.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label fx:id="labelVirhe" prefWidth="260.0" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+               </bottom>
             </BorderPane>
             <BorderPane maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
                <top>
@@ -211,7 +226,7 @@
                         <GridPane>
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="85.0" prefWidth="85.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" prefWidth="230.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" prefWidth="215.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -219,7 +234,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="200.0" prefHeight="250.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="200.0" prefHeight="235.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Label text="kirjailija" />
@@ -232,8 +247,14 @@
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Label alignment="TOP_LEFT" prefHeight="58.0" prefWidth="77.0" text="oma arvostelu" wrapText="true" GridPane.rowIndex="5" />
-                              <TextArea prefHeight="38.0" prefWidth="129.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label alignment="TOP_LEFT" prefWidth="77.0" text="oma arvostelu" wrapText="true" GridPane.rowIndex="5" />
+                              <TextArea GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" />
+                                 </GridPane.margin></TextArea>
                            </children>
                            <padding>
                               <Insets left="5.0" right="5.0" />
@@ -244,29 +265,10 @@
                         </GridPane>
                      </content>
                      <BorderPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
                      </BorderPane.margin>
                   </ScrollPane>
                </center>
-               <bottom>
-                  <HBox BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </BorderPane.margin>
-                     <children>
-                        <HBox spacing="10.0">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#eiToimi" text="Uusi kirja">
-                                 <tooltip>
-                                    <Tooltip text="vrw" />
-                                 </tooltip>
-                              </Button>
-                              <Button mnemonicParsing="false" onAction="#eiToimi" text="Tallenna" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </HBox>
-               </bottom>
                
                <padding>
                   <Insets left="5.0" right="5.0" />
@@ -275,4 +277,36 @@
          </items>
       </SplitPane>
    </center>
+   <bottom>
+      <HBox prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefWidth="230.0" />
+            <HBox prefWidth="275.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleUusiKirjailija" text="Uusi kirjailija">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefWidth="300.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleUusiKirja" text="Uusi kirja">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></Button>
+                  <Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin></HBox>
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
