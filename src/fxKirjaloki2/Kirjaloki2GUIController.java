@@ -27,6 +27,7 @@ public class Kirjaloki2GUIController implements Initializable {
     
     @FXML private ComboBoxChooser<String> cbKentat;
     @FXML private TextField hakuehto;
+    @FXML private TextField syntyma;
     @FXML private Label labelVirhe;
     private String kirjalokinnimi = "Heta";
     
@@ -159,6 +160,20 @@ public class Kirjaloki2GUIController implements Initializable {
             naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
             
     }
+    
+    /*
+     * TODO PÄIVITÄ: Tarkistaa päiväyksen/vuosiluvun oikeinkirjoituksen
+     */
+    /*
+    @FXML private void handlePaivays() {
+        String hakukentta = syntyma.getText();
+        if ( syntyma.isDirtyEmpty() )
+            naytaVirhe(null);
+        else
+            naytaVirhe("Ei osata vielä tarkistaa; " + syntyma);
+            
+    }
+    */
     
     /*
      * Näyttää tekstikentän virheen käyttöliittymässä, mikäli syöte ei ole oikeellinen. 

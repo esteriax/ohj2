@@ -180,7 +180,7 @@
                            <GridPane.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </GridPane.margin></TextField>
-                <TextField promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <TextField onAction="#handleHakuehto" promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" />
                            </GridPane.margin></TextField>
@@ -246,7 +246,7 @@
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField onAction="#handleHakuehto" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label alignment="TOP_LEFT" prefWidth="77.0" text="oma arvostelu" wrapText="true" GridPane.rowIndex="5" />
                               <TextArea GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <padding>
