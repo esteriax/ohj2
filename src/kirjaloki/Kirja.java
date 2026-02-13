@@ -41,13 +41,11 @@ public class Kirja {
     
     /**
      * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
-     * @param apuid kirjan nimi
      */
 
-    public void vastaaMargarita(int apuid) {
+    public void vastaaMargarita() {
             nimi = "Margarita";
             kirjailija = "Anni Kytömäki";
-            kirjaid = apuid;
             julkaisuvuosi = 2020;
             genre = "historiallinen romaani";
             tahdet = 5;
@@ -66,6 +64,7 @@ public class Kirja {
         out.println("Tähdet: " + tahdet + "/5");
         out.println("Luettu: " + lukupvm);
         out.println("Lisätiedot: " + lisatiedot);
+        out.println();
     }
     
     /**
@@ -117,13 +116,14 @@ public class Kirja {
     public static void main(String[] args) {
         
         Kirja margarita = new Kirja();
-        Kirja kirja = new Kirja();
+        Kirja margarita2 = new Kirja();
 
         margarita.rekisteroi();
-        kirja.rekisteroi();
-        //margarita.vastaaMargarita(1);
+        margarita2.rekisteroi();
+        margarita.vastaaMargarita();
+        margarita2.vastaaMargarita();
         margarita.tulosta(System.out);
-        kirja.tulosta(System.out);
+        margarita2.tulosta(System.out);
          
 
     }
