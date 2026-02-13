@@ -207,7 +207,7 @@ public class Kirjaloki2GUIController implements Initializable {
     private void avustus() {
         Desktop desktop = Desktop.getDesktop();
         try {
-            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2023s/ht/heespari#mtypuo4cyMgg");
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2023s/ht/heespari");
             desktop.browse(uri);
         } catch (URISyntaxException e) {
             return;
