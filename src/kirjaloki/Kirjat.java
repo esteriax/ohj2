@@ -61,7 +61,7 @@ public class Kirjat {
      * </pre>
      */
 
-    private void lisaa(Kirja kirja) throws SailoException {
+    public void lisaa(Kirja kirja) throws SailoException {
         if (lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
         alkiot[lkm] = kirja;
         lkm++;
