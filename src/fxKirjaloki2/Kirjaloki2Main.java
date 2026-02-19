@@ -3,6 +3,7 @@ package fxKirjaloki2;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import kirjaloki.Kirjaloki;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +31,9 @@ public class Kirjaloki2Main extends Application {
             primaryStage.setOnCloseRequest((event) -> {
                 if ( !kirjaloki2Ctrl.voikoSulkea() ) event.consume();
             });
-
+            
+            Kirjaloki kirjaloki = new Kirjaloki();  
+            kirjaloki2Ctrl.setKirjaloki(kirjaloki); 
             
             if (!kirjaloki2Ctrl.avaa()) Platform.exit();
         } catch(Exception e) {
