@@ -45,7 +45,7 @@ public class Kirjat implements Iterable<Kirja> {
 
 
     /**
-     * Tallentaa jäsenistön tiedostoon.  
+     * Tallentaa käyttäjien tiedostoon 
      * TODO Kesken.
      * @throws SailoException jos talletus epäonnistuu
      */
@@ -105,9 +105,9 @@ public class Kirjat implements Iterable<Kirja> {
 
 
     /**
-     * Haetaan kaikki jäsen Kirjat
-     * @param tunnusnro jäsenen tunnusnumero jolle kirja1rastuksia haetaan
-     * @return tietorakenne jossa viiteet löydetteyihin kirja1rastuksiin
+     * Haetaan kaikki kirjailijan kirjat
+     * @param kirjailijaId kirjailijan id jonka kirjoja haetaan
+     * @return tietorakenne jossa viiteet löydetteyihin kirjoihin
      * @example
      * <pre name="test">
      * #import java.util.*;
@@ -132,10 +132,10 @@ public class Kirjat implements Iterable<Kirja> {
      *  loytyneet.get(0) == margarita51 === true;
      * </pre> 
      */
-    public List<Kirja> annaKirjat(int tunnusnro) {
+    public List<Kirja> annaKirjat(int kirjailijaId) {
         List<Kirja> loydetyt = new ArrayList<Kirja>();
         for (Kirja kirja1 : alkiot)
-            if (kirja1.getKirjailijaId() == tunnusnro) loydetyt.add(kirja1);
+            if (kirja1.getKirjailijaId() == kirjailijaId) loydetyt.add(kirja1);
         return loydetyt;
     }
 
