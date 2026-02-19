@@ -1,5 +1,7 @@
 package kirjaloki;
 
+import java.util.List;
+
 /**
  * @author heta
  * @version 17.2.2026
@@ -8,6 +10,7 @@ package kirjaloki;
 public class Kirjaloki {
     
     private final Kirjailijat kirjailijat = new Kirjailijat();
+    private final Kirjat kirjat = new Kirjat();
     
     
         /**
@@ -16,8 +19,44 @@ public class Kirjaloki {
          * @return indeksissä numero sijaitseva kirjailija
          */
         public Kirjailija annaKirjailija(int numero) {
-        return kirjailijat.anna(numero);
+            return kirjailijat.anna(numero);
         }
+        
+        /**
+         * Haetaan kaikki kirjailija kirjat
+         * @param kirjailija jolle kirjoja haetaan
+         * @return tietorakenne jossa viiteet löydetteyihin kirjoihin
+         * @example
+         * <pre name="test">
+         * #import java.util.*;
+         * 
+         *  Kirjaloki kirjaloki = new Kirjaloki();
+         *  Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija(), kytomaki3 = new Kirjailija();
+         *  kytomaki1.rekisteroi(); kytomaki2.rekisteroi(); kytomaki3.rekisteroi();
+         *  int id1 = kytomaki1.getKirjailijaId();
+         *  int id2 = kytomaki2.getKirjailijaId();
+         *  Kirja margarita11 = new Kirja(id1); kirjaloki.lisaa(margarita11);
+         *  Kirja margarita12 = new Kirja(id1); kirjaloki.lisaa(margarita12);
+         *  Kirja margarita21 = new Kirja(id2); kirjaloki.lisaa(margarita21);
+         *  Kirja margarita22 = new Kirja(id2); kirjaloki.lisaa(margarita22);
+         *  Kirja margarita23 = new Kirja(id2); kirjaloki.lisaa(margarita23);
+         *  
+         *  List<Kirja> loytyneet;
+         *  loytyneet = kirjaloki.annaKirjat(kytomaki3);
+         *  loytyneet.size() === 0; 
+         *  loytyneet = kirjaloki.annaKirjat(kytomaki1);
+         *  loytyneet.size() === 2; 
+         *  loytyneet.get(0) == margarita11 === true;
+         *  loytyneet.get(1) == margarita12 === true;
+         *  loytyneet = kirjaloki.annaKirjat(kytomaki2);
+         *  loytyneet.size() === 3; 
+         *  loytyneet.get(0) == margarita21 === true;
+         * </pre> 
+         */
+        public List<Kirja> annaKirjat(Kirjailija kirjailija) {
+            return kirjat.annaKirjat(kirjailija.getKirjailijaId());
+        }
+
         
         /**
          * Ge
@@ -52,6 +91,15 @@ public class Kirjaloki {
          * */
         public void lisaa(Kirjailija kirjailija) throws SailoException {
             kirjailijat.lisaa(kirjailija);
+        }
+        
+        /**
+         * Lisätään kirja kirjalokiin
+         * @param kirja kirjalokiin lisättävä kirja
+         * @throws SailoException mikäli lisääminen epäonnistuu
+         */
+        public void lisaa(Kirja kirja) throws SailoException {
+            kirjat.lisaa(kirja);
         }
 
         /**
