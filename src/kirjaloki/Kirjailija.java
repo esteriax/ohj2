@@ -21,8 +21,8 @@ public class Kirjailija {
      * @example
      * <pre name="test">
      *   Kirjailija kytomaki = new Kirjailija();
-     *   kytomati.vastaaKytomaki();
-     *   ky.getNimi() === "Anni Kytömäki";
+     *   kytomaki.vastaaKytomaki();
+     *   kytomaki.getNimi() === "Anni Kytömäki";
      * </pre>
      */
     public String getNimi() {
@@ -38,6 +38,9 @@ public class Kirjailija {
             syntymaVuosi = 1980;
             suosikki = true;
         }
+    
+    
+    
     /**
      * Tulostetaan kirjailijan tiedot
      * @param out tietovirta johon tulostetaan
@@ -65,12 +68,12 @@ public class Kirjailija {
      * @example
      * <pre name="test">
      *   Kirjailija kirjailija1 = new Kirjailija();
-     *   kirjailia1.getTunnusNro() === 0;
-     *   kirjailia1.rekisteroi();
+     *   kirjailija1.getKirjailijaId() === 0;
+     *   kirjailija1.rekisteroi();
      *   Kirjailija kirjailija2 = new Kirjailija();
      *   kirjailija2.rekisteroi();
-     *   int n1 = kirjailija1.getTunnusNro();
-     *   int n2 = kirjailija2.getTunnusNro();
+     *   int n1 = kirjailija1.getKirjailijaId();
+     *   int n2 = kirjailija2.getKirjailijaId();
      *   n1 === n2-1;
      * </pre>
      */
@@ -83,8 +86,8 @@ public class Kirjailija {
 
 
      /**
-      * Palauttaa kirjailijan tunnusnumeron.
-      * @return kirjailijan tunnusnumero
+      * Palauttaa kirjailijan id:n.
+      * @return kirjailijan id
       */
      public int getKirjailijaId() {
          return kirjailijaId;

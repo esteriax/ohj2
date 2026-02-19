@@ -5,68 +5,62 @@ package kirjaloki;
  * @version 17.2.2026
  *
  */
-/**
- * Kirjaloki-luokka
- * @author heta
- * @version 13.2.2026
- *
- */
 public class Kirjaloki {
     
-    private final Kirjat kirjat = new Kirjat();
+    private final Kirjailijat kirjailijat = new Kirjailijat();
     
     
         /**
          * Pyyntimetodi kirjojen lukumäärälle
          * @param numero kirjan järjestysnumero kirjalokissa
-         * @return indeksissä numero sijaitseva kirja
+         * @return indeksissä numero sijaitseva kirjailija
          */
-        public Kirja annaKirja(int numero) {
-        return kirjat.anna(numero);
+        public Kirjailija annaKirjailija(int numero) {
+        return kirjailijat.anna(numero);
         }
         
         /**
          * Ge
          * @return kirjojen lukumäärä
          */
-        public int getKirjoja() {
-        return kirjat.getLkm();
+        public int getKirjailijoita() {
+        return kirjailijat.getLkm();
         }
         /**
          * 
-         * @param kirja kirjalokiin lisättävä kirja
+         * @param kirjailija kirjalokiin lisättävä kirjailija
          * @throws SailoException näytettävä virhe, mikäli lisääminen ei onnistu
          * * @example
          * <pre name="test">
          * #THROWS SailoException
          * Kirjaloki kirjaloki = new Kirjaloki();
-         * Kirja margarita1 = new Kirja(), margarita2 = new Kirja();
-         * margarita1.rekisteroi(); margarita2.rekisteroi();
-         * kirjaloki.getKirjoja() === 0;
-         * kirjaloki.lisaa(margarita1); kirjaloki.getKirjoja() === 1;
-         * kirjaloki.lisaa(margarita2); kirjaloki.getKirjoja() === 2;
-         * kirjaloki.lisaa(margarita1); kirjaloki.getKirjoja() === 3;
-         * kirjaloki.getKirjoja() === 3;
-         * kirjaloki.annaKirja(0) === margarita1;
-         * kirjaloki.annaKirja(1) === margarita2;
-         * kirjaloki.annaKirja(2) === margarita1;
-         * kirjaloki.annaKirja(3) === margarita1; #THROWS IndexOutOfBoundsException 
-         * kirjaloki.lisaa(margarita1); kirjaloki.getKirjoja() === 4;
-         * kirjaloki.lisaa(margarita1); kirjaloki.getKirjoja() === 5;
-         * kirjaloki.lisaa(margarita1);            #THROWS SailoException
+         * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija();
+         * kytomaki1.rekisteroi(); kytomaki2.rekisteroi();
+         * kirjaloki.getKirjailijoita() === 0;
+         * kirjaloki.lisaa(kytomaki1); kirjaloki.getKirjailijoita() === 1;
+         * kirjaloki.lisaa(kytomaki2); kirjaloki.getKirjailijoita() === 2;
+         * kirjaloki.lisaa(kytomaki1); kirjaloki.getKirjailijoita() === 3;
+         * kirjaloki.getKirjailijoita() === 3;
+         * kirjaloki.annaKirjailija(0) === kytomaki1;
+         * kirjaloki.annaKirjailija(1) === kytomaki2;
+         * kirjaloki.annaKirjailija(2) === kytomaki1;
+         * kirjaloki.annaKirjailija(3) === kytomaki1; #THROWS IndexOutOfBoundsException 
+         * kirjaloki.lisaa(kytomaki1); kirjaloki.getKirjailijoita() === 4;
+         * kirjaloki.lisaa(kytomaki1); kirjaloki.getKirjailijoita() === 5;
+         * kirjaloki.lisaa(kytomaki1);            #THROWS SailoException
          * </pre>
          * */
-        public void lisaa(Kirja kirja) throws SailoException {
-            kirjat.lisaa(kirja);
+        public void lisaa(Kirjailija kirjailija) throws SailoException {
+            kirjailijat.lisaa(kirjailija);
         }
 
         /**
          * Lukee kirjalokin tiedot tiedostosta
-         * @param nimi jota käyteään lukemisessa
+         * @param nimi kirjailijan jota käyteään lukemisessa
          * @throws SailoException jos lukeminen epäonnistuu
          */
         public void lueTiedostosta(String nimi) throws SailoException {
-            kirjat.lueTiedostosta(nimi);
+            kirjailijat.lueTiedostosta(nimi);
         }
         
         /**
@@ -74,13 +68,13 @@ public class Kirjaloki {
          * @throws SailoException jos tallettamisessa ongelmia
          */
         public void talleta() throws SailoException {
-            kirjat.talleta();
+            kirjailijat.talleta();
         }
 
 
 
 
-        /**
+        /** Testataan luokkaa
          * @param args ei käytössä
          */
         public static void main(String[] args) {
@@ -91,21 +85,21 @@ public class Kirjaloki {
             try {
                 //kirjaloki.lueTiedostosta("Heta");
 
-                Kirja margarita1 = new Kirja(), margarita2 = new Kirja();
-                margarita1.rekisteroi();
-                margarita1.vastaaMargarita();
-                margarita2.rekisteroi();
-                margarita2.vastaaMargarita();
+                Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija();
+                kytomaki1.rekisteroi();
+                kytomaki1.vastaaKytomaki();
+                kytomaki2.rekisteroi();
+                kytomaki2.vastaaKytomaki();
 
-                kirjaloki.lisaa(margarita1);
-                kirjaloki.lisaa(margarita2);
+                kirjaloki.lisaa(kytomaki1);
+                kirjaloki.lisaa(kytomaki2);
 
                 System.out.println("============= Kirjaloki testi =================");
 
-                for (int i = 0; i < kirjaloki.getKirjoja(); i++) {
-                    Kirja kirja = kirjaloki.annaKirja(i);
-                    System.out.println("Kirja paikassa: " + i);
-                    kirja.tulosta(System.out);
+                for (int i = 0; i < kirjaloki.getKirjailijoita(); i++) {
+                    Kirjailija kirjailija = kirjaloki.annaKirjailija(i);
+                    System.out.println("Kirjailija paikassa: " + i);
+                    kirjailija.tulosta(System.out);
                 }
 
             } catch (SailoException ex) {

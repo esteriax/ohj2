@@ -1,87 +1,52 @@
 package kirjaloki;
 
-
+import java.util.*;
 
 /**
+ * 
  * @author heta
- * @version 13.2.2026
+ * @version 19.2.2026
  *
  */
-public class Kirjat {
-    
-    private static final int MAX_KIRJOJA   = 5;
-    private int              lkm           = 0;
-    private String           tiedostonNimi = "";
-    private Kirja            alkiot[]      = new Kirja[MAX_KIRJOJA];
-    
-    
+public class Kirjat implements Iterable<Kirja> {
+
+    private String                      tiedostonNimi = "";
+
+    /** taulukko kirjoista */
+    private final Collection<Kirja> alkiot        = new ArrayList<Kirja>();
+
+
     /**
-     * Palauttaa viitteen i:teen jäseneen.
-     * @param i monennenko kirjan viite halutaan
-     * @return viite kirjaan, jonka indeksi on i
-     * @throws IndexOutOfBoundsException jos i ei ole sallitulla alueella  
+     * Alustetaan kirjat
      */
-    public Kirja anna(int i) throws IndexOutOfBoundsException {
-        if (i < 0 || lkm <= i)
-            throw new IndexOutOfBoundsException("Laiton indeksi: " + i);
-        return alkiot[i];
+    public Kirjat() {
     }
 
 
-    
     /**
-     * @return Kirjojen lukumäärä
+     * Lisää uuden kirjan kirjat-listaan
+     * @param kirja1 lisättävä Kirja
      */
-    public int getLkm() {
-        return lkm;
+    public void lisaa(Kirja kirja1) {
+        alkiot.add(kirja1);
     }
-    
-    /**
-     * Lisää uuden kirjan tietorakenteeseen.  Ottaa kirjan omistukseensa.
-     * @param kirja lisätäävän kirja viite.  Huom tietorakenne muuttuu omistajaksi
-     * @throws SailoException jos tietorakenne on jo täynnä
-     * @example
-     * <pre name="test">
-     * #THROWS SailoException 
-     * Kirja kirjat = new Kirjat();
-     * Kirja margarita = new Kirja(), margarita2 = new Kirja();
-     * kirjat.getLkm() === 0;
-     * kirjat.lisaa(margarita); kirjat.getLkm() === 1;
-     * kirjat.lisaa(margarita2); kirjat.getLkm() === 2;
-     * kirjat.lisaa(margarita); kirjat.getLkm() === 3;
-     * kirjat.anna(0) === margarita;
-     * kirjat.anna(1) === margarita2;
-     * kirjat.anna(2) === margarita;
-     * kirjat.anna(1) == margarita === false;
-     * kirjat.anna(1) == margarita2 === true;
-     * kirjat.anna(3) === margarita; #THROWS IndexOutOfBoundsException 
-     * kirjat.lisaa(margarita); kirjat.getLkm() === 4;
-     * kirjat.lisaa(margarita); kirjat.getLkm() === 5;
-     * kirjat.lisaa(margarita);  #THROWS SailoException
-     * </pre>
-     */
 
-    public void lisaa(Kirja kirja) throws SailoException {
-        if (lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
-        alkiot[lkm] = kirja;
-        lkm++;
 
-        
-    }
-    
     /**
-     * Lukee jäsenistön tiedostosta TODO
+     * Lukee käyttäjien tiedostosta.  
+     * TODO Kesken
      * @param hakemisto tiedoston hakemisto
      * @throws SailoException jos lukeminen epäonnistuu
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
-        tiedostonNimi = hakemisto + "/nimet.dat";
+        tiedostonNimi = hakemisto + ".kirja1";
         throw new SailoException("Ei osata vielä lukea tiedostoa " + tiedostonNimi);
     }
 
 
     /**
-     * Tallentaa kirjalokin tiedostoon TODO JATKA
+     * Tallentaa jäsenistön tiedostoon.  
+     * TODO Kesken.
      * @throws SailoException jos talletus epäonnistuu
      */
     public void talleta() throws SailoException {
@@ -90,34 +55,121 @@ public class Kirjat {
 
 
     /**
-     * Testataan ohjelmaa
+     * Palauttaa kerhon Kirjaten lukumäärän
+     * @return Kirjaten lukumäärä
+     */
+    public int getLkm() {
+        return alkiot.size();
+    }
+
+
+    /**
+     * Iteraattori kaikkien Kirjaten läpikäymiseen
+     * @return Kirjaiteraattori
+     * 
+     * @example
+     * <pre name="test">
+     * #PACKAGEIMPORT
+     * #import java.util.*;
+     * 
+     *  Kirjat kirjat = new Kirjat();
+     *  Kirja margarita21 = new Kirja(2); kirjat.lisaa(margarita21);
+     *  Kirja margarita11 = new Kirja(1); kirjat.lisaa(margarita11);
+     *  Kirja margarita22 = new Kirja(2); kirjat.lisaa(margarita22);
+     *  Kirja margarita12 = new Kirja(1); kirjat.lisaa(margarita12);
+     *  Kirja margarita23 = new Kirja(2); kirjat.lisaa(margarita23);
+     * 
+     *  Iterator<Kirja> i2=kirjat.iterator();
+     *  i2.next() === margarita21;
+     *  i2.next() === margarita11;
+     *  i2.next() === margarita22;
+     *  i2.next() === margarita12;
+     *  i2.next() === margarita23;
+     *  i2.next() === margarita12;  #THROWS NoSuchElementException  
+     *  
+     *  int n = 0;
+     *  int jnrot[] = {2,1,2,1,2};
+     *  
+     *  for ( Kirja kirja1:kirjat ) { 
+     *    kirja1.getKirjailijaId() === jnrot[n]; n++;  
+     *  }
+     *  
+     *  n === 5;
+     *  
+     * </pre>
+     */
+    @Override
+    public Iterator<Kirja> iterator() {
+        return alkiot.iterator();
+    }
+
+
+    /**
+     * Haetaan kaikki jäsen Kirjat
+     * @param tunnusnro jäsenen tunnusnumero jolle kirja1rastuksia haetaan
+     * @return tietorakenne jossa viiteet löydetteyihin kirja1rastuksiin
+     * @example
+     * <pre name="test">
+     * #import java.util.*;
+     * 
+     *  Kirjat kirjat = new Kirjat();
+     *  Kirja margarita21 = new Kirja(2); kirjat.lisaa(margarita21);
+     *  Kirja margarita11 = new Kirja(1); kirjat.lisaa(margarita11);
+     *  Kirja margarita22 = new Kirja(2); kirjat.lisaa(margarita22);
+     *  Kirja margarita12 = new Kirja(1); kirjat.lisaa(margarita12);
+     *  Kirja margarita23 = new Kirja(2); kirjat.lisaa(margarita23);
+     *  Kirja margarita51 = new Kirja(5); kirjat.lisaa(margarita51);
+     *  
+     *  List<Kirja> loytyneet;
+     *  loytyneet = kirjat.annaKirjat(3);
+     *  loytyneet.size() === 0; 
+     *  loytyneet = kirjat.annaKirjat(1);
+     *  loytyneet.size() === 2; 
+     *  loytyneet.get(0) == margarita11 === true;
+     *  loytyneet.get(1) == margarita12 === true;
+     *  loytyneet = kirjat.annaKirjat(5);
+     *  loytyneet.size() === 1; 
+     *  loytyneet.get(0) == margarita51 === true;
+     * </pre> 
+     */
+    public List<Kirja> annaKirjat(int tunnusnro) {
+        List<Kirja> loydetyt = new ArrayList<Kirja>();
+        for (Kirja kirja1 : alkiot)
+            if (kirja1.getKirjailijaId() == tunnusnro) loydetyt.add(kirja1);
+        return loydetyt;
+    }
+
+
+    /**
+     * Testiohjelma kirjailijoille
      * @param args ei käytössä
      */
     public static void main(String[] args) {
-        Kirjat Kirjat = new Kirjat();
+        Kirjat kirjat = new Kirjat();
+        Kirja margarita1 = new Kirja();
+        margarita1.vastaaMargarita(2);
+        Kirja margarita2 = new Kirja();
+        margarita2.vastaaMargarita(1);
+        Kirja margarita3 = new Kirja();
+        margarita3.vastaaMargarita(2);
+        Kirja margarita4 = new Kirja();
+        margarita4.vastaaMargarita(2);
 
-        Kirja margarita = new Kirja(), margarita2 = new Kirja();
-        margarita.rekisteroi();    margarita.vastaaMargarita();
-        margarita2.rekisteroi();   margarita2.vastaaMargarita();
+        kirjat.lisaa(margarita1);
+        kirjat.lisaa(margarita2);
+        kirjat.lisaa(margarita3);
+        kirjat.lisaa(margarita2);
+        kirjat.lisaa(margarita4);
 
-        try {
-            Kirjat.lisaa(margarita);
-            Kirjat.lisaa(margarita2);
+        System.out.println("============= Kirjat testi =================");
 
-            System.out.println("========== Kirjat testi ==============");
+        List<Kirja> Kirjat2 = kirjat.annaKirjat(2);
 
-            for (int i=0; i<Kirjat.getLkm(); i++) {
-                Kirja Kirja = Kirjat.anna(i);
-                System.out.println("Kirja nro: " + i);
-                Kirja.tulosta(System.out);
-            }
-
-        } catch (SailoException ex) {
-            System.out.println(ex.getMessage());
+        for (Kirja kirja1 : Kirjat2) {
+            System.out.print(kirja1.getKirjailijaId() + " ");
+            kirja1.tulosta(System.out);
         }
 
-    
     }
 
-    
 }

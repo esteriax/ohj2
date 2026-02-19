@@ -43,6 +43,21 @@ public class Kirja {
     
     /**
      * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
+     * @param kirjailijaTunnus kirjailijan id kenen kirja on kysessä
+     */
+    public void vastaaMargarita(int kirjailijaTunnus) {
+            kirjailijaId = kirjailijaTunnus;
+            nimi = "Margarita";
+            kirjailija = "Anni Kytömäki";
+            julkaisuvuosi = 2020;
+            genre = "historiallinen romaani";
+            tahdet = 5;
+            lukupvm = "23.02.2022";
+            lisatiedot = "Todellinen helmi, voitti Finlandia-palkinnon";
+        }
+    
+    /**
+     * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle ilman kirjailijaId:tä
      */
     public void vastaaMargarita() {
             nimi = "Margarita";
