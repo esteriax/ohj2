@@ -3,7 +3,7 @@
  */
 package kirjaloki;
 import java.io.*;
-import kirjaloki.Kirja;
+
 
 
 /**
@@ -12,7 +12,8 @@ import kirjaloki.Kirja;
  */
 public class Kirja {
     
-    private int kirjaid;
+    private int kirjaId;
+    private int kirjailijaId;
     private String nimi = "";
     private String kirjailija = "";
     private int julkaisuvuosi = 0;
@@ -24,25 +25,25 @@ public class Kirja {
     
     private static int seuraavaNro = 1;
     
+    /**
+     * Alustetaan kirja
+     */
+    public Kirja() {
+        // TODO
+    }
+
     
     /**
-     * @return jäsenen nimi
-     * @example
-     * <pre name="test">
-     *   Kirja margarita = new Kirja();
-     *   margarita.vastaaMargarita();
-     *   margarita.getNimi() === "Margarita";
-     * </pre>
+     * Alustetaan tietyn kirjan harrastus.  
+     * @param kirjailijaId jäsenen viitenumero 
      */
-    public String getNimi() {
-        return nimi;
-
+    public Kirja(int kirjailijaId) {
+        this.kirjailijaId = kirjailijaId;
     }
     
     /**
      * Apumetodi, jolla saadaan täytettyä testiarvot kirjalle.
      */
-
     public void vastaaMargarita() {
             nimi = "Margarita";
             kirjailija = "Anni Kytömäki";
@@ -52,12 +53,13 @@ public class Kirja {
             lukupvm = "23.02.2022";
             lisatiedot = "Todellinen helmi, voitti Finlandia-palkinnon";
         }
+    
     /**
      * Tulostetaan kirjan tiedot
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(String.format("%03d", kirjaid) + " " + nimi);
+        out.println(String.format("%03d", kirjaId) + " " + nimi);
         out.println("Julkaisuvuosi: " + julkaisuvuosi);
         out.println("Kirjailija: " + kirjailija);
         out.println("Genre: " + genre);
@@ -75,7 +77,6 @@ public class Kirja {
         tulosta(new PrintStream(os));
 
     }
-
     
     /**
      * Palauttaa kirjan tunnusnumeron.
@@ -83,31 +84,40 @@ public class Kirja {
      * @example
      * <pre name="test">
      *   Kirja kirja1 = new Kirja();
-     *   kirja1.getTunnusNro() === 0;
+     *   kirja1.getKirjaId() === 0;
      *   kirja1.rekisteroi();
      *   Kirja kirja2 = new Kirja();
      *   kirja2.rekisteroi();
-     *   int n1 = kirja1.getTunnusNro();
-     *   int n2 = kirja2.getTunnusNro();
+     *   int n1 = kirja1.getKirjaId();
+     *   int n2 = kirja2.getKirjaId();
      *   n1 === n2-1;
      * </pre>
      */
      public int rekisteroi() {
-         kirjaid = seuraavaNro;
+         kirjaId = seuraavaNro;
          seuraavaNro++;
-         return kirjaid;
+         return kirjaId;
 
         }
 
 
      /**
-      * Palauttaa kirjan tunnusnumeron.
+      * Palauttaa kirjan id:n
       * @return kirjan tunnusnumero
       */
-     public int getTunnusNro() {
-         return kirjaid;
+     public int getKirjaId() {
+         return kirjaId;
         }
+    
+    /**
+     * @return kirjailijaId kirjan kirjailijan ID
+     * 
+     */
+    public int getKirjailijaId() {
+        return kirjailijaId;
 
+    }
+    
     
     /**
      * Testataan Kirja-luokkaa
