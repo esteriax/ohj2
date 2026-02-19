@@ -2,6 +2,7 @@ package fxKirjaloki2;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -9,14 +10,24 @@ import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
+import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
+import kanta.PaivaysTarkistus;
+import kirjaloki.Kirjailija;
+import kirjaloki.Kirjaloki;
+import kirjaloki.SailoException;
+
 
 /**
  * @author heta
@@ -27,8 +38,11 @@ public class Kirjaloki2GUIController implements Initializable {
     
     @FXML private ComboBoxChooser<String> cbKentat;
     @FXML private TextField hakuehto;
-    @FXML private TextField syntyma;
+    @FXML private TextField lukuPvm;
+    @FXML private TextField julkaisuVuosi;
     @FXML private Label labelVirhe;
+    @FXML private ScrollPane panelKirjailija;
+    @FXML private ListChooser<Kirjailija> chooserKirjailijat;
     private String kirjalokinnimi = "Heta";
     
     /**
@@ -37,6 +51,43 @@ public class Kirjaloki2GUIController implements Initializable {
     public void handleAvaa() {
         avaa();
     }
+    
+    /*
+     * Antaa hakulaatikkoon syötetyn tekstin mukaisen hakutuloksen
+     */
+    @FXML private void handleHakuehto() {
+        String hakukentta = cbKentat.getSelectedText();
+        String ehto = hakuehto.getText(); 
+        if ( ehto.isEmpty() )
+            naytaVirhe(null);
+        else
+            naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);      
+    }
+    
+    /*
+     * Tarkistaa päiväyksen/vuosiluvun oikeinkirjoituksen
+     */
+    
+    @FXML private void handleTarkistaLukuPvm() {
+        String ehto = lukuPvm.getText(); 
+        if ( ehto.isEmpty() | PaivaysTarkistus.tarkistaLukuPvm(ehto) == true)
+            naytaVirhe(null);
+        else
+            naytaVirhe("Tarkista päivämäärä: " + ehto);         
+    }
+    
+    /*
+     * Tarkistaa päiväyksen/vuosiluvun oikeinkirjoituksen
+     */
+    
+    @FXML private void handleTarkistaVuosi() {
+        String ehto = julkaisuVuosi.getText(); 
+        if ( ehto.isEmpty() || PaivaysTarkistus.tarkistaVuosi(ehto))
+            naytaVirhe(null);
+        else
+            naytaVirhe("Tarkista vuosiluku: " + ehto);         
+    }
+    
     
     
     /*
@@ -56,30 +107,33 @@ public class Kirjaloki2GUIController implements Initializable {
 
     }
     
-    /*
-     * Avaa muokkausdialogin tyhjänä ja jos se tallennetaan OK:lla, lisätään uusi kirja.
-     */
-    @FXML private void handleUusiKirja() {
-        eiToimi();
 
-    }
-    
-    @FXML private void handlePoistaKirja() {
-        eiToimi();
-    }
-    
-    
-    @FXML private void handleUusiKirjailija() {
-        eiToimi();
-    }
-    
     /*
      * Aukaisee harjoitustyön suunnitelmasivun timistä
      */
      @FXML private void handleApua() {
          avustus();
      }
-     
+    
+    /*
+     * Avaa muokkausdialogin tyhjänä ja jos se tallennetaan OK:lla, lisätään uusi kirja.
+     */
+    @FXML private void handleUusiKirja() {
+        eiToimi();
+    }
+    
+    @FXML private void handleUusiKirjailija() {
+        uusiKirjailija();
+    }
+    
+    @FXML private void handlePoistaKirja() {
+        eiToimi();
+    }
+    
+    @FXML private void handlePoistaKirjailija() {
+        eiToimi();
+    }
+    
     
     @FXML private void handleMuokkaaKirja() {
         ModalController.showModal(Kirjaloki2GUIController.class.getResource("KirjanTiedotDialogi.fxml"), "Kirja", null, "");
@@ -96,19 +150,61 @@ public class Kirjaloki2GUIController implements Initializable {
     @FXML private void handleTietoja() {
         ModalController.showModal(Kirjaloki2GUIController.class.getResource("TietojaView.fxml"), "Tietoja", null, "");
     }
-    
-    
-   
+
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
+        alusta();
         
     }
     
     //--------------------------------------------------------------------------------------------------------------------
     
+    private Kirjaloki kirjaloki;
+    private Kirjailija kirjailijaKohdalla;
+    private TextArea areaKirjailija = new TextArea();
     
+    /**
+     * Tekee tarvittavat muut alustukset, nyt vaihdetaan GridPanen tilalle
+     * yksi iso tekstikenttä, johon voidaan tulostaa kirjojen tiedot.
+     * Alustetaan myös kirjalistan kuuntelija 
+     */
+    protected void alusta() {
+        panelKirjailija.setContent(areaKirjailija);
+        areaKirjailija.setFont(new Font("Courier New", 12));
+        panelKirjailija.setFitToHeight(true);
+        
+        chooserKirjailijat.clear();
+        chooserKirjailijat.addSelectionListener(e -> naytaKirjailija());
+    }
+
+    
+    /**
+     * Näyttää listasta valitun kirjan tiedot, tilapäisesti yhteen isoon edit-kenttään
+     */
+    protected void naytaKirjailija() {
+        kirjailijaKohdalla = chooserKirjailijat.getSelectedObject();
+
+        if (kirjailijaKohdalla == null) return;
+
+        areaKirjailija.setText("");
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaKirjailija)) {
+            kirjailijaKohdalla.tulosta(os);
+        }
+    }
+    
+    /**
+     * Tulostaa kirjailijan tiedot
+     * @param os tietovirta johon tulostetaan
+     * @param kirjailija tulostettava jäsen
+     */
+    public void tulosta(PrintStream os, final Kirjailija kirjailija) {
+        os.println("----------------------------------------------");
+        kirjailija.tulosta(os);
+        os.println("----------------------------------------------");
+    }
+
+
     /**
      * Tietojen tallennus
      */
@@ -148,32 +244,40 @@ public class Kirjaloki2GUIController implements Initializable {
         return true;
     }
     
-    /*
-     * Antaa hakulaatikkoon syötetyn tekstin mukaisen hakutuloksen
+    
+    
+    /**
+     * Luo uuden kirjailijan jota aletaan editoimaan 
      */
-    @FXML private void handleHakuehto() {
-        String hakukentta = cbKentat.getSelectedText();
-        String ehto = hakuehto.getText(); 
-        if ( ehto.isEmpty() )
-            naytaVirhe(null);
-        else
-            naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
-            
+    protected void uusiKirjailija() {
+        Kirjailija uusi = new Kirjailija();
+        uusi.rekisteroi();
+        uusi.vastaaKytomaki();
+        try {
+            kirjaloki.lisaa(uusi);
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
+            return;
+        }
+        hae(uusi.getKirjailijaId());
     }
     
-    /*
-     * TODO PÄIVITÄ: Tarkistaa päiväyksen/vuosiluvun oikeinkirjoituksen
+    /**
+     * Hakee kirjailijoiden tiedot listaan
+     * @param jnro kirjailijan numero, joka aktivoidaan haun jälkeen
      */
-    /*
-    @FXML private void handlePaivays() {
-        String hakukentta = syntyma.getText();
-        if ( syntyma.isDirtyEmpty() )
-            naytaVirhe(null);
-        else
-            naytaVirhe("Ei osata vielä tarkistaa; " + syntyma);
-            
+    protected void hae(int jnro) {
+        chooserKirjailijat.clear();
+
+        int index = 0;
+        for (int i = 0; i < kirjaloki.getKirjailijoita(); i++) {
+            Kirjailija kirjailija = kirjaloki.annaKirjailija(i);
+            if (kirjailija.getKirjailijaId() == jnro) index = i;
+            chooserKirjailijat.add(kirjailija.getNimi(), kirjailija);
+        }
+        chooserKirjailijat.setSelectedIndex(index); 
     }
-    */
+
     
     /*
      * Näyttää tekstikentän virheen käyttöliittymässä, mikäli syöte ei ole oikeellinen. 
@@ -224,6 +328,20 @@ public class Kirjaloki2GUIController implements Initializable {
         ModalController.getStage(hakuehto).setTitle(title);
         
     }
+
+
+    /**
+     * @param kirjaloki käsiteltävä kirjaloki käyttöliittymässä
+     */
+    public void setKirjaloki(Kirjaloki kirjaloki) {
+        this.kirjaloki = kirjaloki;
+        naytaKirjailija();
+        
+        
+    }
+
+
+    
 
 
 

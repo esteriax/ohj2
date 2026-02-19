@@ -56,9 +56,13 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Lisää uusi kirja" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirjaa" />
+              <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Lisää kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleUusiKirjailija" text="Lisaa kirjailija" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirjailija" text="Muokkaa kirjailija" />
                   <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirja" text="Poista kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirjailija" text="Poista kirjailija" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirja" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirjailija" text="Muokkaa kirjailija" />
             </items>
           </Menu>
@@ -106,7 +110,7 @@
                            </VBox.margin></Label>
                         <ScrollPane maxWidth="200.0" minWidth="200.0" prefHeight="300.0" prefWidth="200.0">
                            <content>
-                              <ListChooser minWidth="200.0" rivit="Kirja1&#10;Kirja2&#10;Kirja3">
+                              <ListChooser fx:id="chooserKirjailijat" minWidth="200.0" rivit="Kirja1&#10;Kirja2&#10;Kirja3">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
@@ -140,57 +144,67 @@
                      </font></Label>
                </top>
                <center>
-                  <GridPane>
-
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" prefWidth="200.0" />
-            </columnConstraints>
-
-            <rowConstraints>
-                <RowConstraints />
-                <RowConstraints />
-                <RowConstraints fillHeight="false" />
-            </rowConstraints>
-
-            <children>
-                <Label text="nimi">
-                           <padding>
-                              <Insets bottom="5.0" top="5.0" />
-                           </padding>
-                           <GridPane.margin>
-                              <Insets top="5.0" />
-                           </GridPane.margin></Label>
-                <Label text="syntymävuosi" GridPane.rowIndex="1">
-                           <padding>
-                              <Insets bottom="5.0" top="5.0" />
-                           </padding>
-                           <GridPane.margin>
-                              <Insets top="5.0" />
-                           </GridPane.margin></Label>
-                <Label text="suosikki" GridPane.rowIndex="2">
-                           <padding>
-                              <Insets bottom="5.0" top="5.0" />
-                           </padding>
-                           <GridPane.margin>
-                              <Insets top="5.0" />
-                           </GridPane.margin></Label>
-
-                <TextField promptText="Anni Kytömäki" GridPane.columnIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" top="5.0" />
-                           </GridPane.margin></TextField>
-                <TextField onAction="#handleHakuehto" promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" />
-                           </GridPane.margin></TextField>
-                <TextField promptText="kyllä" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" />
-                           </GridPane.margin></TextField>
-            </children>
-
-        </GridPane>
+                  <ScrollPane fx:id="panelKirjailija">
+                     <content>
+                        <GridPane>
+      
+                        <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" prefWidth="200.0" />
+                  </columnConstraints>
+      
+                        <rowConstraints>
+                      <RowConstraints />
+                      <RowConstraints />
+                      <RowConstraints fillHeight="false" />
+                  </rowConstraints>
+      
+                        <children>
+                      <Label text="nimi">
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                                 <GridPane.margin>
+                                    <Insets top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                      <Label text="syntymävuosi" GridPane.rowIndex="1">
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                                 <GridPane.margin>
+                                    <Insets top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                      <Label text="suosikki" GridPane.rowIndex="2">
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                                 <GridPane.margin>
+                                    <Insets top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+      
+                            <TextField promptText="Anni Kytömäki" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                      <TextField onAction="#handleHakuehto" promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                      <TextField promptText="kyllä" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                  </children>
+      
+                    </GridPane>
+                     </content>
+                  </ScrollPane>
                </center>
                <padding>
                   <Insets left="5.0" right="5.0" />
@@ -243,10 +257,10 @@
                               <Label text="tähdet" GridPane.rowIndex="3" />
                               <Label text="lukupvm" GridPane.rowIndex="4" />
                               <TextField GridPane.columnIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="julkaisuVuosi" onAction="#handleTarkistaVuosi" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField onAction="#handleHakuehto" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField fx:id="lukuPvm" onAction="#handleTarkistaLukuPvm" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label alignment="TOP_LEFT" prefWidth="77.0" text="oma arvostelu" wrapText="true" GridPane.rowIndex="5" />
                               <TextArea GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <padding>
