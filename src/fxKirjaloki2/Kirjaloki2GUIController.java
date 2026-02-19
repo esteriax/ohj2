@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import kanta.PaivaysTarkistus;
+import kirjaloki.Kirja;
 import kirjaloki.Kirjailija;
 import kirjaloki.Kirjaloki;
 import kirjaloki.SailoException;
@@ -119,7 +121,7 @@ public class Kirjaloki2GUIController implements Initializable {
      * Avaa muokkausdialogin tyhjänä ja jos se tallennetaan OK:lla, lisätään uusi kirja.
      */
     @FXML private void handleUusiKirja() {
-        eiToimi();
+        uusiKirja();
     }
     
     @FXML private void handleUusiKirjailija() {
@@ -144,7 +146,9 @@ public class Kirjaloki2GUIController implements Initializable {
     }
     
     @FXML private void handleTulosta() {
-        ModalController.showModal(Kirjaloki2GUIController.class.getResource("TulostusView.fxml"), "Tulostus", null, "");
+        TulostusController tulostusCtrl = TulostusController.tulosta(null); 
+        tulostaValitut(tulostusCtrl.getTextArea());
+
     }
     
     @FXML private void handleTietoja() {
@@ -202,7 +206,27 @@ public class Kirjaloki2GUIController implements Initializable {
         os.println("----------------------------------------------");
         kirjailija.tulosta(os);
         os.println("----------------------------------------------");
+        List<Kirja> kirjat = kirjaloki.annaKirjat(kirjailija);   
+        for (Kirja kir:kirjat)
+            kir.tulosta(os); 
+
     }
+    
+    /**
+     * Tulostaa listassa olevat kirjailijat tekstialueeseen
+     * @param text alue johon tulostetaan
+     */
+    public void tulostaValitut(TextArea text) {
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(text)) {
+            os.println("Tulostetaan kaikki kirjailijat");
+            for (int i = 0; i < kirjaloki.getKirjailijoita(); i++) {
+                Kirjailija kirjailija = kirjaloki.annaKirjailija(i);
+                tulosta(os, kirjailija);
+                os.println("\n\n");
+            }
+        }
+    }
+
 
 
     /**
@@ -256,11 +280,29 @@ public class Kirjaloki2GUIController implements Initializable {
         try {
             kirjaloki.lisaa(uusi);
         } catch (SailoException e) {
-            Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
+            Dialogs.showMessageDialog("Ongelmia kirjailijan lisäämisessä " + e.getMessage());
             return;
         }
         hae(uusi.getKirjailijaId());
     }
+    
+    /** 
+     * Tekee uuden tyhjän kirjan editointia varten 
+     */ 
+    public void uusiKirja() { 
+        if ( kirjailijaKohdalla == null ) return;  
+        Kirja kirja = new Kirja();  
+        kirja.rekisteroi();  
+        kirja.vastaaMargarita(kirjailijaKohdalla.getKirjailijaId());  
+        try {
+            kirjaloki.lisaa(kirja);
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog("Ongelmia kirjan lisäämisessä " + e.getMessage());
+            return;
+        }  
+        hae(kirjailijaKohdalla.getKirjailijaId());          
+    } 
+
     
     /**
      * Hakee kirjailijoiden tiedot listaan
@@ -279,7 +321,7 @@ public class Kirjaloki2GUIController implements Initializable {
     }
 
     
-    /*
+    /**
      * Näyttää tekstikentän virheen käyttöliittymässä, mikäli syöte ei ole oikeellinen. 
      * @param virhe viesti, joka näytetään virhekentässä
      */
@@ -326,9 +368,7 @@ public class Kirjaloki2GUIController implements Initializable {
      */
     private void setTitle(String title) {
         ModalController.getStage(hakuehto).setTitle(title);
-        
     }
-
 
     /**
      * @param kirjaloki käsiteltävä kirjaloki käyttöliittymässä
@@ -336,14 +376,6 @@ public class Kirjaloki2GUIController implements Initializable {
     public void setKirjaloki(Kirjaloki kirjaloki) {
         this.kirjaloki = kirjaloki;
         naytaKirjailija();
-        
-        
     }
 
-
-    
-
-
-
-   
 }
