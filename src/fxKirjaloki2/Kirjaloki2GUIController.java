@@ -200,7 +200,7 @@ public class Kirjaloki2GUIController implements Initializable {
     /**
      * Tulostaa kirjailijan tiedot
      * @param os tietovirta johon tulostetaan
-     * @param kirjailija tulostettava jäsen
+     * @param kirjailija tulostettava kirjailija
      */
     public void tulosta(PrintStream os, final Kirjailija kirjailija) {
         os.println("----------------------------------------------");
@@ -371,7 +371,7 @@ public class Kirjaloki2GUIController implements Initializable {
     }
 
     /**
-     * @param kirjaloki käsiteltävä kirjaloki käyttöliittymässä
+     * @param kirjaloki käsiteltävä kirjalokin käyttöliittymässä
      */
     public void setKirjaloki(Kirjaloki kirjaloki) {
         this.kirjaloki = kirjaloki;

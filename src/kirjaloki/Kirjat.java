@@ -106,7 +106,7 @@ public class Kirjat implements Iterable<Kirja> {
 
     /**
      * Haetaan kaikki kirjailijan kirjat
-     * @param kirjailijaId kirjailijan id jonka kirjoja haetaan
+     * @param kirjailijaId kirjailija jonka kirjoja haetaan
      * @return tietorakenne jossa viiteet löydetteyihin kirjoihin
      * @example
      * <pre name="test">
