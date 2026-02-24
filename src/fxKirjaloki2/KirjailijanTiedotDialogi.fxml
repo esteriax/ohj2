@@ -36,6 +36,7 @@
                 <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
 
             <children>
@@ -45,7 +46,9 @@
 
                 <TextField promptText="Anne Kytömäki" GridPane.columnIndex="1" />
                 <TextField promptText="2020" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField promptText="historialliset romaanit" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField promptText="kyllä" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="lisätiedot" GridPane.rowIndex="3" />
+            <TextField promptText="Kaunokirjallisuuden Finlandia-palkinto vuodelta 2020." GridPane.columnIndex="1" GridPane.rowIndex="3" />
             </children>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

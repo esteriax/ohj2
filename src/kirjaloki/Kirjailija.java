@@ -1,6 +1,8 @@
 package kirjaloki;
 import java.io.*;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 
 /**
  * Kirjalokin Kirjailija-luokka
@@ -11,7 +13,8 @@ public class Kirjailija {
     private String nimi;
     private int kirjailijaId;
     private int syntymaVuosi;
-    private boolean suosikki;
+    private String suosikki;
+    private String lisatiedot;
 
     private static int seuraavaNro = 1;
     
@@ -36,7 +39,8 @@ public class Kirjailija {
     public void vastaaKytomaki() {
             nimi= "Anni Kytömäki";
             syntymaVuosi = 1980;
-            suosikki = true;
+            suosikki = "kyllä";
+            lisatiedot = "Kaunokirjallisuuden Finlandia-palkinto vuodelta 2020.";
         }
     
     
@@ -49,6 +53,7 @@ public class Kirjailija {
         out.println(String.format("%03d", kirjailijaId) + " " + nimi);
         out.println("Syntymävuosi: " + syntymaVuosi);
         out.println("Onko suosikki: " + suosikki);
+        out.println("Lisätiedot: " + lisatiedot);
         out.println();
     }
     
@@ -92,6 +97,79 @@ public class Kirjailija {
      public int getKirjailijaId() {
          return kirjailijaId;
         }
+     
+     /**
+      * Asettaa kirjailijaid:n ja samalla varmistaa että
+      * seuraava numero on aina suurempi kuin tähän mennessä suurin.
+      * @param nr asetettava kirjailijaid
+      */
+     private void setKirjailijaId(int id) {
+         kirjailijaId = id;
+         if (kirjailijaId >= seuraavaNro) seuraavaNro = kirjailijaId + 1;
+     }
+     
+     /**
+      * Palauttaa kirjailijan tiedot merkkijonona jonka voi tallentaa tiedostoon.
+      * @return kirjailija tolppaeroteltuna merkkijonona 
+      * @example
+      * <pre name="test">
+      *   Kirjailija kirjailija = new Kirjailija();
+      *   kirjailija.parse("   3  |  Anni Kytömäki   | 1980");
+      *   kirjailija.toString().startsWith("3|Anni Kytömäki|1980|") === true; // on enemmäkin kuin 3 kenttää, siksi loppu |
+      * </pre>  
+      */
+     @Override
+     public String toString() {
+         return "" +
+                 getKirjailijaId() + "|" +
+                 nimi + "|" +
+                 syntymaVuosi + "|" +
+                 suosikki + "|";
+     }
+
+
+     /**
+      * Selvitää kirjailijan tiedot | erotellusta merkkijonosta
+      * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnsNro.
+      * @param rivi josta kirjailijan tiedot otetaan
+      * 
+      * @example
+      * <pre name="test">
+      *   Kirjailija kirjailija = new Kirjailija();
+      *   kirjailija.parse("   3  |  Anni Kytömäki   | 1980");
+      *   kirjailija.getKirjailijaId() === 3;
+      *   kirjailija.toString().startsWith("3|Anni Kytömäki|1980|") === true; // on enemmäkin kuin 3 kenttää, siksi loppu |
+      *
+      *   kirjailija.rekisteroi();
+      *   int n = kirjailija.getKirjailijaId();
+      *   kirjailija.parse(""+(n+20));       // Otetaan merkkijonosta vain tunnusnumero
+      *   kirjailija.rekisteroi();           // ja tarkistetaan että seuraavalla kertaa tulee yhtä isompi
+      *   kirjailija.getKirjailijaId() === n+20+1;
+      *     
+      * </pre>
+      */
+     public void parse(String rivi) {
+         StringBuffer sb = new StringBuffer(rivi);
+         setKirjailijaId(Mjonot.erota(sb, '|', getKirjailijaId()));
+         nimi = Mjonot.erota(sb, '|', nimi);
+         syntymaVuosi = Mjonot.erota(sb, '|', syntymaVuosi);
+         suosikki = Mjonot.erota(sb, '|', suosikki);
+         lisatiedot = Mjonot.erota(sb, '|', lisatiedot);
+     }
+     
+     
+     @Override
+     public boolean equals(Object kirjailija) {
+         if ( kirjailija == null ) return false;
+         return this.toString().equals(kirjailija.toString());
+     }
+
+
+     @Override
+     public int hashCode() {
+         return getKirjailijaId();
+     }
+
 
     
     /**

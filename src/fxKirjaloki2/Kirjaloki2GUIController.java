@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -45,7 +46,7 @@ public class Kirjaloki2GUIController implements Initializable {
     @FXML private Label labelVirhe;
     @FXML private ScrollPane panelKirjailija;
     @FXML private ListChooser<Kirjailija> chooserKirjailijat;
-    private String kirjalokinnimi = "Heta";
+    //private String kirjalokinnimi = "Heta";
     
     /**
      * Avaa aloitusview:n, josta voi vaihtaa käyttäjää
@@ -58,12 +59,8 @@ public class Kirjaloki2GUIController implements Initializable {
      * Antaa hakulaatikkoon syötetyn tekstin mukaisen hakutuloksen
      */
     @FXML private void handleHakuehto() {
-        String hakukentta = cbKentat.getSelectedText();
-        String ehto = hakuehto.getText(); 
-        if ( ehto.isEmpty() )
-            naytaVirhe(null);
-        else
-            naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);      
+        if ( kirjailijaKohdalla != null )
+            hae(kirjailijaKohdalla.getKirjailijaId());    
     }
     
     /*
@@ -167,6 +164,7 @@ public class Kirjaloki2GUIController implements Initializable {
     private Kirjaloki kirjaloki;
     private Kirjailija kirjailijaKohdalla;
     private TextArea areaKirjailija = new TextArea();
+    private String kirjalokinnimi = "heta";
     
     /**
      * Tekee tarvittavat muut alustukset, nyt vaihdetaan GridPanen tilalle
@@ -184,18 +182,21 @@ public class Kirjaloki2GUIController implements Initializable {
 
     
     /**
-     * Näyttää listasta valitun kirjan tiedot, tilapäisesti yhteen isoon edit-kenttään
+     * Näyttää listasta valitun kirjailijan tiedot, tilapäisesti yhteen isoon edit-kenttään
      */
     protected void naytaKirjailija() {
         kirjailijaKohdalla = chooserKirjailijat.getSelectedObject();
 
-        if (kirjailijaKohdalla == null) return;
-
+        if (kirjailijaKohdalla == null) {
+            areaKirjailija.clear();
+            return;
+        }
         areaKirjailija.setText("");
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaKirjailija)) {
-            kirjailijaKohdalla.tulosta(os);
+            tulosta(os,kirjailijaKohdalla); 
         }
-    }
+
+     }
     
     /**
      * Tulostaa kirjailijan tiedot
@@ -206,10 +207,10 @@ public class Kirjaloki2GUIController implements Initializable {
         os.println("----------------------------------------------");
         kirjailija.tulosta(os);
         os.println("----------------------------------------------");
-        List<Kirja> kirjat = kirjaloki.annaKirjat(kirjailija);   
-        for (Kirja kir:kirjat)
-            kir.tulosta(os); 
-
+        
+        List<Kirja> kirjat = kirjaloki.annaKirjat(kirjailija);
+        for (Kirja kirja:kirjat) 
+            kirja.tulosta(os);  
     }
     
     /**
@@ -219,21 +220,31 @@ public class Kirjaloki2GUIController implements Initializable {
     public void tulostaValitut(TextArea text) {
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(text)) {
             os.println("Tulostetaan kaikki kirjailijat");
-            for (int i = 0; i < kirjaloki.getKirjailijoita(); i++) {
-                Kirjailija kirjailija = kirjaloki.annaKirjailija(i);
+            
+            Collection<Kirjailija> kirjailijat = kirjaloki.etsi("", -1); 
+            for (Kirjailija kirjailija:kirjailijat) { 
                 tulosta(os, kirjailija);
                 os.println("\n\n");
             }
+        } catch (SailoException ex) { 
+            Dialogs.showMessageDialog("Kirjailijan hakemisessa ongelmia! " + ex.getMessage()); 
         }
+        
     }
 
 
-
     /**
-     * Tietojen tallennus
+     * Tallentaa muokatut tiedot
+     * @return null jos kaikki meni hyvin, muuten virhe
      */
-    private void tallenna() {
-        Dialogs.showMessageDialog("Tallennetetaan! Mutta ei toimi vielä");
+    private String tallenna() {
+        try {
+            kirjaloki.tallenna();
+            return null;
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + ex.getMessage());
+            return ex.getMessage();
+        }
     }
     
     /**
@@ -298,7 +309,6 @@ public class Kirjaloki2GUIController implements Initializable {
             kirjaloki.lisaa(kirja);
         } catch (SailoException e) {
             Dialogs.showMessageDialog("Ongelmia kirjan lisäämisessä " + e.getMessage());
-            return;
         }  
         hae(kirjailijaKohdalla.getKirjailijaId());          
     } 
@@ -309,15 +319,30 @@ public class Kirjaloki2GUIController implements Initializable {
      * @param jnro kirjailijan numero, joka aktivoidaan haun jälkeen
      */
     protected void hae(int jnro) {
+        int k = cbKentat.getSelectionModel().getSelectedIndex();
+        String ehto = hakuehto.getText(); 
+        if (k > 0 || ehto.length() > 0)
+            naytaVirhe(String.format("Ei osata hakea (kenttä: %d, ehto: %s)", k, ehto));
+        else
+            naytaVirhe(null);
+        
         chooserKirjailijat.clear();
 
         int index = 0;
-        for (int i = 0; i < kirjaloki.getKirjailijoita(); i++) {
-            Kirjailija kirjailija = kirjaloki.annaKirjailija(i);
-            if (kirjailija.getKirjailijaId() == jnro) index = i;
-            chooserKirjailijat.add(kirjailija.getNimi(), kirjailija);
+        Collection<Kirjailija> kirjailijat;
+        try {
+            kirjailijat = kirjaloki.etsi(ehto, k);
+            int i = 0;
+            for (Kirjailija kirjailija:kirjailijat) {
+                if (kirjailija.getKirjailijaId() == jnro) index = i;
+                chooserKirjailijat.add(kirjailija.getNimi(), kirjailija);
+                i++;
+            }
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Kirjailijan hakemisessa ongelmia " + ex.getMessage());
         }
-        chooserKirjailijat.setSelectedIndex(index); 
+        chooserKirjailijat.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää jäsenen
+
     }
 
     
@@ -337,14 +362,22 @@ public class Kirjaloki2GUIController implements Initializable {
     
     /**
      * Alustaa kirjalokin lukemalla sen valitun nimisestä tiedostosta
-     * @param nimi tiedosto josta kerhon tiedot luetaan
+     * @param nimi tiedosto joka luetaan
+     * @return virhe jos jokin meni pieleen, null jos kaikki meni hyvin
      */
-    protected void lueTiedosto(String nimi) {
+    protected String lueTiedosto(String nimi) {
         kirjalokinnimi = nimi;
         setTitle("Kirjaloki: " + kirjalokinnimi);
-        String virhe = "Ei osata lukea vielä";  // TODO: tähän oikea tiedoston lukeminen
-         //if (virhe != null) 
-            Dialogs.showMessageDialog(virhe);
+        try {
+            kirjaloki.lueTiedostosta(nimi);
+            hae(0);
+            return null;
+        } catch (SailoException e) {
+            hae(0);
+            String virhe = e.getMessage(); 
+            if ( virhe != null ) Dialogs.showMessageDialog(virhe);
+            return virhe;
+        }
     }
     
     /**

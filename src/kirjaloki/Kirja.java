@@ -4,6 +4,8 @@
 package kirjaloki;
 import java.io.*;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 
 
 /**
@@ -31,11 +33,81 @@ public class Kirja {
     public Kirja() {
         // TODO
     }
-
     
     /**
-     * Alustetaan tietyn kirjan harrastus.  
-     * @param kirjailijaId jäsenen viitenumero 
+    * Asettaa kirjaid:n ja samalla varmistaa että
+    * seuraava numero on aina suurempi kuin tähän mennessä suurin.
+    * @param nr asetettava kirjaid
+    */
+   private void setKirjaId(int nr) {
+       kirjaId = nr;
+       if ( kirjaId >= seuraavaNro ) seuraavaNro = kirjaId + 1;
+   }
+
+
+   /**
+    * Pnimiuttaa kirjan tiedot merkkijonona jonka voi tallentaa tiedostoon.
+    * @return kirja tolppaeroteltuna merkkijonona 
+    * @example
+    * <pre name="test">
+    *   Kirja kirja = new Kirja();
+    *   kirja.parse("   2   |  10  |   Knimistus  | 1949 | 22 t ");
+    *   kirja.toString()    === "2|10|Knimistus|1949|22";
+    * </pre>
+    */
+   @Override
+   public String toString() {
+       return "" + getKirjaId() + "|" + kirjailijaId + "|" + nimi + "|" + julkaisuvuosi + "|" + genre + "|" + tahdet + "|" + lukupvm + "|" + lisatiedot;
+   }
+
+
+   /**
+    * Selvitää kirjan tiedot | erotellusta merkkijonosta.
+    * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnusnro.
+    * @param rivi josta kirjans tiedot otetaan
+    * @example
+    * <pre name="test">
+    *   Kirja kirja = new Kirja();
+    *   kirja.parse("   2   |  10  |   Knimistus  | 1949 | 22 t ");
+    *   kirja.getJasenNro() === 10;
+    *   kirja.toString()    === "2|10|Knimistus|1949|22";
+    *   
+    *   kirja.rekisteroi();
+    *   int n = kirja.getKirjaId();
+    *   kirja.parse(""+(n+20));
+    *   kirja.rekisteroi();
+    *   kirja.getKirjaId() === n+20+1;
+    *   kirja.toString()     === "" + (n+20+1) + "|10|Knimistus|1949|22";
+    * </pre>
+    */
+   public void parse(String rivi) {
+       StringBuffer sb = new StringBuffer(rivi);
+       setKirjaId(Mjonot.erota(sb, '|', getKirjaId()));
+       kirjailijaId = Mjonot.erota(sb, '|', kirjailijaId);
+       nimi = Mjonot.erota(sb, '|', nimi);
+       julkaisuvuosi = Mjonot.erota(sb, '|', julkaisuvuosi);
+       genre = Mjonot.erota(sb, '|', genre);
+       tahdet = Mjonot.erota(sb, '|', tahdet);
+       lukupvm = Mjonot.erota(sb, '|', lukupvm);
+       lisatiedot = Mjonot.erota(sb, '|', lisatiedot);
+   }
+
+
+   @Override
+   public boolean equals(Object obj) {
+       if ( obj == null ) return false;
+       return this.toString().equals(obj.toString());
+   }
+   
+
+   @Override
+   public int hashCode() {
+       return kirjaId;
+   }
+   
+    /**
+     * Alustetaan tietyn kirjailijan kirja.  
+     * @param kirjailijaId kirjailijan viitenumero 
      */
     public Kirja(int kirjailijaId) {
         this.kirjailijaId = kirjailijaId;
@@ -94,7 +166,7 @@ public class Kirja {
     }
     
     /**
-     * Palauttaa kirjan tunnusnumeron.
+     * Pnimiuttaa kirjan tunnusnumeron.
      * @return kirjan tunnusnumeron
      * @example
      * <pre name="test">
@@ -117,7 +189,7 @@ public class Kirja {
 
 
      /**
-      * Palauttaa kirjan id:n
+      * Pnimiuttaa kirjan id:n
       * @return kirjan tunnusnumero
       */
      public int getKirjaId() {
@@ -140,6 +212,11 @@ public class Kirja {
      */
     public static void main(String[] args) {
         
+        Kirja har = new Kirja();
+        har.vastaaMargarita(2);
+        har.tulosta(System.out);
+        
+        
         Kirja margarita = new Kirja();
         Kirja margarita2 = new Kirja();
 
@@ -148,7 +225,7 @@ public class Kirja {
         margarita.vastaaMargarita();
         margarita2.vastaaMargarita();
         margarita.tulosta(System.out);
-        margarita2.tulosta(System.out);
+        margarita2.tulosta(System.out); 
          
 
     }

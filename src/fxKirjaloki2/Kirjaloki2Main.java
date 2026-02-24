@@ -26,7 +26,6 @@ public class Kirjaloki2Main extends Application {
             scene.getStylesheets().add(getClass().getResource("kirjaloki2.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Kirjaloki");
-            primaryStage.show();
             
             primaryStage.setOnCloseRequest((event) -> {
                 if ( !kirjaloki2Ctrl.voikoSulkea() ) event.consume();
@@ -35,7 +34,13 @@ public class Kirjaloki2Main extends Application {
             Kirjaloki kirjaloki = new Kirjaloki();  
             kirjaloki2Ctrl.setKirjaloki(kirjaloki); 
             
-            if (!kirjaloki2Ctrl.avaa()) Platform.exit();
+            primaryStage.show();
+            
+            Application.Parameters params = getParameters(); 
+            if ( params.getRaw().size() > 0 ) 
+                kirjaloki2Ctrl.lueTiedosto(params.getRaw().get(0));  
+            else
+                if ( !kirjaloki2Ctrl.avaa() ) Platform.exit();
         } catch(Exception e) {
             e.printStackTrace();
         }

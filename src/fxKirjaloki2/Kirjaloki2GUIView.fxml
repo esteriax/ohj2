@@ -37,6 +37,11 @@
                         <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Uusi kirja">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -51,18 +56,16 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleUusiKirjailija" text="Lisaa kirjailija" />
-              <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Lisää kirja" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirjailija" text="Muokkaa kirjailija" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirja" />
-                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirjailija" text="Poista kirjailija" />
+              <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Lisää uusi kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirjaa" />
                   <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirja" text="Poista kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirjailija" text="Muokkaa kirjailija" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Apua">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleTietoja" text="Tietoja" />
+              <MenuItem mnemonicParsing="false" onAction="#eiToimi" text="Apua" />
+                  <MenuItem mnemonicParsing="false" text="Tietoja" />
             </items>
           </Menu>
         </menus>
@@ -92,7 +95,7 @@
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin></TextField>
-                        <ComboBoxChooser fx:id="cbKentat" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" rivit="nimi&#10;kirjailija&#10;syntymävuosi&#10;suosikki&#10;julkaisuvuosi&#10;genre&#10;tähdet&#10;oma arvostelu">
+                        <ComboBoxChooser fx:id="cbKentat" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" rivit="nimi&#10;kirjailija&#10;syntymävuosi&#10;suosikki&#10;julkaisuvuosi&#10;genre&#10;tähdet&#10;oma arvostelu&#10;lisätiedot">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin>
@@ -141,18 +144,19 @@
                      <content>
                         <GridPane>
       
-                        <columnConstraints>
+                  <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" prefWidth="200.0" />
                   </columnConstraints>
       
-                        <rowConstraints>
+                  <rowConstraints>
                       <RowConstraints />
                       <RowConstraints />
                       <RowConstraints fillHeight="false" />
+                              <RowConstraints fillHeight="false" />
                   </rowConstraints>
       
-                        <children>
+                  <children>
                       <Label text="nimi">
                                  <padding>
                                     <Insets bottom="5.0" top="5.0" />
@@ -178,12 +182,12 @@
                                  </GridPane.margin>
                               </Label>
       
-                            <TextField promptText="Anni Kytömäki" GridPane.columnIndex="1">
+                      <TextField promptText="Anni Kytömäki" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" top="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                      <TextField onAction="#handleHakuehto" promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                      <TextField onAction="#handleTarkistaVuosi" promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" />
                                  </GridPane.margin>
@@ -193,9 +197,11 @@
                                     <Insets bottom="5.0" />
                                  </GridPane.margin>
                               </TextField>
+                              <Label text="lisätiedot" GridPane.rowIndex="3" />
+                              <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Kaunokirjallisuuden Finlandia-palkinto vuodelta 2020." GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   </children>
       
-                    </GridPane>
+              </GridPane>
                      </content>
                   </ScrollPane>
                </center>
