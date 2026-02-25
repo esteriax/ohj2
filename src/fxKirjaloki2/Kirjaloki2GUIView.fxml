@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
@@ -37,11 +38,6 @@
                         <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Uusi kirja">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -56,16 +52,18 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Lisää uusi kirja" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirjaa" />
-                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirja" text="Poista kirja" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleUusiKirjailija" text="Lisää kirjailija" />
+              <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Lisää kirja" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirjailija" text="Muokkaa kirjailija" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirjaa" />
+                  <RadioMenuItem mnemonicParsing="false" onAction="#handlePoistaKirjailija" text="Poista kirjailija" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirja" text="Poista kirja" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Apua">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#eiToimi" text="Apua" />
-                  <MenuItem mnemonicParsing="false" text="Tietoja" />
+              <MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTietoja" text="Tietoja" />
             </items>
           </Menu>
         </menus>

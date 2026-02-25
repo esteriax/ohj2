@@ -27,7 +27,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
     private Kirjailija            alkiot[]      = new Kirjailija[MAX_KIRJAILIJOITA];
     private boolean muutettu = false;
     private String kokoNimi = "";
-    private String tiedostonPerusNimi = "nimet";
+    private String tiedostonPerusNimi = "kirjailijat";
     
     
     /**
@@ -127,7 +127,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
         setTiedostonPerusNimi(tiedosto);
         try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
             kokoNimi = fi.readLine();
-            if ( kokoNimi == null ) throw new SailoException("Kerhon nimi puuttuu");
+            if ( kokoNimi == null ) throw new SailoException("Kirjalokin nimi puuttuu");
             String rivi = fi.readLine();
             if ( rivi == null ) throw new SailoException("Maksimikoko puuttuu");
             // int maxKoko = Mjonot.erotaInt(rivi,10); // tehdään jotakin
@@ -141,7 +141,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
             }
             muutettu = false;
         } catch ( FileNotFoundException e ) {
-            throw new SailoException("Tiedosto " + getTiedostonNimi() + " ei aukea");
+           throw new SailoException("Tiedosto " + getTiedostonNimi() + " ei aukea");
         } catch ( IOException e ) {
             throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
         }

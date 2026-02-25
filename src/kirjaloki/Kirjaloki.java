@@ -35,12 +35,12 @@ public class Kirjaloki {
             dir.mkdirs();
             String hakemistonNimi = "";
             if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
-            kirjailijat.setTiedostonPerusNimi(hakemistonNimi + "nimet");
+            kirjailijat.setTiedostonPerusNimi(hakemistonNimi + "kirjailijat");
             kirjat.setTiedostonPerusNimi(hakemistonNimi + "kirjat");
         }
         
         /**
-         * Haetaan kaikki kirjailija kirjat
+         * Haetaan kaikki kirjailijan kirjat
          * @param kirjailija jolle kirjoja haetaan
          * @return tietorakenne jossa viiteet löydetteyihin kirjoihin
          * @example
