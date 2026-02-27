@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
@@ -51,11 +52,11 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleUusiKirjailija" text="Lisaa kirjailija" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleUusiKirjailija" text="Lisää kirjailija" />
               <MenuItem mnemonicParsing="false" onAction="#handleUusiKirja" text="Lisää kirja" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirjailija" text="Muokkaa kirjailija" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirja" />
-                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirjailija" text="Poista kirjailija" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKirja" text="Muokkaa kirjaa" />
+                  <RadioMenuItem mnemonicParsing="false" onAction="#handlePoistaKirjailija" text="Poista kirjailija" />
                   <MenuItem mnemonicParsing="false" onAction="#handlePoistaKirja" text="Poista kirja" />
             </items>
           </Menu>
@@ -92,7 +93,7 @@
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin></TextField>
-                        <ComboBoxChooser fx:id="cbKentat" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" rivit="nimi&#10;kirjailija&#10;syntymävuosi&#10;suosikki&#10;julkaisuvuosi&#10;genre&#10;tähdet&#10;oma arvostelu">
+                        <ComboBoxChooser fx:id="cbKentat" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" rivit="nimi&#10;kirjailija&#10;syntymävuosi&#10;suosikki&#10;julkaisuvuosi&#10;genre&#10;tähdet&#10;oma arvostelu&#10;lisätiedot">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin>
@@ -126,9 +127,9 @@
                   <Insets right="10.0" />
                </padding>
             </BorderPane>
-            <BorderPane>
+            <BorderPane maxWidth="150.0" prefHeight="200.0" prefWidth="200.0">
                <top>
-                  <Label alignment="CENTER" minWidth="250.0" text="Kirjailijan tiedot" BorderPane.alignment="CENTER">
+                  <Label alignment="CENTER" minWidth="300.0" text="Kirjailijan tiedot" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>
@@ -137,23 +138,23 @@
                      </font></Label>
                </top>
                <center>
-                  <ScrollPane fx:id="panelKirjailija">
+                  <ScrollPane fx:id="panelKirjailija" minHeight="100.0">
                      <content>
                         <GridPane>
       
-                        <columnConstraints>
+                  <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" prefWidth="200.0" />
                   </columnConstraints>
       
-                        <rowConstraints>
+                  <rowConstraints>
                       <RowConstraints />
                       <RowConstraints />
                       <RowConstraints fillHeight="false" />
                               <RowConstraints fillHeight="false" />
                   </rowConstraints>
       
-                        <children>
+                  <children>
                       <Label text="nimi">
                                  <padding>
                                     <Insets bottom="5.0" top="5.0" />
@@ -178,32 +179,27 @@
                                     <Insets top="5.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label text="lisätiedot" GridPane.rowIndex="3">
-                                 <padding>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </padding>
-                              </Label>
       
-                            <TextField promptText="Anni Kytömäki" GridPane.columnIndex="1">
+                      <TextField fx:id="kirjailijaNimi" editable="false" promptText="Anni Kytömäki" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" top="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                      <TextField onAction="#handleTarkistaVuosi" promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                      <TextField fx:id="syntymaVuosi" editable="false" onAction="#handleTarkistaVuosi" promptText="1980" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                      <TextField promptText="kyllä" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                      <TextField fx:id="suosikki" editable="false" promptText="kyllä" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextArea promptText="Kaunokirjallisuuden Finlandia-palkinto vuodelta 2020." GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              
+                              <Label text="lisätiedot" GridPane.rowIndex="3" />
+                              <TextField fx:id="lisatiedot" editable="false" minHeight="100.0" prefHeight="100.0" prefWidth="20.0" promptText="Kaunokirjallisuuden Finlandia-palkinto vuodelta 2020." GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   </children>
       
-                    </GridPane>
+              </GridPane>
                      </content>
                   </ScrollPane>
                </center>
@@ -252,7 +248,7 @@
                               <RowConstraints minHeight="200.0" prefHeight="235.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="nimi" />
+                              <Label text="kirjailija" />
                               <Label prefHeight="17.0" prefWidth="96.0" text="julkaisuvuosi" GridPane.rowIndex="1" />
                               <Label text="genre" GridPane.rowIndex="2" />
                               <Label text="tähdet" GridPane.rowIndex="3" />

@@ -24,7 +24,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Font;
 import kanta.PaivaysTarkistus;
 import kirjaloki.Kirja;
 import kirjaloki.Kirjailija;
@@ -47,6 +46,11 @@ public class Kirjaloki2GUIController implements Initializable {
     @FXML private ScrollPane panelKirjailija;
     @FXML private ListChooser<Kirjailija> chooserKirjailijat;
     //private String kirjalokinnimi = "Heta";
+    
+    @FXML private TextField syntymaVuosi;
+    @FXML private TextField lisatiedot;
+    @FXML private TextField kirjailijaNimi;
+    @FXML private TextField suosikki;
     
     /**
      * Avaa aloitusview:n, josta voi vaihtaa käyttäjää
@@ -165,8 +169,8 @@ public class Kirjaloki2GUIController implements Initializable {
     
     private Kirjaloki kirjaloki;
     private Kirjailija kirjailijaKohdalla;
-    private TextArea areaKirjailija = new TextArea();
-    private String kirjalokinnimi = "heta";
+    private String kirjalokinnimi = "Heta";
+    private TextField muutokset[];
     
     /**
      * Tekee tarvittavat muut alustukset, nyt vaihdetaan GridPanen tilalle
@@ -174,29 +178,20 @@ public class Kirjaloki2GUIController implements Initializable {
      * Alustetaan myös kirjalistan kuuntelija 
      */
     protected void alusta() {
-        panelKirjailija.setContent(areaKirjailija);
-        areaKirjailija.setFont(new Font("Courier New", 12));
-        panelKirjailija.setFitToHeight(true);
-        
+        muutokset = new TextField[]{kirjailijaNimi, syntymaVuosi, suosikki, lisatiedot}; 
         chooserKirjailijat.clear();
         chooserKirjailijat.addSelectionListener(e -> naytaKirjailija());
     }
 
     
     /**
-     * Näyttää listasta valitun kirjailijan tiedot, tilapäisesti yhteen isoon edit-kenttään
+     * Näyttää listasta valitun jäsenen tiedot tekstikenttiin. 
      */
     protected void naytaKirjailija() {
         kirjailijaKohdalla = chooserKirjailijat.getSelectedObject();
 
-        if (kirjailijaKohdalla == null) {
-            areaKirjailija.clear();
-            return;
-        }
-        areaKirjailija.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaKirjailija)) {
-            tulosta(os,kirjailijaKohdalla); 
-        }
+        if (kirjailijaKohdalla == null) return;
+        KirjailijanTiedotController.naytaKirjailija(muutokset, kirjailijaKohdalla);
 
      }
     

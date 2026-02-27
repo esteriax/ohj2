@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import kanta.PaivaysTarkistus;
 import kirjaloki.Kirjailija;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 
 /**
  * 
@@ -18,11 +17,12 @@ import javafx.scene.control.TextArea;
  */
 public class KirjailijanTiedotController implements ModalControllerInterface<Kirjailija>{
 
-    @FXML private TextField syntymaVuosi;
     @FXML private Label labelVirhe;
-    @FXML private TextArea lisatiedot;
-    @FXML private TextField nimi;
+    @FXML private TextField syntymaVuosi;
+    @FXML private TextField lisatiedot;
+    @FXML private TextField kirjailijaNimi;
     @FXML private TextField suosikki;
+    private TextField muutokset[];
     
     @FXML
     void handleDefaultCancel() {
@@ -49,16 +49,16 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
     
  
     // -------------------------------------------------------------------------------------------------------------
+    
     private Kirjailija kirjailijaKohdalla;
     
     /**
-     * Tyhjentään tekstikentät 
+     * Tyhjentää kirjailijan tiedot
+     * @param muutokset tehdyt muutokset
      */
-    public void tyhjenna() {
-        nimi.setText("");
-        syntymaVuosi.setText("");
-        suosikki.setText("");
-        lisatiedot.setText("");
+    public static void tyhjenna(TextField[] muutokset) {
+        for (TextField muutos : muutokset)
+            muutos.setText("");
     }
 
 
@@ -66,7 +66,7 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
      * Tekee tarvittavat muut alustukset.
      */
     protected void alusta() {
-        //
+        muutokset = new TextField[]{kirjailijaNimi, syntymaVuosi, suosikki, lisatiedot};
     }
     
     @Override
@@ -76,7 +76,7 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
 
     @Override
     public void handleShown() {
-        nimi.requestFocus();
+        kirjailijaNimi.requestFocus();
         
     }
 
@@ -86,7 +86,7 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
     @Override
     public void setDefault(Kirjailija oletus) {
         kirjailijaKohdalla = oletus;
-        naytaKirjailija(kirjailijaKohdalla);
+        naytaKirjailija(muutokset, kirjailijaKohdalla);
         
     }
     
@@ -100,14 +100,16 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
     
     /**
      * Näytetään kirjailijan tiedot TextField komponentteihin
+     * @param muutokset taulukko tekstikenttineen
      * @param kirjailija näytettävä kirjailija
      */
-    public void naytaKirjailija(Kirjailija kirjailija) {
+    public static void naytaKirjailija(TextField[] muutokset, Kirjailija kirjailija) {
         if (kirjailija == null) return;
-        nimi.setText(kirjailija.getNimi());
-        syntymaVuosi.setText(kirjailija.getSyntymaVuosi());
-        suosikki.setText(kirjailija.getSuosikki());
-        lisatiedot.setText(kirjailija.getLisatiedot());
+        muutokset[0].setText(kirjailija.getNimi());
+        muutokset[1].setText(kirjailija.getSyntymaVuosi());
+        muutokset[2].setText(kirjailija.getSuosikki());
+        muutokset[3].setText(kirjailija.getLisatiedot());
+
     }
     
     
@@ -119,7 +121,7 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
      * @return null jos painetaan Cancel, muuten täytetty tietue
      */
     public static Kirjailija kysyKirjailija(Stage modalityStage, Kirjailija oletus) {
-        return ModalController.showModal(
+        return ModalController.<Kirjailija, KirjailijanTiedotController>showModal(
                     KirjailijanTiedotController.class.getResource("KirjailijanTiedotDialogi.fxml"),
                     "Kirjaloki",
                     modalityStage, oletus, null 
