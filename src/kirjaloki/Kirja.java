@@ -46,7 +46,7 @@ public class Kirja {
 
 
    /**
-    * Pnimiuttaa kirjan tiedot merkkijonona jonka voi tallentaa tiedostoon.
+    * Palauttaa kirjan tiedot merkkijonona jonka voi tallentaa tiedostoon.
     * @return kirja tolppaeroteltuna merkkijonona 
     * @example
     * <pre name="test">
@@ -57,7 +57,7 @@ public class Kirja {
     */
    @Override
    public String toString() {
-       return "" + getKirjaId() + "|" + kirjailijaId + "|" + nimi + "|" + julkaisuvuosi + "|" + genre + "|" + tahdet + "|" + lukupvm + "|" + lisatiedot;
+       return "" + getKirjaId() + "|" + kirjailijaId + "|" + kirjailija + "|" + julkaisuvuosi + "|" + genre + "|" + tahdet + "|" + lukupvm + "|" + lisatiedot;
    }
 
 
@@ -84,7 +84,7 @@ public class Kirja {
        StringBuffer sb = new StringBuffer(rivi);
        setKirjaId(Mjonot.erota(sb, '|', getKirjaId()));
        kirjailijaId = Mjonot.erota(sb, '|', kirjailijaId);
-       nimi = Mjonot.erota(sb, '|', nimi);
+       kirjailija = Mjonot.erota(sb, '|', kirjailija);
        julkaisuvuosi = Mjonot.erota(sb, '|', julkaisuvuosi);
        genre = Mjonot.erota(sb, '|', genre);
        tahdet = Mjonot.erota(sb, '|', tahdet);

@@ -41,14 +41,14 @@
             </rowConstraints>
 
             <children>
-                <Label text="kirjailija" />
+                <Label text="nimi" />
                 <Label text="julkaisuvuosi" GridPane.rowIndex="1" />
                 <Label text="genre" GridPane.rowIndex="2" />
                 <Label text="tähdet" GridPane.rowIndex="3" />
                 <Label text="lukupvm" GridPane.rowIndex="4" />
                 <Label text="oma arvostelu" GridPane.rowIndex="5" />
 
-                <TextField promptText="Anne Kytömäki" GridPane.columnIndex="1" />
+                <TextField promptText="Margarita" GridPane.columnIndex="1" />
                 <TextField promptText="2020" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField promptText="historialliset romaanit" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField promptText="5/5" GridPane.columnIndex="1" GridPane.rowIndex="3" />

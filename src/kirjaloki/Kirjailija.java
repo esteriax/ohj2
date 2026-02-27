@@ -10,11 +10,11 @@ import fi.jyu.mit.ohj2.Mjonot;
  */
 public class Kirjailija {
     
-    private String nimi;
+    private String nimi = "";
     private int kirjailijaId;
-    private int syntymaVuosi;
-    private String suosikki;
-    private String lisatiedot;
+    private String syntymaVuosi = "";
+    private String suosikki = "";
+    private String lisatiedot = "";
 
     private static int seuraavaNro = 1;
     
@@ -38,7 +38,7 @@ public class Kirjailija {
      */
     public void vastaaKytomaki() {
             nimi= "Anni Kytömäki";
-            syntymaVuosi = 1980;
+            syntymaVuosi = "1980";
             suosikki = "kyllä";
             lisatiedot = "Kaunokirjallisuuden Finlandia-palkinto vuodelta 2020.";
         }
@@ -52,7 +52,7 @@ public class Kirjailija {
     public void tulosta(PrintStream out) {
         out.println(String.format("%03d", kirjailijaId) + " " + nimi);
         out.println("Syntymävuosi: " + syntymaVuosi);
-        out.println("Onko suosikki: " + suosikki);
+        out.println("Oma suosikki: " + suosikki);
         out.println("Lisätiedot: " + lisatiedot);
         out.println();
     }
@@ -124,7 +124,8 @@ public class Kirjailija {
                  getKirjailijaId() + "|" +
                  nimi + "|" +
                  syntymaVuosi + "|" +
-                 suosikki + "|";
+                 suosikki + "|" +
+                 lisatiedot + "|";
      }
 
 
@@ -189,6 +190,30 @@ public class Kirjailija {
         kytomaki2.tulosta(System.out);
          
 
+    }
+
+    
+    /**
+     * @return kirjailijan syntymävuosi
+     */
+    public String getSyntymaVuosi() {
+        return syntymaVuosi;
+    }
+
+    /**
+     * 
+     * @return onko kirjailija käyttäjän suosikki
+     */
+    public String getSuosikki() {
+        return suosikki;
+    }
+
+    /**
+     * 
+     * @return käyttäjän asettamat lisätiedot kirjailijasta
+     */
+    public String getLisatiedot() {
+        return lisatiedot;
     }
 
 }

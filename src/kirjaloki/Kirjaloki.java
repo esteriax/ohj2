@@ -236,21 +236,21 @@ public class Kirjaloki {
                 
                 int id1 = kytomaki1.getKirjailijaId();
                 int id2 = kytomaki2.getKirjailijaId();
-                Kirja pitsi11 = new Kirja(id1);
-                pitsi11.vastaaMargarita(id1);
-                kirjaloki.lisaa(pitsi11);
-                Kirja pitsi12 = new Kirja(id1);
-                pitsi12.vastaaMargarita(id1);
-                kirjaloki.lisaa(pitsi12);
-                Kirja pitsi21 = new Kirja(id2);
-                pitsi21.vastaaMargarita(id2);
-                kirjaloki.lisaa(pitsi21);
-                Kirja pitsi22 = new Kirja(id2);
-                pitsi22.vastaaMargarita(id2);
-                kirjaloki.lisaa(pitsi22);
-                Kirja pitsi23 = new Kirja(id2);
-                pitsi23.vastaaMargarita(id2);
-                kirjaloki.lisaa(pitsi23);
+                Kirja kirja11 = new Kirja(id1);
+                kirja11.vastaaMargarita(id1);
+                kirjaloki.lisaa(kirja11);
+                Kirja kirja12 = new Kirja(id1);
+                kirja12.vastaaMargarita(id1);
+                kirjaloki.lisaa(kirja12);
+                Kirja kirja21 = new Kirja(id2);
+                kirja21.vastaaMargarita(id2);
+                kirjaloki.lisaa(kirja21);
+                Kirja kirja22 = new Kirja(id2);
+                kirja22.vastaaMargarita(id2);
+                kirjaloki.lisaa(kirja22);
+                Kirja kirja23 = new Kirja(id2);
+                kirja23.vastaaMargarita(id2);
+                kirjaloki.lisaa(kirja23);
 
 
                 System.out.println("============= Kirjaloki testi =================");

@@ -72,7 +72,7 @@ public class Kirjaloki2GUIController implements Initializable {
         if ( ehto.isEmpty() | PaivaysTarkistus.tarkistaLukuPvm(ehto) == true)
             naytaVirhe(null);
         else
-            naytaVirhe("Tarkista päivämäärä: " + ehto);         
+            naytaVirhe("Korjaa päivämäärä: " + ehto);         
     }
     
     /*
@@ -84,7 +84,7 @@ public class Kirjaloki2GUIController implements Initializable {
         if ( ehto.isEmpty() || PaivaysTarkistus.tarkistaVuosi(ehto))
             naytaVirhe(null);
         else
-            naytaVirhe("Tarkista vuosiluku: " + ehto);         
+            naytaVirhe("Korjaa vuosiluku: " + ehto);         
     }
     
     
@@ -138,10 +138,12 @@ public class Kirjaloki2GUIController implements Initializable {
         ModalController.showModal(Kirjaloki2GUIController.class.getResource("KirjanTiedotDialogi.fxml"), "Kirja", null, "");
     }
     
-    @FXML private void handleMuokkaaKirjailija() {
-        ModalController.showModal(Kirjaloki2GUIController.class.getResource("KirjailijanTiedotDialogi.fxml"), "Kirjailija", null, "");
-    }
     
+    @FXML private void handleMuokkaaKirjailija() {
+        muokkaaKirjailija();
+    } 
+    
+
     @FXML private void handleTulosta() {
         TulostusController tulostusCtrl = TulostusController.tulosta(null); 
         tulostaValitut(tulostusCtrl.getTextArea());
@@ -197,6 +199,11 @@ public class Kirjaloki2GUIController implements Initializable {
         }
 
      }
+    
+    private void muokkaaKirjailija() {
+        KirjailijanTiedotController.kysyKirjailija(null, kirjailijaKohdalla);
+        
+    }
     
     /**
      * Tulostaa kirjailijan tiedot
