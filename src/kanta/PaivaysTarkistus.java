@@ -1,6 +1,7 @@
 package kanta;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
@@ -46,12 +47,39 @@ public class PaivaysTarkistus {
      * @return true jos tarkastus meni läpi, false jos ei
      */
     public static boolean tarkistaVuosi(String vuosi) {
+        int tamaVuosi = LocalDateTime.now().getYear();
         try {
-            int v = Integer.parseInt(vuosi);
-            return v >= 600 && v <= 2026;
+            int v = Integer.parseInt(vuosi);;
+            return v >= 600 && v <= tamaVuosi;
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+    
+    /**
+     * Tarkastaa vuosiluvun oikeinkirjoituksen. Vuosiluvun tulee olla suurempi kuin 600.
+     * @param vuosi tarkistettava vuosiluku
+     * @return true jos tarkastus meni läpi, false jos ei
+     */
+    public static boolean tarkistaVuosi(int vuosi) {
+        int tamaVuosi = LocalDateTime.now().getYear();
+        try {
+            return vuosi >= 600 && vuosi <= tamaVuosi;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Testataan luokkaa
+     * @param args ei käytössä
+     */
+    public static void main(String[] args) {
+        int tamaVuosi = LocalDateTime.now().getYear();
+        String vuosi = "2222";
+        
+        System.out.println(tarkistaVuosi(tamaVuosi));
+        System.out.println(tarkistaVuosi(vuosi));
     }
 
 }
