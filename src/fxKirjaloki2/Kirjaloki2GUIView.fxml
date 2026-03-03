@@ -2,6 +2,7 @@
 
 <?import fi.jyu.mit.fxgui.ComboBoxChooser?>
 <?import fi.jyu.mit.fxgui.ListChooser?>
+<?import fi.jyu.mit.fxgui.StringGrid?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -11,7 +12,6 @@
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
@@ -223,7 +223,7 @@
             </BorderPane>
             <BorderPane maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
                <top>
-                  <Label alignment="CENTER" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" text="Kirjan tiedot" BorderPane.alignment="CENTER">
+                  <Label alignment="CENTER" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" text="Kirjailijan kirjat" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </BorderPane.margin>
@@ -231,59 +231,17 @@
                         <Font size="14.0" />
                      </font></Label>
                </top>
-               <center>
-                  <ScrollPane hmin="1.0" layoutX="1.0" layoutY="3.0" prefHeight="200.0" prefWidth="200.0" vmin="3.0" BorderPane.alignment="CENTER">
-                     <content>
-                        <GridPane>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="85.0" prefWidth="85.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" prefWidth="215.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="200.0" prefHeight="235.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label text="kirjailija" />
-                              <Label prefHeight="17.0" prefWidth="96.0" text="julkaisuvuosi" GridPane.rowIndex="1" />
-                              <Label text="genre" GridPane.rowIndex="2" />
-                              <Label text="tähdet" GridPane.rowIndex="3" />
-                              <Label text="lukupvm" GridPane.rowIndex="4" />
-                              <TextField GridPane.columnIndex="1" />
-                              <TextField fx:id="julkaisuVuosi" onAction="#handleTarkistaVuosi" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField fx:id="lukuPvm" onAction="#handleTarkistaLukuPvm" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Label alignment="TOP_LEFT" prefWidth="77.0" text="oma arvostelu" wrapText="true" GridPane.rowIndex="5" />
-                              <TextArea GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                 <padding>
-                                    <Insets bottom="5.0" />
-                                 </padding>
-                                 <GridPane.margin>
-                                    <Insets bottom="5.0" />
-                                 </GridPane.margin></TextArea>
-                           </children>
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                           <opaqueInsets>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </opaqueInsets>
-                        </GridPane>
-                     </content>
-                     <BorderPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" />
-                     </BorderPane.margin>
-                  </ScrollPane>
-               </center>
                
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
+               <center>
+                  <ScrollPane BorderPane.alignment="CENTER">
+                     <content>
+                        <StringGrid fx:id="tableKirjat" editable="true" maxWidth="1.7976931348623157E308" rivit="nimi|julkaisuvuosi|lukupvm|genre|tähdet|lisätiedot&#10;Margarita|2020|1.2.2022|historiallinen fiktio|5/5|tykkäsin paljon&#10;" />
+                     </content>
+                  </ScrollPane>
+               </center>
             </BorderPane>
          </items>
       </SplitPane>

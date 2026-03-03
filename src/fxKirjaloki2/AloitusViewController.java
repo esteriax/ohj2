@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fxKirjaloki2;
 
 import fi.jyu.mit.fxgui.ModalController;

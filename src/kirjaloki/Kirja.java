@@ -57,7 +57,7 @@ public class Kirja {
     */
    @Override
    public String toString() {
-       return "" + getKirjaId() + "|" + kirjailijaId + "|" + kirjailija + "|" + julkaisuvuosi + "|" + genre + "|" + tahdet + "|" + lukupvm + "|" + lisatiedot;
+       return "" + getKirjaId() + "|" + kirjailijaId + "|" + nimi + "|" + julkaisuvuosi + "|" + lukupvm + "|" + genre + "|" + tahdet + "|" + lisatiedot;
    }
 
 

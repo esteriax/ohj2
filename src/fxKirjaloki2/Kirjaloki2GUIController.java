@@ -14,6 +14,7 @@ import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.StringGrid;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -45,6 +46,7 @@ public class Kirjaloki2GUIController implements Initializable {
     @FXML private Label labelVirhe;
     @FXML private ScrollPane panelKirjailija;
     @FXML private ListChooser<Kirjailija> chooserKirjailijat;
+    @FXML private StringGrid<Kirja> tableKirjat;
     //private String kirjalokinnimi = "Heta";
     
     @FXML private TextField syntymaVuosi;
@@ -192,9 +194,35 @@ public class Kirjaloki2GUIController implements Initializable {
 
         if (kirjailijaKohdalla == null) return;
         KirjailijanTiedotController.naytaKirjailija(muutokset, kirjailijaKohdalla);
-
+        naytaKirjat(kirjailijaKohdalla);
      }
     
+    /**
+     * Näytetään valitun kirjailijan kaikki kirjat taulukossa
+     * @param kirjailija valittu kirjailija
+     */
+    private void naytaKirjat(Kirjailija kirjailija) {
+        tableKirjat.clear();
+        if ( kirjailija == null ) return;
+        
+        List<Kirja> kirjat = kirjaloki.annaKirjat(kirjailija);
+        if ( kirjat.size() == 0 ) return;
+        for (Kirja kirja: kirjat)
+            naytaKirja(kirja); 
+    }
+
+    /**
+     * Näyttää kirjan tiedot taulukossa
+     * @param kirja joka näytetään
+     */
+    private void naytaKirja(Kirja kirja) {
+        String[] rivi = kirja.toString().split("\\|"); // TODO: huono ja tilapäinen ratkaisu
+        tableKirjat.add(kirja,rivi[2],rivi[3],rivi[4],rivi[5],rivi[6],rivi[7]);
+    }
+    
+    /**
+     * Avaa kirjailijan muokkausdialogin
+     */
     private void muokkaaKirjailija() {
         KirjailijanTiedotController.kysyKirjailija(null, kirjailijaKohdalla);
         
