@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
  */
 public class Kirjailijat implements Iterable<Kirjailija>{
 
-    private static final int MAX_KIRJAILIJOITA   = 5;
+    private static final int MAX_KIRJAILIJOITA   = 15;
     private int              lkm           = 0;
     private Kirjailija            alkiot[]      = new Kirjailija[MAX_KIRJAILIJOITA];
     private boolean muutettu = false;
@@ -36,7 +36,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * @return viite kirjailijaan, jonka indeksi on i
      * @throws IndexOutOfBoundsException jos i ei ole sallitulla alueella  
      */
-    public Kirjailija anna(int i) throws IndexOutOfBoundsException {
+    protected Kirjailija anna(int i) throws IndexOutOfBoundsException {
         if (i < 0 || lkm <= i)
             throw new IndexOutOfBoundsException("Laiton indeksi: " + i);
         return alkiot[i];
@@ -64,15 +64,12 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * kirjailijat.lisaa(kytomaki); kirjailijat.getLkm() === 1;
      * kirjailijat.lisaa(kytomaki2); kirjailijat.getLkm() === 2;
      * kirjailijat.lisaa(kytomaki); kirjailijat.getLkm() === 3;
-     * kirjailijat.anna(0) === kytomaki;
-     * kirjailijat.anna(1) === kytomaki2;
-     * kirjailijat.anna(2) === kytomaki;
-     * kirjailijat.anna(1) == kytomaki === false;
-     * kirjailijat.anna(1) == kytomaki2 === true;
-     * kirjailijat.anna(3) === kytomaki; #THROWS IndexOutOfBoundsException 
+     * Iterator<Kirjailija> it = kirjailijat.iterator(); 
+     * it.next() === kytomaki1;
+     * it.next() === kytomaki2; 
+     * it.next() === kytomaki3;  
      * kirjailijat.lisaa(kytomaki); kirjailijat.getLkm() === 4;
      * kirjailijat.lisaa(kytomaki); kirjailijat.getLkm() === 5;
-     * kirjailijat.lisaa(kytomaki);  #THROWS SailoException
      * </pre>
      */
 
@@ -345,6 +342,45 @@ public class Kirjailijat implements Iterable<Kirjailija>{
         } 
         return loytyneet; 
     }
+    
+    /**
+     * Korvaa kirjailijan tietorakenteessa.  Ottaa kirjailijan omistukseensa.
+     * Etsitään samalla tunnusnumerolla oleva kirjailija.  Jos ei löydy,
+     * niin lisätään uutena kirjailijana.
+     * @param kirjailija lisätäävän kirjailijan viite.  Huom tietorakenne muuttuu omistajaksi
+     * @throws SailoException jos tietorakenne on jo täynnä
+     * <pre name="test">
+     * #THROWS SailoException,CloneNotSupportedException
+     * #PACKAGEIMPORT
+     * Kirjailijat kirjailijat = new Kirjailijaet();
+     * Kirjailija aku1 = new Kirjailija(), aku2 = new Kirjailija();
+     * aku1.rekisteroi(); aku2.rekisteroi();
+     * kirjailijat.getLkm() === 0;
+     * kirjailijat.korvaaTaiLisaa(aku1); kirjailijat.getLkm() === 1;
+     * kirjailijat.korvaaTaiLisaa(aku2); kirjailijat.getLkm() === 2;
+     * Kirjailija aku3 = aku1.clone();
+     * aku3.setPostinumero("00130");
+     * Iterator<Kirjailija> it = kirjailijat.iterator();
+     * it.next() == aku1 === true;
+     * kirjailijat.korvaaTaiLisaa(aku3); kirjailijat.getLkm() === 2;
+     * it = kirjailijat.iterator();
+     * Kirjailija j0 = it.next();
+     * j0 === aku3;
+     * j0 == aku3 === true;
+     * j0 == aku1 === false;
+     * </pre>
+     */
+    public void korvaaTaiLisaa(Kirjailija kirjailija) throws SailoException {
+        int id = kirjailija.getKirjailijaId();
+        for (int i = 0; i < lkm; i++) {
+            if ( alkiot[i].getKirjailijaId() == id ) {
+                alkiot[i] = kirjailija;
+                muutettu = true;
+                return;
+            }
+        }
+        lisaa(kirjailija);
+    }
 
     /**
      * Testataan ohjelmaa
@@ -363,9 +399,9 @@ public class Kirjailijat implements Iterable<Kirjailija>{
 
             System.out.println("========== kirjailijat testi ==============");
 
-            for (int i = 0; i < kirjailijat.getLkm(); i++) {
-                Kirjailija kirjailija = kirjailijat.anna(i);
-                System.out.println("Kirjailijan nro: " + i);
+            int i = 0;
+            for (Kirjailija kirjailija: kirjailijat) { 
+                System.out.println("Kirjailija nro: " + i++);
                 kirjailija.tulosta(System.out);
             }
 

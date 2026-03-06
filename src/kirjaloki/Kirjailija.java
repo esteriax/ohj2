@@ -8,7 +8,7 @@ import fi.jyu.mit.ohj2.Mjonot;
  * Kirjalokin Kirjailija-luokka
  * @author heta
  */
-public class Kirjailija {
+public class Kirjailija implements Cloneable {
     
     private String nimi = "";
     private int kirjailijaId;
@@ -19,6 +19,39 @@ public class Kirjailija {
     private static int seuraavaNro = 1;
     
     
+    /**
+     * @param s kirjailijalle laitettava nimi
+     * @return virheilmoitus, null jos ok
+     */
+    public String setNimi(String s) {
+        nimi = s;
+        return null;
+    }
+
+    /**
+     * @return kirjailijan syntymävuosi
+     */
+    public String getSyntymaVuosi() {
+        return syntymaVuosi;
+    }
+
+    /**
+     * 
+     * @return onko kirjailija käyttäjän suosikki
+     */
+    public String getSuosikki() {
+        return suosikki;
+    }
+
+    /**
+     * 
+     * @return käyttäjän asettamat lisätiedot kirjailijasta
+     */
+    public String getLisatiedot() {
+        return lisatiedot;
+    }
+    
+
     /**
      * @return kirjailijan nimi
      * @example
@@ -31,6 +64,34 @@ public class Kirjailija {
     public String getNimi() {
         return nimi;
 
+    }
+
+    
+    /**
+     * @param s kirjailijalle laitettava syntymavuosi
+     * @return virheilmoitus, null jos ok
+     */
+    public String setSyntymaVuosi(String s) {
+        syntymaVuosi = s;
+        return null;
+    }
+    
+    /**
+     * @param s kirjailijalle laitettava merkintä, mikäli hän on käyttäjän suosikki
+     * @return virheilmoitus, null jos ok
+     */
+    public String setSuosikki(String s) {
+        suosikki = s;
+        return null;
+    }
+    
+    /**
+     * @param s kirjailijalle laitettavat lisätiedot
+     * @return virheilmoitus, null jos ok
+     */
+    public String setLisatiedot(String s) {
+        lisatiedot = s;
+        return null;
     }
     
     /**
@@ -164,6 +225,27 @@ public class Kirjailija {
          if ( kirjailija == null ) return false;
          return this.toString().equals(kirjailija.toString());
      }
+     
+     /**
+      * Tehdään identtinen klooni kirjailijasta
+      * @return Object kloonattu kirjailija
+      * @example
+      * <pre name="test">
+      * #THROWS CloneNotSupportedException 
+      *   Kirjailija Kirjailija = new Kirjailija();
+      *   Kirjailija.parse("   3  |  Ankka Aku   | 123");
+      *   Kirjailija kopio = Kirjailija.clone();
+      *   kopio.toString() === Kirjailija.toString();
+      *   Kirjailija.parse("   4  |  Ankka Tupu   | 123");
+      *   kopio.toString().equals(Kirjailija.toString()) === false;
+      * </pre>
+      */
+     @Override
+     public Kirjailija clone() throws CloneNotSupportedException {
+         Kirjailija uusi;
+         uusi = (Kirjailija) super.clone();
+         return uusi;
+     }
 
 
      @Override
@@ -191,30 +273,5 @@ public class Kirjailija {
          
 
     }
-
-    
-    /**
-     * @return kirjailijan syntymävuosi
-     */
-    public String getSyntymaVuosi() {
-        return syntymaVuosi;
-    }
-
-    /**
-     * 
-     * @return onko kirjailija käyttäjän suosikki
-     */
-    public String getSuosikki() {
-        return suosikki;
-    }
-
-    /**
-     * 
-     * @return käyttäjän asettamat lisätiedot kirjailijasta
-     */
-    public String getLisatiedot() {
-        return lisatiedot;
-    }
-
 }
 

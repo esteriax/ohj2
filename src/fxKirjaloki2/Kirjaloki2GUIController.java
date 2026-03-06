@@ -180,9 +180,9 @@ public class Kirjaloki2GUIController implements Initializable {
      * Alustetaan myös kirjalistan kuuntelija 
      */
     protected void alusta() {
-        muutokset = new TextField[]{kirjailijaNimi, syntymaVuosi, suosikki, lisatiedot}; 
         chooserKirjailijat.clear();
         chooserKirjailijat.addSelectionListener(e -> naytaKirjailija());
+        muutokset = new TextField[]{kirjailijaNimi, syntymaVuosi, suosikki, lisatiedot}; 
     }
 
     
@@ -191,7 +191,6 @@ public class Kirjaloki2GUIController implements Initializable {
      */
     protected void naytaKirjailija() {
         kirjailijaKohdalla = chooserKirjailijat.getSelectedObject();
-
         if (kirjailijaKohdalla == null) return;
         KirjailijanTiedotController.naytaKirjailija(muutokset, kirjailijaKohdalla);
         naytaKirjat(kirjailijaKohdalla);
@@ -208,7 +207,7 @@ public class Kirjaloki2GUIController implements Initializable {
         List<Kirja> kirjat = kirjaloki.annaKirjat(kirjailija);
         if ( kirjat.size() == 0 ) return;
         for (Kirja kirja: kirjat)
-            naytaKirja(kirja); 
+            naytaKirja(kirja);
     }
 
     /**
@@ -224,8 +223,19 @@ public class Kirjaloki2GUIController implements Initializable {
      * Avaa kirjailijan muokkausdialogin
      */
     private void muokkaaKirjailija() {
-        KirjailijanTiedotController.kysyKirjailija(null, kirjailijaKohdalla);
-        
+        if ( kirjailijaKohdalla == null ) return; 
+        try { 
+            Kirjailija kirjailija; 
+            kirjailija = KirjailijanTiedotController.kysyKirjailija(null, kirjailijaKohdalla.clone()); 
+            if ( kirjailija == null ) return; 
+            kirjaloki.korvaaTaiLisaa(kirjailija); 
+            hae(kirjailija.getKirjailijaId()); 
+        } catch (CloneNotSupportedException e) { 
+            // 
+        } catch (SailoException e) { 
+            Dialogs.showMessageDialog(e.getMessage()); 
+        } 
+
     }
     
     /**
@@ -315,16 +325,18 @@ public class Kirjaloki2GUIController implements Initializable {
      * Luo uuden kirjailijan jota aletaan editoimaan 
      */
     protected void uusiKirjailija() {
-        Kirjailija uusi = new Kirjailija();
-        uusi.rekisteroi();
-        uusi.vastaaKytomaki();
         try {
+            Kirjailija uusi = new Kirjailija();
+            uusi = KirjailijanTiedotController.kysyKirjailija(null, uusi);  
+            if ( uusi == null ) return;
+            uusi.rekisteroi();
             kirjaloki.lisaa(uusi);
+            hae(uusi.getKirjailijaId());
         } catch (SailoException e) {
-            Dialogs.showMessageDialog("Ongelmia kirjailijan lisäämisessä " + e.getMessage());
+            Dialogs.showMessageDialog("Ongelmia uuden kirjailijan luomisessa " + e.getMessage());
             return;
         }
-        hae(uusi.getKirjailijaId());
+
     }
     
     /** 
@@ -346,9 +358,9 @@ public class Kirjaloki2GUIController implements Initializable {
     
     /**
      * Hakee kirjailijoiden tiedot listaan
-     * @param jnro kirjailijan numero, joka aktivoidaan haun jälkeen
+     * @param knro kirjailijan numero, joka aktivoidaan haun jälkeen
      */
-    protected void hae(int jnro) {
+    protected void hae(int knro) {
         int k = cbKentat.getSelectionModel().getSelectedIndex();
         String ehto = hakuehto.getText(); 
         if (k > 0 || ehto.length() > 0)
@@ -364,7 +376,7 @@ public class Kirjaloki2GUIController implements Initializable {
             kirjailijat = kirjaloki.etsi(ehto, k);
             int i = 0;
             for (Kirjailija kirjailija:kirjailijat) {
-                if (kirjailija.getKirjailijaId() == jnro) index = i;
+                if (kirjailija.getKirjailijaId() == knro) index = i;
                 chooserKirjailijat.add(kirjailija.getNimi(), kirjailija);
                 i++;
             }

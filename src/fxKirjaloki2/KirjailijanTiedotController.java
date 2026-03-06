@@ -1,5 +1,6 @@
 package fxKirjaloki2;
 
+import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
@@ -26,12 +27,25 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
     
     @FXML
     void handleDefaultCancel() {
+        kirjailijaKohdalla = null;
         ModalController.closeStage(labelVirhe);
     }
 
     @FXML
     void handleDefaultOK() {
+        if ( kirjailijaKohdalla != null && kirjailijaKohdalla.getNimi().trim().equals("") ) {
+            naytaVirhe("Nimi ei saa olla tyhjä");
+            return;
+        }
         ModalController.closeStage(labelVirhe);
+    }
+    
+
+    /**
+     * 
+     */
+    public void initialize() {
+        alusta();  
     }
     
     /*
@@ -63,10 +77,43 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
 
 
     /**
-     * Tekee tarvittavat muut alustukset.
+     * Tekee tarvittavat muut alustukset, kuten asettaa edit-kentistä tulevan
+     * tapahtuman menemään kasitteleMuutosJaseneen-metodiin ja vie sille
+     * kentännumeron parametrina.
      */
     protected void alusta() {
         muutokset = new TextField[]{kirjailijaNimi, syntymaVuosi, suosikki, lisatiedot};
+        int i = 0;
+        for (TextField edit : muutokset) {
+            final int k = ++i;
+            edit.setOnKeyReleased( e -> kasitteleMuutosKirjailijaan(k, (TextField)(e.getSource())));
+        }
+    }
+    
+    /**
+     * Käsitellään kirjailijaan tullut muutos
+     * @param edit muuttunut kenttä
+     */
+    private void kasitteleMuutosKirjailijaan(int k, TextField edit) {
+        if (kirjailijaKohdalla == null) return;
+        String s = edit.getText();
+        String virhe = null;
+        switch (k) {
+           case 1 : virhe = kirjailijaKohdalla.setNimi(s); break;
+           case 2 : virhe = kirjailijaKohdalla.setSyntymaVuosi(s); break;
+           case 3 : virhe = kirjailijaKohdalla.setSuosikki(s); break;
+           case 4 : virhe = kirjailijaKohdalla.setLisatiedot(s); break;
+           default:
+        }
+        if (virhe == null) {
+            Dialogs.setToolTipText(edit,"");
+            edit.getStyleClass().removeAll("virhe");
+            naytaVirhe(virhe);
+        } else {
+            Dialogs.setToolTipText(edit,virhe);
+            edit.getStyleClass().add("virhe");
+            naytaVirhe(virhe);
+        }
     }
     
     @Override
@@ -90,13 +137,6 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
         
     }
     
-    
-    /**
-     * 
-     */
-    public void initialize() {
-        alusta();  
-    }
     
     /**
      * Näytetään kirjailijan tiedot TextField komponentteihin

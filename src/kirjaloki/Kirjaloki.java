@@ -210,6 +210,17 @@ public class Kirjaloki {
             }
             if ( !"".equals(virhe) ) throw new SailoException(virhe);
         }
+        
+        /** 
+         * Korvaa kirjailijan tietorakenteessa.  Ottaa kirjailijan omistukseensa. 
+         * Etsitään samalla tunnusnumerolla oleva kirjailija.  Jos ei löydy, 
+         * niin lisätään uutena kirjailijana. 
+         * @param kirjailija lisätäävän kirjailijan viite.  Huom tietorakenne muuttuu omistajaksi 
+         * @throws SailoException jos tietorakenne on jo täynnä 
+         */ 
+        public void korvaaTaiLisaa(Kirjailija kirjailija) throws SailoException { 
+            kirjailijat.korvaaTaiLisaa(kirjailija); 
+        } 
 
 
 
