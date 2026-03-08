@@ -359,7 +359,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * kirjailijat.korvaaTaiLisaa(aku1); kirjailijat.getLkm() === 1;
      * kirjailijat.korvaaTaiLisaa(aku2); kirjailijat.getLkm() === 2;
      * Kirjailija aku3 = aku1.clone();
-     * aku3.setPostinumero("00130");
+     * aku3.aseta(3,"kkk");
      * Iterator<Kirjailija> it = kirjailijat.iterator();
      * it.next() == aku1 === true;
      * kirjailijat.korvaaTaiLisaa(aku3); kirjailijat.getLkm() === 2;

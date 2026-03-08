@@ -2,6 +2,7 @@ package kirjaloki;
 import java.io.*;
 
 import fi.jyu.mit.ohj2.Mjonot;
+import kanta.PaivaysTarkistus;
 
 
 /**
@@ -18,38 +19,115 @@ public class Kirjailija implements Cloneable {
 
     private static int seuraavaNro = 1;
     
+    /**
+     * Palauttaa kirjailijan kenttien lukumäärän
+     * @return kenttien lukumäärä
+     */
+    public int getKenttia() {
+        return 5;
+    }
+
+
+    /**
+     * Eka kenttä joka on mielekäs kysyttäväksi
+     * @return eknn kentän indeksi
+     */
+    public int ekaKentta() {
+        return 1;
+    }
+
+
+    /**
+     * Alustetaan kirjailijan merkkijono-attribuuti tyhjiksi jonoiksi
+     * ja tunnusnro = 0.
+     */
+    public Kirjailija() {
+        // Toistaiseksi ei tarvita mitään
+    }
+
+
+    /**
+     * Antaa k:n kentän sisällön merkkijonona
+     * @param k monenenko kentän sisältö palautetaan
+     * @return kentän sisältö merkkijonona
+     */
+    public String anna(int k) {
+        switch ( k ) {
+            case 0: return "" + kirjailijaId;
+            case 1: return "" + nimi;
+            case 2: return "" + syntymaVuosi;
+            case 3: return "" + suosikki;
+            case 4: return "" + lisatiedot;
+            default: return "";
+            }
+        }
     
     /**
-     * @param s kirjailijalle laitettava nimi
-     * @return virheilmoitus, null jos ok
+     ** Asettaa k:n kentän arvoksi parametrina tuodun merkkijonon arvon
+     * @param k kuinka monennen kentän arvo asetetaan
+     * @param jono jonoa joka asetetaan kentän arvoksi
+     * @return null jos asettaminen onnistuu, muuten vastaava virheilmoitus.
+     * @example
+     * <pre name="test">
+     *   Kirjailija kirjailija = new Kirjailija();
+     *   kirjailija.aseta(1,"Ankka Aku") === null;
+     *   kirjailija.aseta(2,"kissa") =R= "Hetu liian lyhyt"
+     *   kirjailija.aseta(2,"030201-1111") === "Tarkistusmerkin kuuluisi olla C"; 
+     *   kirjailija.aseta(2,"030201-111C") === null; 
+     *   kirjailija.aseta(9,"kissa") === "Liittymisvuosi väärin jono = \"kissa\"";
+     *   kirjailija.aseta(9,"1940") === null;
+     * </pre>
+
      */
-    public String setNimi(String s) {
-        nimi = s;
-        return null;
+    public String aseta(int k, String jono) {
+        String tjono = jono.trim();
+        StringBuffer sb = new StringBuffer(tjono);
+        switch ( k ) {
+        case 0:
+            setKirjailijaId(Mjonot.erota(sb, '§', getKirjailijaId()));
+            return null;
+        case 1:
+            nimi = tjono;
+            return null;
+        case 2:
+            PaivaysTarkistus vuosi = new PaivaysTarkistus();
+            try {
+                Boolean tulos = vuosi.tarkistaVuosi(tjono);
+                if (tulos) {syntymaVuosi = tjono;}
+                return null;
+            } catch ( NumberFormatException ex ) {
+                return "Syntymävuosi väärin " + ex.getMessage();
+            }
+
+        case 3:
+            suosikki = tjono;
+            return null;
+        case 4:
+            lisatiedot = tjono;
+            return null;
+        default:
+            return "ÄÄliö";
+        }
+    }
+    
+    /**
+     * Palauttaa k:tta kirjailijan kenttää vastaavan kysymyksen
+     * @param k kuinka monennen kentän kysymys palautetaan (0-alkuinen)
+     * @return k:netta kenttää vastaava kysymys
+
+     */
+    public String getKysymys(int k) {
+        switch ( k ) {
+        case 0: return "KirjailijaId";
+        case 1: return "Nimi";
+        case 2: return "Syntymävuosi";
+        case 3: return "Oma suosikki";
+        case 4: return "Lisätiedot";
+        default: return "";
+        }
     }
 
-    /**
-     * @return kirjailijan syntymävuosi
-     */
-    public String getSyntymaVuosi() {
-        return syntymaVuosi;
-    }
 
-    /**
-     * 
-     * @return onko kirjailija käyttäjän suosikki
-     */
-    public String getSuosikki() {
-        return suosikki;
-    }
-
-    /**
-     * 
-     * @return käyttäjän asettamat lisätiedot kirjailijasta
-     */
-    public String getLisatiedot() {
-        return lisatiedot;
-    }
     
 
     /**
@@ -64,34 +142,6 @@ public class Kirjailija implements Cloneable {
     public String getNimi() {
         return nimi;
 
-    }
-
-    
-    /**
-     * @param s kirjailijalle laitettava syntymavuosi
-     * @return virheilmoitus, null jos ok
-     */
-    public String setSyntymaVuosi(String s) {
-        syntymaVuosi = s;
-        return null;
-    }
-    
-    /**
-     * @param s kirjailijalle laitettava merkintä, mikäli hän on käyttäjän suosikki
-     * @return virheilmoitus, null jos ok
-     */
-    public String setSuosikki(String s) {
-        suosikki = s;
-        return null;
-    }
-    
-    /**
-     * @param s kirjailijalle laitettavat lisätiedot
-     * @return virheilmoitus, null jos ok
-     */
-    public String setLisatiedot(String s) {
-        lisatiedot = s;
-        return null;
     }
     
     /**
@@ -181,12 +231,15 @@ public class Kirjailija implements Cloneable {
       */
      @Override
      public String toString() {
-         return "" +
-                 getKirjailijaId() + "|" +
-                 nimi + "|" +
-                 syntymaVuosi + "|" +
-                 suosikki + "|" +
-                 lisatiedot + "|";
+         StringBuffer sb = new StringBuffer("");
+         String erotin = "";
+         for (int k = 0; k < getKenttia(); k++) {
+             sb.append(erotin);
+             sb.append(anna(k));
+             erotin = "|";
+         }
+         return sb.toString();
+
      }
 
 
@@ -212,18 +265,44 @@ public class Kirjailija implements Cloneable {
       */
      public void parse(String rivi) {
          StringBuffer sb = new StringBuffer(rivi);
-         setKirjailijaId(Mjonot.erota(sb, '|', getKirjailijaId()));
-         nimi = Mjonot.erota(sb, '|', nimi);
-         syntymaVuosi = Mjonot.erota(sb, '|', syntymaVuosi);
-         suosikki = Mjonot.erota(sb, '|', suosikki);
-         lisatiedot = Mjonot.erota(sb, '|', lisatiedot);
+         for (int k = 0; k < getKenttia(); k++)
+             aseta(k, Mjonot.erota(sb, '|'));
+
      }
+     
+     /**
+      * Tutkii onko kirjailijan tiedot samat kuin parametrina tuodun kirjailijanx tiedot
+      * @param kirjailija johon verrataan
+      * @return true jos kaikki tiedot samat, false muuten
+      * @example
+      * <pre name="test">
+      *   Kirjailija kirjailija1 = new Kirjailija();
+      *   kirjailija1.parse("   3  |  Ankka Aku   | 030201-111C");
+      *   Kirjailija kirjailija2 = new Kirjailija();
+      *   kirjailija2.parse("   3  |  Ankka Aku   | 030201-111C");
+      *   Kirjailija kirjailija3 = new Kirjailija();
+      *   kirjailija3.parse("   3  |  Ankka Aku   | 030201-115H");
+      *   
+      *   kirjailija1.equals(kirjailija2) === true;
+      *   kirjailija2.equals(kirjailija1) === true;
+      *   kirjailija1.equals(kirjailija3) === false;
+      *   kirjailija3.equals(kirjailija2) === false;
+      * </pre>
+      */
+     public boolean equals(Kirjailija kirjailija) {
+         if ( kirjailija == null ) return false;
+         for (int k = 0; k < getKenttia(); k++)
+             if ( !anna(k).equals(kirjailija.anna(k)) ) return false;
+         return true;
+     }
+
      
      
      @Override
      public boolean equals(Object kirjailija) {
-         if ( kirjailija == null ) return false;
-         return this.toString().equals(kirjailija.toString());
+         if ( kirjailija instanceof Kirjailija ) return equals((Kirjailija)kirjailija);
+         return false;
+
      }
      
      /**

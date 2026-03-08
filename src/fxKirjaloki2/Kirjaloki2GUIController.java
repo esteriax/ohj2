@@ -25,11 +25,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import kanta.PaivaysTarkistus;
 import kirjaloki.Kirja;
 import kirjaloki.Kirjailija;
 import kirjaloki.Kirjaloki;
 import kirjaloki.SailoException;
+import static fxKirjaloki2.KirjailijanTiedotController.getFieldId; 
 
 
 /**
@@ -47,6 +49,7 @@ public class Kirjaloki2GUIController implements Initializable {
     @FXML private ScrollPane panelKirjailija;
     @FXML private ListChooser<Kirjailija> chooserKirjailijat;
     @FXML private StringGrid<Kirja> tableKirjat;
+    @FXML private GridPane gridKirjailija;
     //private String kirjalokinnimi = "Heta";
     
     @FXML private TextField syntymaVuosi;
@@ -87,7 +90,8 @@ public class Kirjaloki2GUIController implements Initializable {
     
     @FXML private void handleTarkistaVuosi() {
         String ehto = julkaisuVuosi.getText(); 
-        if ( ehto.isEmpty() || PaivaysTarkistus.tarkistaVuosi(ehto))
+        PaivaysTarkistus vuosi = new PaivaysTarkistus();
+        if ( ehto.isEmpty() || vuosi.tarkistaVuosi(ehto))
             naytaVirhe(null);
         else
             naytaVirhe("Korjaa vuosiluku: " + ehto);         
@@ -109,10 +113,8 @@ public class Kirjaloki2GUIController implements Initializable {
     @FXML private void handleLopeta() {
         tallenna();
         Platform.exit();
-
     }
     
-
     /*
      * Aukaisee harjoitustyön suunnitelmasivun timistä
      */
@@ -146,7 +148,7 @@ public class Kirjaloki2GUIController implements Initializable {
     
     
     @FXML private void handleMuokkaaKirjailija() {
-        muokkaaKirjailija();
+        muokkaaKirjailija(1);
     } 
     
 
@@ -173,6 +175,7 @@ public class Kirjaloki2GUIController implements Initializable {
     private Kirjailija kirjailijaKohdalla;
     private String kirjalokinnimi = "Heta";
     private TextField muutokset[];
+    private int kentta = 0; 
     
     /**
      * Tekee tarvittavat muut alustukset, nyt vaihdetaan GridPanen tilalle
@@ -182,7 +185,14 @@ public class Kirjaloki2GUIController implements Initializable {
     protected void alusta() {
         chooserKirjailijat.clear();
         chooserKirjailijat.addSelectionListener(e -> naytaKirjailija());
-        muutokset = new TextField[]{kirjailijaNimi, syntymaVuosi, suosikki, lisatiedot}; 
+        muutokset = KirjailijanTiedotController.luoKentat(gridKirjailija); 
+        for (TextField edit: muutokset)  
+            if ( edit != null ) {  
+                edit.setEditable(false);  
+                edit.setOnMouseClicked(e -> { if ( e.getClickCount() > 1 ) muokkaaKirjailija(getFieldId(e.getSource(),0)); });  
+                edit.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(edit,kentta));  
+            }    
+
     }
 
     
@@ -222,11 +232,11 @@ public class Kirjaloki2GUIController implements Initializable {
     /**
      * Avaa kirjailijan muokkausdialogin
      */
-    private void muokkaaKirjailija() {
+    private void muokkaaKirjailija(int k) {
         if ( kirjailijaKohdalla == null ) return; 
         try { 
             Kirjailija kirjailija; 
-            kirjailija = KirjailijanTiedotController.kysyKirjailija(null, kirjailijaKohdalla.clone()); 
+            kirjailija = KirjailijanTiedotController.kysyKirjailija(null, kirjailijaKohdalla.clone(), k); 
             if ( kirjailija == null ) return; 
             kirjaloki.korvaaTaiLisaa(kirjailija); 
             hae(kirjailija.getKirjailijaId()); 
@@ -327,7 +337,7 @@ public class Kirjaloki2GUIController implements Initializable {
     protected void uusiKirjailija() {
         try {
             Kirjailija uusi = new Kirjailija();
-            uusi = KirjailijanTiedotController.kysyKirjailija(null, uusi);  
+            uusi = KirjailijanTiedotController.kysyKirjailija(null, uusi, 1);  
             if ( uusi == null ) return;
             uusi.rekisteroi();
             kirjaloki.lisaa(uusi);

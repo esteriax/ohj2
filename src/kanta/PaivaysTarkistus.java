@@ -46,7 +46,7 @@ public class PaivaysTarkistus {
      * @param vuosi tarkistettava vuosiluku
      * @return true jos tarkastus meni läpi, false jos ei
      */
-    public static boolean tarkistaVuosi(String vuosi) {
+    public boolean tarkistaVuosi(String vuosi) {
         int tamaVuosi = LocalDateTime.now().getYear();
         try {
             int v = Integer.parseInt(vuosi);;
@@ -76,10 +76,10 @@ public class PaivaysTarkistus {
      */
     public static void main(String[] args) {
         int tamaVuosi = LocalDateTime.now().getYear();
-        String vuosi = "2222";
+        //String vuosi = "2222";
         
         System.out.println(tarkistaVuosi(tamaVuosi));
-        System.out.println(tarkistaVuosi(vuosi));
+        //System.out.println(tarkistaVuosi(vuosi));
     }
 
 }

@@ -143,7 +143,6 @@ public class KirjailijatTest {
     kirjailijat.korvaaTaiLisaa(aku1); assertEquals("From: Kirjailijat line: 359", 1, kirjailijat.getLkm()); 
     kirjailijat.korvaaTaiLisaa(aku2); assertEquals("From: Kirjailijat line: 360", 2, kirjailijat.getLkm()); 
     Kirjailija aku3 = aku1.clone(); 
-    aku3.setSyntymaVuosi("2020"); 
     Iterator<Kirjailija> it = kirjailijat.iterator(); 
     assertEquals("From: Kirjailijat line: 364", true, it.next() == aku1); 
     kirjailijat.korvaaTaiLisaa(aku3); assertEquals("From: Kirjailijat line: 365", 2, kirjailijat.getLkm()); 

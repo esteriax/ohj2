@@ -3,12 +3,15 @@ package fxKirjaloki2;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
+import fi.jyu.mit.ohj2.Mjonot;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import kanta.PaivaysTarkistus;
 import kirjaloki.Kirjailija;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 
 /**
  * 
@@ -19,16 +22,13 @@ import javafx.scene.control.Label;
 public class KirjailijanTiedotController implements ModalControllerInterface<Kirjailija>{
 
     @FXML private Label labelVirhe;
-    @FXML private TextField syntymaVuosi;
-    @FXML private TextField lisatiedot;
-    @FXML private TextField kirjailijaNimi;
-    @FXML private TextField suosikki;
-    private TextField muutokset[];
+    @FXML private ScrollPane panelKirjailija;
+    @FXML private GridPane gridKirjailija;
     
     @FXML
     void handleDefaultCancel() {
         kirjailijaKohdalla = null;
-        ModalController.closeStage(labelVirhe);
+        ModalController.closeStage(gridKirjailija);
     }
 
     @FXML
@@ -37,7 +37,7 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
             naytaVirhe("Nimi ei saa olla tyhjä");
             return;
         }
-        ModalController.closeStage(labelVirhe);
+        ModalController.closeStage(gridKirjailija);
     }
     
 
@@ -48,63 +48,91 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
         alusta();  
     }
     
-    /*
-     * Tarkistaa päiväyksen/vuosiluvun oikeinkirjoituksen
-     */
-    
-    @FXML private void handleTarkistaVuosi() {
-        String ehto = syntymaVuosi.getText(); 
-        if ( ehto.isEmpty() || PaivaysTarkistus.tarkistaVuosi(ehto))
-            naytaVirhe(null);
-        else
-            naytaVirhe("Korjaa syntymävuosi: " + ehto);         
-    }
-    
     
  
     // -------------------------------------------------------------------------------------------------------------
     
     private Kirjailija kirjailijaKohdalla;
+    private static Kirjailija apukirjailija = new Kirjailija(); // Jäsen jolta voidaan kysellä tietoja.
+    private TextField[] edits;
+    private int kentta = 0;
+    
+
+    /**
+     * Luodaan GridPaneen kirjailijan tiedot
+     * @param gridKirjailija mihin tiedot luodaan
+     * @return luodut tekstikentät
+     */
+    public static TextField[] luoKentat(GridPane gridKirjailija) {
+        gridKirjailija.getChildren().clear();
+        TextField[] edits = new TextField[apukirjailija.getKenttia()];
+        
+        for (int i=0, k = apukirjailija.ekaKentta(); k < apukirjailija.getKenttia(); k++, i++) {
+            Label label = new Label(apukirjailija.getKysymys(k));
+            gridKirjailija.add(label, 0, i);
+            TextField edit = new TextField();
+            edits[k] = edit;
+            edit.setId("e"+k);
+            gridKirjailija.add(edit, 1, i);
+        }
+        return edits;
+    }
+
     
     /**
      * Tyhjentää kirjailijan tiedot
-     * @param muutokset tehdyt muutokset
+     * @param edits tyhjennettävät kentät
      */
-    public static void tyhjenna(TextField[] muutokset) {
-        for (TextField muutos : muutokset)
-            muutos.setText("");
+    public static void tyhjenna(TextField[] edits) {
+        for (TextField edit: edits) 
+            if ( edit != null ) edit.setText(""); 
+
     }
-
-
+    
     /**
-     * Tekee tarvittavat muut alustukset, kuten asettaa edit-kentistä tulevan
-     * tapahtuman menemään kasitteleMuutosJaseneen-metodiin ja vie sille
-     * kentännumeron parametrina.
-     */
+    * Palautetaan komponentin id:stä saatava luku
+    * @param obj tutkittava komponentti
+    * @param oletus mikä arvo jos id ei ole kunnollinen
+    * @return komponentin id lukuna 
+    */
+   public static int getFieldId(Object obj, int oletus) {
+       if ( !( obj instanceof Node)) return oletus;
+       Node node = (Node)obj;
+       return Mjonot.erotaInt(node.getId().substring(1),oletus);
+   }
+
+
+
+   /**
+    * Tekee tarvittavat muut alustukset, nyt vaihdetaan GridPanen tilalle
+    * yksi iso tekstikenttä, johon voidaan tulostaa kirjailijoiden tiedot.
+    */
+
     protected void alusta() {
-        muutokset = new TextField[]{kirjailijaNimi, syntymaVuosi, suosikki, lisatiedot};
-        int i = 0;
-        for (TextField edit : muutokset) {
-            final int k = ++i;
-            edit.setOnKeyReleased( e -> kasitteleMuutosKirjailijaan(k, (TextField)(e.getSource())));
-        }
+        edits = luoKentat(gridKirjailija);
+        for (TextField edit : edits)
+            if ( edit != null )
+                edit.setOnKeyReleased( e -> kasitteleMuutosKirjailijaan((TextField)(e.getSource())));
+        panelKirjailija.setFitToHeight(true);
+
     }
+    
+    
+    private void setKentta(int kentta) {
+        this.kentta = kentta;
+    }
+
     
     /**
      * Käsitellään kirjailijaan tullut muutos
      * @param edit muuttunut kenttä
      */
-    private void kasitteleMuutosKirjailijaan(int k, TextField edit) {
+    protected void kasitteleMuutosKirjailijaan(TextField edit) {
         if (kirjailijaKohdalla == null) return;
+        int k = getFieldId(edit,apukirjailija.ekaKentta());
         String s = edit.getText();
         String virhe = null;
-        switch (k) {
-           case 1 : virhe = kirjailijaKohdalla.setNimi(s); break;
-           case 2 : virhe = kirjailijaKohdalla.setSyntymaVuosi(s); break;
-           case 3 : virhe = kirjailijaKohdalla.setSuosikki(s); break;
-           case 4 : virhe = kirjailijaKohdalla.setLisatiedot(s); break;
-           default:
-        }
+        virhe = kirjailijaKohdalla.aseta(k,s); 
         if (virhe == null) {
             Dialogs.setToolTipText(edit,"");
             edit.getStyleClass().removeAll("virhe");
@@ -121,9 +149,14 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
         return kirjailijaKohdalla;
     }
 
+    /**
+     * Mitä tehdään kun dialogi on näytetty
+     */
     @Override
     public void handleShown() {
-        kirjailijaNimi.requestFocus();
+        kentta = Math.max(apukirjailija.ekaKentta(), Math.min(kentta, apukirjailija.getKenttia()-1));
+        edits[kentta].requestFocus();
+
         
     }
 
@@ -133,22 +166,22 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
     @Override
     public void setDefault(Kirjailija oletus) {
         kirjailijaKohdalla = oletus;
-        naytaKirjailija(muutokset, kirjailijaKohdalla);
+        naytaKirjailija(edits, kirjailijaKohdalla);
         
     }
     
     
     /**
      * Näytetään kirjailijan tiedot TextField komponentteihin
-     * @param muutokset taulukko tekstikenttineen
+     * @param edits taulukko TextFieldeistä johon näytetään
      * @param kirjailija näytettävä kirjailija
      */
-    public static void naytaKirjailija(TextField[] muutokset, Kirjailija kirjailija) {
+    public static void naytaKirjailija(TextField[] edits, Kirjailija kirjailija) {
         if (kirjailija == null) return;
-        muutokset[0].setText(kirjailija.getNimi());
-        muutokset[1].setText(kirjailija.getSyntymaVuosi());
-        muutokset[2].setText(kirjailija.getSuosikki());
-        muutokset[3].setText(kirjailija.getLisatiedot());
+        for (int k = kirjailija.ekaKentta(); k < kirjailija.getKenttia(); k++) {
+            edits[k].setText(kirjailija.anna(k));
+        }
+
 
     }
     
@@ -158,13 +191,16 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
      * TODO: korjattava toimimaan
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
      * @param oletus mitä dataan näytetään oletuksena
+     * @param kentta mikä kenttä saa fokuksen kun näytetään
      * @return null jos painetaan Cancel, muuten täytetty tietue
      */
-    public static Kirjailija kysyKirjailija(Stage modalityStage, Kirjailija oletus) {
+    public static Kirjailija kysyKirjailija(Stage modalityStage, Kirjailija oletus, int kentta) {
         return ModalController.<Kirjailija, KirjailijanTiedotController>showModal(
                     KirjailijanTiedotController.class.getResource("KirjailijanTiedotDialogi.fxml"),
                     "Kirjaloki",
-                    modalityStage, oletus, null 
+                    modalityStage, oletus,
+                    ctrl -> ctrl.setKentta(kentta) 
+
                 );
         
     }
