@@ -28,7 +28,7 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
     @FXML
     void handleDefaultCancel() {
         kirjailijaKohdalla = null;
-        ModalController.closeStage(gridKirjailija);
+        ModalController.closeStage(labelVirhe);
     }
 
     @FXML
@@ -37,7 +37,7 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
             naytaVirhe("Nimi ei saa olla tyhjä");
             return;
         }
-        ModalController.closeStage(gridKirjailija);
+        ModalController.closeStage(labelVirhe);
     }
     
 
@@ -200,9 +200,7 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
                     "Kirjaloki",
                     modalityStage, oletus,
                     ctrl -> ctrl.setKentta(kentta) 
-
                 );
-        
     }
     
     /**
@@ -219,9 +217,5 @@ public class KirjailijanTiedotController implements ModalControllerInterface<Kir
         labelVirhe.setText(virhe);
         labelVirhe.getStyleClass().add("virhe");
     }
-
-    
-    
-   
 
 }

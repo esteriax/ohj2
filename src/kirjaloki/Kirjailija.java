@@ -92,8 +92,8 @@ public class Kirjailija implements Cloneable {
         case 2:
             PaivaysTarkistus vuosi = new PaivaysTarkistus();
             try {
-                Boolean tulos = vuosi.tarkistaVuosi(tjono);
-                if (tulos) {syntymaVuosi = tjono;}
+                if (vuosi.tarkistaVuosi(tjono) == false) return "Tarkista syntymävuosi";
+                syntymaVuosi = tjono;
                 return null;
             } catch ( NumberFormatException ex ) {
                 return "Syntymävuosi väärin " + ex.getMessage();
@@ -106,7 +106,7 @@ public class Kirjailija implements Cloneable {
             lisatiedot = tjono;
             return null;
         default:
-            return "ÄÄliö";
+            return "";
         }
     }
     
