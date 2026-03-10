@@ -5,6 +5,7 @@ package kirjaloki;
 import java.io.*;
 
 import fi.jyu.mit.ohj2.Mjonot;
+import kanta.PaivaysTarkistus;
 
 
 
@@ -12,15 +13,15 @@ import fi.jyu.mit.ohj2.Mjonot;
  * Kirjalokin Kirja-luokka
  * @author heta
  */
-public class Kirja {
+public class Kirja implements Cloneable{
     
     private int kirjaId;
     private int kirjailijaId;
     private String nimi = "";
-    private String kirjailija = "";
-    private int julkaisuvuosi = 0;
+    //private String kirjailija = "";
+    private String julkaisuvuosi;
     private String genre = "";
-    private int tahdet = 0;
+    private int tahdet;
     private String lukupvm = "";
     private String lisatiedot = "";
     
@@ -33,6 +34,167 @@ public class Kirja {
     public Kirja() {
         // TODO
     }
+    
+    /**
+     * @return kirjan kenttien lukumäärä
+     */
+    public int getKenttia() {
+        return 8;
+    }
+
+
+    /**
+     * @return ensimmäinen käyttäjän syötettävän kentän indeksi
+     */
+    public int ekaKentta() {
+        return 2;
+    }
+    
+
+    /**
+     * @param k minkä kentän kysymys halutaan
+     * @return valitun kentän kysymysteksti
+     */
+    public String getKysymys(int k) {
+        switch (k) {
+            case 0:
+                return "Kirjaid";
+            case 1:
+                return "KirjailijaId";
+            case 2:
+                return "Nimi";
+            case 3:
+                return "Julkaisuvuosi";
+            case 4:
+                return "Genre";
+            case 5:
+                return "Tähdet";
+            case 6:
+                return "Luettu";
+            case 7:
+                return "Lisätiedot";
+            default:
+                return "";
+        }
+    }
+
+
+    /**
+     * @param k Minkä kentän sisältö halutaan
+     * @return valitun kentän sisältö
+     * @example
+     * <pre name="test">
+     *   Kirja har = new Kirja();
+     *   har.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
+     *   har.anna(0) === "2";   
+     *   har.anna(1) === "10";   
+     *   har.anna(2) === "Kalastus";   
+     *   har.anna(3) === "1949";   
+     *   har.anna(4) === "22";   
+     *   
+     * </pre>
+     */
+    public String anna(int k) {
+        switch (k) {
+            case 0:
+                return "" + kirjaId;
+            case 1:
+                return "" + kirjailijaId;
+            case 2:
+                return "" + nimi;
+            case 3:
+                return "" + julkaisuvuosi;
+            case 4:
+                return "" + genre;
+            case 5:
+                return "" + tahdet;
+            case 6:
+                return "" + lukupvm;
+            case 7:
+                return "" + lisatiedot;
+            default:
+                return "";
+        }
+    }
+
+
+    /**
+     * Asetetaan valitun kentän sisältö.  Mikäli asettaminen onnistuu,
+     * palautetaan null, muutoin virheteksti.
+     * @param k minkä kentän sisältö asetetaan
+     * @param s asetettava sisältö merkkijonona
+     * @return null jos ok, muuten virheteksti
+     * @example
+     * <pre name="test">
+     *   Kirja kirja = new Kirja();
+     *   har.aseta(3,"kissa") === "Aloitusvuosi väärin jono = \"kissa\"";
+     *   har.aseta(3,"1940")  === null;
+     *   har.aseta(4,"kissa") === "Viikkotunnit väärin jono = \"kissa\"";
+     *   har.aseta(4,"20")    === null;
+     *   
+     * </pre>
+     */
+    public String aseta(int k, String s) {
+        String st = s.trim();
+        StringBuffer sb = new StringBuffer(st);
+        switch (k) {
+            case 0:
+                setKirjaId(Mjonot.erota(sb, '$', getKirjaId()));
+                return null;
+            case 1:
+                kirjailijaId = Mjonot.erota(sb, '$', kirjailijaId);
+                return null;
+            case 2:
+                nimi = st;
+                return null;
+            case 3:
+                PaivaysTarkistus vuosi = new PaivaysTarkistus();
+                try {
+                    if (vuosi.tarkistaVuosi(st) == false) return "Tarkista julkaisuvuosi";
+                    julkaisuvuosi = st;
+                    return null;
+                } catch ( NumberFormatException ex ) {
+                    return "Julkaisuvuosi väärin " + ex.getMessage();
+                }
+            case 4:
+                genre = st;
+                return null;
+            case 5:
+                tahdet = Mjonot.erota(sb, '$', tahdet);
+                return null;
+            case 6:
+                lukupvm = st;
+                return null;
+            case 7:
+                lisatiedot = st;
+                return null;
+
+            default:
+                return "Väärä kentän indeksi";
+        }
+    }
+
+
+    /**
+     * Tehdään identtinen klooni jäsenestä
+     * @return Object kloonattu jäsen
+     * @example
+     * <pre name="test">
+     * #THROWS CloneNotSupportedException 
+     *   Kirja har = new Kirja();
+     *   har.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
+     *   Kirja kopio = har.clone();
+     *   kopio.toString() === har.toString();
+     *   har.parse("   1   |  11  |   Uinti  | 1949 | 22 t ");
+     *   kopio.toString().equals(har.toString()) === false;
+     * </pre>
+     */
+    @Override
+    public Kirja clone() throws CloneNotSupportedException { 
+        return (Kirja)super.clone();
+    }
+    
+
     
     /**
     * Asettaa kirjaid:n ja samalla varmistaa että
@@ -57,8 +219,17 @@ public class Kirja {
     */
    @Override
    public String toString() {
-       return "" + getKirjaId() + "|" + kirjailijaId + "|" + nimi + "|" + julkaisuvuosi + "|" + lukupvm + "|" + genre + "|" + tahdet + "|" + lisatiedot;
-   }
+       StringBuffer sb = new StringBuffer("");
+       String erotin = "";
+       for (int k = 0; k < getKenttia(); k++) {
+           sb.append(erotin);
+           sb.append(anna(k));
+           erotin = "|";
+       }
+       return sb.toString();
+    }
+
+
 
 
    /**
@@ -82,14 +253,9 @@ public class Kirja {
     */
    public void parse(String rivi) {
        StringBuffer sb = new StringBuffer(rivi);
-       setKirjaId(Mjonot.erota(sb, '|', getKirjaId()));
-       kirjailijaId = Mjonot.erota(sb, '|', kirjailijaId);
-       kirjailija = Mjonot.erota(sb, '|', kirjailija);
-       julkaisuvuosi = Mjonot.erota(sb, '|', julkaisuvuosi);
-       genre = Mjonot.erota(sb, '|', genre);
-       tahdet = Mjonot.erota(sb, '|', tahdet);
-       lukupvm = Mjonot.erota(sb, '|', lukupvm);
-       lisatiedot = Mjonot.erota(sb, '|', lisatiedot);
+       for (int k = 0; k < getKenttia(); k++)
+           aseta(k, Mjonot.erota(sb, '|'));
+
    }
 
 
@@ -120,8 +286,8 @@ public class Kirja {
     public void vastaaMargarita(int kirjailijaTunnus) {
             kirjailijaId = kirjailijaTunnus;
             nimi = "Margarita";
-            kirjailija = "Anni Kytömäki";
-            julkaisuvuosi = 2020;
+            //kirjailija = "Anni Kytömäki";
+            julkaisuvuosi = "2020";
             genre = "historiallinen romaani";
             tahdet = 5;
             lukupvm = "23.02.2022";
@@ -133,8 +299,8 @@ public class Kirja {
      */
     public void vastaaMargarita() {
             nimi = "Margarita";
-            kirjailija = "Anni Kytömäki";
-            julkaisuvuosi = 2020;
+            //kirjailija = "Anni Kytömäki";
+            julkaisuvuosi = "2020";
             genre = "historiallinen romaani";
             tahdet = 5;
             lukupvm = "23.02.2022";
@@ -148,7 +314,6 @@ public class Kirja {
     public void tulosta(PrintStream out) {
         out.println(String.format("%03d", kirjaId) + " " + nimi);
         out.println("Julkaisuvuosi: " + julkaisuvuosi);
-        out.println("Kirjailija: " + kirjailija);
         out.println("Genre: " + genre);
         out.println("Tähdet: " + tahdet + "/5");
         out.println("Luettu: " + lukupvm);

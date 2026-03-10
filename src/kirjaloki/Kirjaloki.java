@@ -8,7 +8,47 @@ import java.util.List;
  * @author heta
  * @version 17.2.2026
  *
- */
+ * Testien alustus
+ * @example
+ * <pre name="testJAVA">
+ * #import kirjaloki.SailoException;
+ *  private Kirjaloki kirjaloki;
+ *  private Kirjailija kytomaki1;
+ *  private Kirjailija kytomaki2;
+ *  private int jid1;
+ *  private int jid2;
+ *  private Kirja margarita21;
+ *  private Kirja margarita11;
+ *  private Kirja margarita22; 
+ *  private Kirja margarita12; 
+ *  private Kirja margarita23;
+ *  
+ *  @SuppressWarnings("javadoc")
+ *  public void alustaKirjaloki() {
+ *    kirjaloki = new Kirjaloki();
+ *    kytomaki1 = new Kirjailija(); kytomaki1.vastaaKytomaki(); kytomaki1.rekisteroi();
+ *    kytomaki2 = new Kirjailija(); kytomaki2.vastaaKytomaki(); kytomaki2.rekisteroi();
+ *    jid1 = kytomaki1.getTunnusNro();
+ *    jid2 = kytomaki2.getTunnusNro();
+ *    margarita21 = new Kirja(jid2); margarita21.vastaaMargarita(jid2);
+ *    margarita11 = new Kirja(jid1); margarita11.vastaaMargarita(jid1);
+ *    margarita22 = new Kirja(jid2); margarita22.vastaaMargarita(jid2); 
+ *    margarita12 = new Kirja(jid1); margarita12.vastaaMargarita(jid1); 
+ *    margarita23 = new Kirja(jid2); margarita23.vastaaMargarita(jid2);
+ *    try {
+ *    kirjaloki.lisaa(kytomaki1);
+ *    kirjaloki.lisaa(kytomaki2);
+ *    kirjaloki.lisaa(margarita21);
+ *    kirjaloki.lisaa(margarita11);
+ *    kirjaloki.lisaa(margarita22);
+ *    kirjaloki.lisaa(margarita12);
+ *    kirjaloki.lisaa(margarita23);
+ *    } catch ( Exception e) {
+ *       System.err.println(e.getMessage());
+ *    }
+ *  }
+ * </pre>
+*/
 public class Kirjaloki {
     
     private Kirjailijat kirjailijat = new Kirjailijat();
@@ -16,11 +56,17 @@ public class Kirjaloki {
     
     
         /** 
-         * Palauttaa "taulukossa" hakuehtoon vastaavien jäsenten viitteet 
-         * @param hakuehto hakuehto  
+         * Palauttaa "taulukossa" hkytomakiehtoon vastaavien kirjailijoiden viitteet 
+         * @param hakuehto ehto jonka mukaan haetaan
          * @param k etsittävän kentän indeksi  
          * @return tietorakenteen löytyneistä kirjailijoista 
          * @throws SailoException Jos jotakin menee väärin
+         * @example 
+         * <pre name="test">
+         *   #THROWS CloneNotSupportedException, SailoException
+         *   alustaKirjaloki();
+         *   // TODO: tee testit kun etsi on korjattu
+         * </pre>
          */ 
         public Collection<Kirjailija> etsi(String hakuehto, int k) throws SailoException { 
             return kirjailijat.etsi(hakuehto, k); 
@@ -46,18 +92,10 @@ public class Kirjaloki {
          * @example
          * <pre name="test">
          * #import java.util.*;
-         * 
-         *  Kirjaloki kirjaloki = new Kirjaloki();
-         *  Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija(), kytomaki3 = new Kirjailija();
-         *  kytomaki1.rekisteroi(); kytomaki2.rekisteroi(); kytomaki3.rekisteroi();
-         *  int id1 = kytomaki1.getKirjailijaId();
-         *  int id2 = kytomaki2.getKirjailijaId();
-         *  Kirja margarita11 = new Kirja(id1); kirjaloki.lisaa(margarita11);
-         *  Kirja margarita12 = new Kirja(id1); kirjaloki.lisaa(margarita12);
-         *  Kirja margarita21 = new Kirja(id2); kirjaloki.lisaa(margarita21);
-         *  Kirja margarita22 = new Kirja(id2); kirjaloki.lisaa(margarita22);
-         *  Kirja margarita23 = new Kirja(id2); kirjaloki.lisaa(margarita23);
-         *  
+         *  alustaKirjaloki();
+         *  Kirjailija kytomaki3 = new Kirjailija();
+         *  kytomaki3.rekisteroi();
+         *  kirjaloki.lisaa(kytomaki3);
          *  List<Kirja> loytyneet;
          *  loytyneet = kirjaloki.annaKirjat(kytomaki3);
          *  loytyneet.size() === 0; 
@@ -86,21 +124,14 @@ public class Kirjaloki {
          * 
          * @param kirjailija kirjalokiin lisättävä kirjailija
          * @throws SailoException näytettävä virhe, mikäli lisääminen ei onnistu
-         * * @example
+         * @example
           <pre name="test">
-         * #THROWS SailoException
-         * Kirjaloki kirjaloki = new Kirjaloki();
-         * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija();
-         * kirjaloki.lisaa(kytomaki1); 
-         * kirjaloki.lisaa(kytomaki2); 
-         * kirjaloki.lisaa(kytomaki1);
-         * Collection<Kirjailija> loytyneet = kirjaloki.etsi("",-1); 
-         * Iterator<Kirjailija> it = loytyneet.iterator();
-         * it.next() === kytomaki1;
-         * it.next() === kytomaki2;
-         * it.next() === kytomaki1;
-         * </pre>
-         * */
+         *  #THROWS SailoException  
+         *  alustaKirjaloki();
+         *  kirjaloki.etsi("*",0).size() === 2;
+         *  kirjaloki.lisaa(kytomaki1);
+         *  kirjaloki.etsi("*",0).size() === 3;
+         */
         public void lisaa(Kirjailija kirjailija) throws SailoException {
             kirjailijat.lisaa(kirjailija);
         }
@@ -109,68 +140,7 @@ public class Kirjaloki {
          * Lisätään kirja kirjalokiin
          * @param kirja lisättävä kirja
          * @throws SailoException mikäli lisääminen epäonnistuu
-         @example
-     * <pre name="test">
-     * #THROWS SailoException 
-     * #import java.io.*;
-     * #import java.util.*;
-     * 
-     *  Kirjaloki kirjaloki = new Kirjaloki();
-     *  
-     *  Kirjailija kytomaki1 = new Kirjailija(); kytomaki1.vastaaKytomaki(); kytomaki1.rekisteroi();
-     *  Kirjailija kytomaki2 = new Kirjailija(); kytomaki2.vastaaKytomaki(); kytomaki2.rekisteroi();
-     *  Kirja margarita1 = new Kirja(); margarita1.vastaaMargarita(kytomaki2.getKirjailijaId());
-     *  Kirja margarita2 = new Kirja(); margarita2.vastaaMargarita(kytomaki1.getKirjailijaId());
-     *  Kirja margarita3 = new Kirja(); margarita3.vastaaMargarita(kytomaki2.getKirjailijaId()); 
-     *  Kirja margarita4 = new Kirja(); margarita4.vastaaMargarita(kytomaki1.getKirjailijaId()); 
-     *  Kirja margarita5 = new Kirja(); margarita5.vastaaMargarita(kytomaki2.getKirjailijaId());
-     *   
-     *  String hakemisto = "testiheta";
-     *  File dir = new File(hakemisto);
-     *  File ftied  = new File(hakemisto+"/nimet.dat");
-     *  File fhtied = new File(hakemisto+"/kirjat.dat");
-     *  dir.mkdir();  
-     *  ftied.delete();
-     *  fhtied.delete();
-     *  kirjaloki.lueTiedostosta(hakemisto); #THROWS SailoException
-     *  kirjaloki.lisaa(kytomaki1);
-     *  kirjaloki.lisaa(kytomaki2);
-     *  kirjaloki.lisaa(margarita1);
-     *  kirjaloki.lisaa(margarita2);
-     *  kirjaloki.lisaa(margarita3);
-     *  kirjaloki.lisaa(margarita4);
-     *  kirjaloki.lisaa(margarita5);
-     *  kirjaloki.tallenna();
-     *  kirjaloki = new Kirjaloki();
-     *  kirjaloki.lueTiedostosta(hakemisto);
-     *  Collection<Kirjailija> kaikki = kirjaloki.etsi("",-1); 
-     *  Iterator<Kirjailija> it = kaikki.iterator();
-     *  it.next() === kytomaki1;
-     *  it.next() === kytomaki2;
-     *  it.hasNext() === false;
-     *  List<Kirja> loytyneet = kirjaloki.annaKirjat(kytomaki1);
-     *  Iterator<Kirja> ih = loytyneet.iterator();
-     *  ih.next() === margarita2;
-     *  ih.next() === margarita4;
-     *  ih.hasNext() === false;
-     *  loytyneet = kirjaloki.annaKirjat(kytomaki2);
-     *  ih = loytyneet.iterator();
-     *  ih.next() === margarita1;
-     *  ih.next() === margarita3;
-     *  ih.next() === margarita5;
-     *  ih.hasNext() === false;
-     *  kirjaloki.lisaa(kytomaki2);
-     *  kirjaloki.lisaa(margarita5);
-     *  kirjaloki.tallenna();
-     *  ftied.delete()  === true;
-     *  fhtied.delete() === true;
-     *  File fbak = new File(hakemisto+"/nimet.bak");
-     *  File fhbak = new File(hakemisto+"/kirjat.bak");
-     *  fbak.delete() === true;
-     *  fhbak.delete() === true;
-      *  dir.delete() === true;
-      * </pre>
-        */
+         */
         public void lisaa(Kirja kirja) throws SailoException {
             kirjat.lisaa(kirja);
         }
@@ -179,6 +149,52 @@ public class Kirjaloki {
          * Lukee kirjalokin tiedot tiedostosta
          * @param nimi tiedoston jota käyteään lukemisessa
          * @throws SailoException jos lukeminen epäonnistuu
+         * * <pre name="test">
+         * #THROWS SailoException 
+         * #import java.io.*;
+         * #import java.util.*;
+         *   
+         *  String hakemisto = "testiheta";
+         *  File dir = new File(hakemisto);
+         *  File ftied  = new File(hakemisto+"/nimet.dat");
+         *  File fhtied = new File(hakemisto+"/kirjat.dat");
+         *  dir.mkdir();  
+         *  ftied.delete();
+         *  fhtied.delete();
+         *  kirjaloki = new Kirjaloki(); // tiedostoja ei ole, tulee poikkeus 
+         *  kirjaloki.lueTiedostosta(hakemisto); #THROWS SailoException
+         *  alustaKirjaloki();
+         *  kirjaloki.setTiedosto(hakemisto); // nimi annettava koska uusi poisti sen
+         *  kirjaloki.tallenna(); 
+         *  kirjaloki = new Kirjaloki();
+         *  kirjaloki.lueTiedostosta(hakemisto);
+         *  Collection<Kirjailija> kaikki = kirjaloki.etsi("",-1); 
+         *  Iterator<Kirjailija> it = kaikki.iterator();
+         *  it.next() === kytomaki1;
+         *  it.next() === kytomaki2;
+         *  it.hasNext() === false;
+         *  List<Kirja> loytyneet = kirjaloki.annaKirjat(kytomaki1);
+         *  Iterator<Kirja> ih = loytyneet.iterator();
+         *  ih.next() === margarita2;
+         *  ih.next() === margarita4;
+         *  ih.hasNext() === false;
+         *  loytyneet = kirjaloki.annaKirjat(kytomaki2);
+         *  ih = loytyneet.iterator();
+         *  ih.next() === margarita1;
+         *  ih.next() === margarita3;
+         *  ih.next() === margarita5;
+         *  ih.hasNext() === false;
+         *  kirjaloki.lisaa(kytomaki2);
+         *  kirjaloki.lisaa(margarita5);
+         *  kirjaloki.tallenna(); // tekee molemmista .bak
+         *  ftied.delete()  === true;
+         *  fhtied.delete() === true;
+         *  File fbak = new File(hakemisto+"/nimet.bak");
+         *  File fhbak = new File(hakemisto+"/kirjat.bak");
+         *  fbak.delete() === true;
+         *  fhbak.delete() === true;
+         *  dir.delete() === true;
+         * </pre>
          */
         public void lueTiedostosta(String nimi) throws SailoException {
             kirjailijat = new Kirjailijat(); // jos luetaan olemassa olevaan niin helpoin tyhjentää näin
@@ -217,6 +233,14 @@ public class Kirjaloki {
          * niin lisätään uutena kirjailijana. 
          * @param kirjailija lisätäävän kirjailijan viite.  Huom tietorakenne muuttuu omistajaksi 
          * @throws SailoException jos tietorakenne on jo täynnä 
+         * @example
+         * <pre name="test">
+         * #THROWS SailoException  
+         *  alustaKirjaloki();
+         *  kirjaloki.etsi("*",0).size() === 2;
+         *  kirjaloki.korvaaTaiLisaa(kytomaki1);
+         *  kirjaloki.etsi("*",0).size() === 2;
+         * </pre>
          */ 
         public void korvaaTaiLisaa(Kirjailija kirjailija) throws SailoException { 
             kirjailijat.korvaaTaiLisaa(kirjailija); 

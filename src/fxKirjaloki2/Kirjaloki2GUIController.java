@@ -23,6 +23,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -51,6 +52,7 @@ public class Kirjaloki2GUIController implements Initializable {
     @FXML private StringGrid<Kirja> tableKirjat;
     @FXML private GridPane gridKirjailija;
     //private String kirjalokinnimi = "Heta";
+    private static Kirja apukirja = new Kirja(); 
     
     @FXML private TextField syntymaVuosi;
     @FXML private TextField lisatiedot;
@@ -192,6 +194,20 @@ public class Kirjaloki2GUIController implements Initializable {
                 edit.setOnMouseClicked(e -> { if ( e.getClickCount() > 1 ) muokkaaKirjailija(getFieldId(e.getSource(),0)); });  
                 edit.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(edit,kentta));  
             }    
+     // alustetaan harrastustaulukon otsikot 
+        int eka = apukirja.ekaKentta(); 
+        int lkm = apukirja.getKenttia(); 
+        String[] headings = new String[lkm-eka]; 
+        for (int i=0, k=eka; k<lkm; i++, k++) headings[i] = apukirja.getKysymys(k); 
+        tableKirjat.initTable(headings); 
+        tableKirjat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
+        tableKirjat.setEditable(false); 
+        tableKirjat.setPlaceholder(new Label("Ei vielä kirjoja")); 
+         
+        // Tämä on vielä huono, ei automaattisesti muutu jos kenttiä muutetaan. 
+        tableKirjat.setColumnSortOrderNumber(1); 
+        tableKirjat.setColumnSortOrderNumber(2); 
+        tableKirjat.setColumnWidth(1, 60); 
 
     }
 
@@ -225,8 +241,12 @@ public class Kirjaloki2GUIController implements Initializable {
      * @param kirja joka näytetään
      */
     private void naytaKirja(Kirja kirja) {
-        String[] rivi = kirja.toString().split("\\|"); // TODO: huono ja tilapäinen ratkaisu
-        tableKirjat.add(kirja,rivi[2],rivi[3],rivi[4],rivi[5],rivi[6],rivi[7]);
+        int kenttia = kirja.getKenttia(); 
+        String[] rivi = new String[kenttia-kirja.ekaKentta()]; 
+        for (int i=0, k=kirja.ekaKentta(); k < kenttia; i++, k++) 
+            rivi[i] = kirja.anna(k); 
+        tableKirjat.add(kirja,rivi);
+
     }
     
     /**
