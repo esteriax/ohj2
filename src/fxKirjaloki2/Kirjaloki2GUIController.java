@@ -27,12 +27,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.input.KeyCode;
 import kanta.PaivaysTarkistus;
 import kirjaloki.Kirja;
 import kirjaloki.Kirjailija;
 import kirjaloki.Kirjaloki;
 import kirjaloki.SailoException;
-import static fxKirjaloki2.KirjailijanTiedotController.getFieldId; 
+import static fxKirjaloki2.TietueDialogController.getFieldId; 
+
 
 
 /**
@@ -150,7 +152,7 @@ public class Kirjaloki2GUIController implements Initializable {
     
     
     @FXML private void handleMuokkaaKirjailija() {
-        muokkaaKirjailija(1);
+        muokkaaKirjailija(kentta);
     } 
     
 
@@ -187,12 +189,13 @@ public class Kirjaloki2GUIController implements Initializable {
     protected void alusta() {
         chooserKirjailijat.clear();
         chooserKirjailijat.addSelectionListener(e -> naytaKirjailija());
-        muutokset = KirjailijanTiedotController.luoKentat(gridKirjailija); 
+        muutokset = TietueDialogController.luoKentat(gridKirjailija, new Kirjailija()); 
         for (TextField edit: muutokset)  
             if ( edit != null ) {  
                 edit.setEditable(false);  
                 edit.setOnMouseClicked(e -> { if ( e.getClickCount() > 1 ) muokkaaKirjailija(getFieldId(e.getSource(),0)); });  
                 edit.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(edit,kentta));  
+                edit.setOnKeyPressed( e -> {if ( e.getCode() == KeyCode.F2 ) muokkaaKirjailija(kentta);}); 
             }    
      // alustetaan harrastustaulukon otsikot 
         int eka = apukirja.ekaKentta(); 
@@ -208,8 +211,13 @@ public class Kirjaloki2GUIController implements Initializable {
         tableKirjat.setColumnSortOrderNumber(1); 
         tableKirjat.setColumnSortOrderNumber(2); 
         tableKirjat.setColumnWidth(1, 60); 
-
+        tableKirjat.setColumnWidth(2, 60); 
+        
+        tableKirjat.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) muokkaaKirjaa(); } );
+        tableKirjat.setOnKeyPressed( e -> {if ( e.getCode() == KeyCode.F2 ) muokkaaKirjaa();}); 
     }
+
+
 
     
     /**
@@ -218,7 +226,7 @@ public class Kirjaloki2GUIController implements Initializable {
     protected void naytaKirjailija() {
         kirjailijaKohdalla = chooserKirjailijat.getSelectedObject();
         if (kirjailijaKohdalla == null) return;
-        KirjailijanTiedotController.naytaKirjailija(muutokset, kirjailijaKohdalla);
+        TietueDialogController.naytaTietue(muutokset, kirjailijaKohdalla);
         naytaKirjat(kirjailijaKohdalla);
      }
     
@@ -256,7 +264,7 @@ public class Kirjaloki2GUIController implements Initializable {
         if ( kirjailijaKohdalla == null ) return; 
         try { 
             Kirjailija kirjailija; 
-            kirjailija = KirjailijanTiedotController.kysyKirjailija(null, kirjailijaKohdalla.clone(), k); 
+            kirjailija = TietueDialogController.kysyTietue(null, kirjailijaKohdalla.clone(), k); 
             if ( kirjailija == null ) return; 
             kirjaloki.korvaaTaiLisaa(kirjailija); 
             hae(kirjailija.getKirjailijaId()); 
@@ -357,7 +365,7 @@ public class Kirjaloki2GUIController implements Initializable {
     protected void uusiKirjailija() {
         try {
             Kirjailija uusi = new Kirjailija();
-            uusi = KirjailijanTiedotController.kysyKirjailija(null, uusi, 1);  
+            uusi = TietueDialogController.kysyTietue(null, uusi, 1);  
             if ( uusi == null ) return;
             uusi.rekisteroi();
             kirjaloki.lisaa(uusi);
@@ -372,18 +380,40 @@ public class Kirjaloki2GUIController implements Initializable {
     /** 
      * Tekee uuden tyhjän kirjan editointia varten 
      */ 
-    public void uusiKirja() { 
+    private void uusiKirja() { 
         if ( kirjailijaKohdalla == null ) return;  
-        Kirja kirja = new Kirja();  
-        kirja.rekisteroi();  
-        kirja.vastaaMargarita(kirjailijaKohdalla.getKirjailijaId());  
         try {
-            kirjaloki.lisaa(kirja);
+            Kirja uusi = new Kirja(kirjailijaKohdalla.getKirjailijaId());
+            uusi = TietueDialogController.kysyTietue(null, uusi, 0);
+            if ( uusi == null ) return;
+            uusi.rekisteroi();
+            kirjaloki.lisaa(uusi);
+            naytaKirjat(kirjailijaKohdalla); 
+            tableKirjat.selectRow(1000);  // järjestetään viimeinen rivi valituksi
+
         } catch (SailoException e) {
-            Dialogs.showMessageDialog("Ongelmia kirjan lisäämisessä " + e.getMessage());
-        }  
-        hae(kirjailijaKohdalla.getKirjailijaId());          
+            Dialogs.showMessageDialog("Lisääminen epäonnistui: " + e.getMessage());
+        }
     } 
+    
+    private void muokkaaKirjaa() {
+        int r = tableKirjat.getRowNr();
+        if ( r < 0 ) return; // klikattu ehkä otsikkoriviä
+        Kirja har = tableKirjat.getObject();
+        if ( har == null ) return;
+        int k = tableKirjat.getColumnNr()+har.ekaKentta();
+        try {
+            har = TietueDialogController.kysyTietue(null, har.clone(), k);
+            if ( har == null ) return;
+            kirjaloki.korvaaTaiLisaa(har); 
+            naytaKirjat(kirjailijaKohdalla); 
+            tableKirjat.selectRow(r);  // järjestetään sama rivi takaisin valituksi
+        } catch (CloneNotSupportedException  e) { /* clone on tehty */  
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog("Ongelmia lisäämisessä: " + e.getMessage());
+        }
+    }
+
 
     
     /**

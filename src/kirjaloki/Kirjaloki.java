@@ -238,12 +238,23 @@ public class Kirjaloki {
          * #THROWS SailoException  
          *  alustaKirjaloki();
          *  kirjaloki.etsi("*",0).size() === 2;
-         *  kirjaloki.korvaaTaiLisaa(kytomaki1);
+         *  kirjaloki.Lisaa(kytomaki1);
          *  kirjaloki.etsi("*",0).size() === 2;
          * </pre>
          */ 
         public void korvaaTaiLisaa(Kirjailija kirjailija) throws SailoException { 
             kirjailijat.korvaaTaiLisaa(kirjailija); 
+        } 
+
+        /** 
+         * Korvaa kiran tietorakenteessa.  Ottaa kirjan omistukseensa. 
+         * Etsitään samalla tunnusnumerolla oleva kirja.  Jos ei löydy, 
+         * niin lisätään uutena kirjana. 
+         * @param kirja lisättävän kirjan viite.  Huom tietorakenne muuttuu omistajaksi 
+         * @throws SailoException jos tietorakenne on jo täynnä 
+         */ 
+        public void korvaaTaiLisaa(Kirja kirja) throws SailoException { 
+            kirjat.korvaaTaiLisaa(kirja); 
         } 
 
 

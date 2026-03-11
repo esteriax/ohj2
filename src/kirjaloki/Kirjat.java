@@ -21,7 +21,7 @@ public class Kirjat implements Iterable<Kirja> {
     private String tiedostonPerusNimi = "";
 
     /** taulukko kirjoista */
-    private final Collection<Kirja> alkiot = new ArrayList<Kirja>();
+    private final List<Kirja> alkiot = new ArrayList<Kirja>();
 
 
     /**
@@ -256,6 +256,47 @@ public class Kirjat implements Iterable<Kirja> {
             if (kirja1.getKirjailijaId() == kirjailijaId) loydetyt.add(kirja1);
         return loydetyt;
     }
+    
+    /**
+     * Korvaa kirjan tietorakenteessa.  Ottaa kirjan omistukseensa.
+     * Etsitään samalla tunnusnumerolla oleva kirja.  Jos ei löydy,
+     * niin lisätään uutena kirjana.
+     * @param kirja lisättävän kirjan viite.  Huom tietorakenne muuttuu omistajaksi
+     * @throws SailoException jos tietorakenne on jo täynnä
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException,CloneNotSupportedException
+     * #PACKAGEIMPORT
+     * Harrastukset kirjat = new Harrastukset();
+     * Kirja har1 = new Kirja(), har2 = new Kirja();
+     * har1.rekisteroi(); har2.rekisteroi();
+     * kirjat.getLkm() === 0;
+     * kirjat.korvaaTaiLisaa(har1); kirjat.getLkm() === 1;
+     * kirjat.korvaaTaiLisaa(har2); kirjat.getLkm() === 2;
+     * Kirja har3 = har1.clone();
+     * har3.aseta(2,"kkk");
+     * Iterator<Kirja> i2=kirjat.iterator();
+     * i2.next() === har1;
+     * kirjat.korvaaTaiLisaa(har3); kirjat.getLkm() === 2;
+     * i2=kirjat.iterator();
+     * Kirja h = i2.next();
+     * h === har3;
+     * h == har3 === true;
+     * h == har1 === false;
+     * </pre>
+     */ 
+    public void korvaaTaiLisaa(Kirja kirja) throws SailoException {
+        int id = kirja.getKirjaId();
+        for (int i = 0; i < getLkm(); i++) {
+            if (alkiot.get(i).getKirjaId() == id) {
+                alkiot.set(i, kirja);
+                muutettu = true;
+                return;
+            }
+        }
+        lisaa(kirja);
+    }
+
 
 
     /**

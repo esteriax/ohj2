@@ -3,13 +3,14 @@ import java.io.*;
 
 import fi.jyu.mit.ohj2.Mjonot;
 import kanta.PaivaysTarkistus;
+import kanta.Tietue;
 
 
 /**
  * Kirjalokin Kirjailija-luokka
  * @author heta
  */
-public class Kirjailija implements Cloneable {
+public class Kirjailija implements Cloneable, Tietue {
     
     private String nimi = "";
     private int kirjailijaId;
@@ -23,6 +24,7 @@ public class Kirjailija implements Cloneable {
      * Palauttaa kirjailijan kenttien lukumäärän
      * @return kenttien lukumäärä
      */
+    @Override
     public int getKenttia() {
         return 5;
     }
@@ -32,6 +34,7 @@ public class Kirjailija implements Cloneable {
      * Eka kenttä joka on mielekäs kysyttäväksi
      * @return eknn kentän indeksi
      */
+    @Override
     public int ekaKentta() {
         return 1;
     }
@@ -51,6 +54,7 @@ public class Kirjailija implements Cloneable {
      * @param k monenenko kentän sisältö palautetaan
      * @return kentän sisältö merkkijonona
      */
+    @Override
     public String anna(int k) {
         switch ( k ) {
             case 0: return "" + kirjailijaId;
@@ -79,6 +83,7 @@ public class Kirjailija implements Cloneable {
      * </pre>
 
      */
+    @Override
     public String aseta(int k, String jono) {
         String tjono = jono.trim();
         StringBuffer sb = new StringBuffer(tjono);
@@ -116,6 +121,7 @@ public class Kirjailija implements Cloneable {
      * @return k:netta kenttää vastaava kysymys
 
      */
+    @Override
     public String getKysymys(int k) {
         switch ( k ) {
         case 0: return "KirjailijaId";

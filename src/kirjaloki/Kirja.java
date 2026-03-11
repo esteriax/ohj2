@@ -6,6 +6,7 @@ import java.io.*;
 
 import fi.jyu.mit.ohj2.Mjonot;
 import kanta.PaivaysTarkistus;
+import kanta.Tietue;
 
 
 
@@ -13,7 +14,7 @@ import kanta.PaivaysTarkistus;
  * Kirjalokin Kirja-luokka
  * @author heta
  */
-public class Kirja implements Cloneable{
+public class Kirja implements Cloneable, Tietue {
     
     private int kirjaId;
     private int kirjailijaId;
@@ -38,6 +39,7 @@ public class Kirja implements Cloneable{
     /**
      * @return kirjan kenttien lukumäärä
      */
+    @Override
     public int getKenttia() {
         return 8;
     }
@@ -46,6 +48,7 @@ public class Kirja implements Cloneable{
     /**
      * @return ensimmäinen käyttäjän syötettävän kentän indeksi
      */
+    @Override
     public int ekaKentta() {
         return 2;
     }
@@ -55,6 +58,7 @@ public class Kirja implements Cloneable{
      * @param k minkä kentän kysymys halutaan
      * @return valitun kentän kysymysteksti
      */
+    @Override
     public String getKysymys(int k) {
         switch (k) {
             case 0:
@@ -94,6 +98,7 @@ public class Kirja implements Cloneable{
      *   
      * </pre>
      */
+    @Override
     public String anna(int k) {
         switch (k) {
             case 0:
@@ -134,6 +139,7 @@ public class Kirja implements Cloneable{
      *   
      * </pre>
      */
+    @Override
     public String aseta(int k, String s) {
         String st = s.trim();
         StringBuffer sb = new StringBuffer(st);
