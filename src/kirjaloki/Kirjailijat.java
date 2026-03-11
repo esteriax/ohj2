@@ -11,8 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import fi.jyu.mit.ohj2.WildChars;
@@ -76,7 +79,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      */
 
     public void lisaa(Kirjailija kirjailija) throws SailoException {
-        if (lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
+        if (lkm >= alkiot.length) alkiot = Arrays.copyOf(alkiot, lkm+20); 
         alkiot[lkm] = kirjailija;
         lkm++;
         muutettu = true;
@@ -336,13 +339,13 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      *   List<Kirjailija> loytyneet;  
      *   loytyneet = (List<Kirjailija>)kirjailijat.etsi("*s*",1);  
      *   loytyneet.size() === 2;  
-     *   loytyneet.get(0) == kirjailija3 === true;  
-     *   loytyneet.get(1) == kirjailija4 === true;  
+     *   loytyneet.get(0) == kirjailija4 === true;  
+     *   loytyneet.get(1) == kirjailija3 === true;  
      *     
      *   loytyneet = (List<Kirjailija>)kirjailijat.etsi("*7-*",2);  
      *   loytyneet.size() === 2;  
-     *   loytyneet.get(0) == kirjailija3 === true;  
-     *   loytyneet.get(1) == kirjailija5 === true; 
+     *   loytyneet.get(0) == kirjailija5 === true;  
+     *   loytyneet.get(1) == kirjailija3 === true; 
      *     
      *   loytyneet = (List<Kirjailija>)kirjailijat.etsi(null,-1);  
      *   loytyneet.size() === 5;  
@@ -355,11 +358,11 @@ public class Kirjailijat implements Iterable<Kirjailija>{
         int hk = k; 
         if ( hk < 0 ) hk = 1;
 
-        Collection<Kirjailija> loytyneet = new ArrayList<Kirjailija>(); 
+        List<Kirjailija> loytyneet = new ArrayList<Kirjailija>(); 
         for (Kirjailija kirjailija : this) { 
             if (WildChars.onkoSamat(kirjailija.anna(hk), ehto)) loytyneet.add(kirjailija); 
         } 
-        //  TODO: lajittelua varten vertailija  
+        Collections.sort(loytyneet, new Kirjailija.Vertailija(hk)); 
         return loytyneet; 
     }
     

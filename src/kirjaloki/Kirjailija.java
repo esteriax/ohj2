@@ -1,5 +1,6 @@
 package kirjaloki;
 import java.io.*;
+import java.util.Comparator;
 
 import fi.jyu.mit.ohj2.Mjonot;
 import kanta.PaivaysTarkistus;
@@ -19,6 +20,41 @@ public class Kirjailija implements Cloneable, Tietue {
     private String lisatiedot = "";
 
     private static int seuraavaNro = 1;
+    
+    /** 
+     * Kirjailijoiden vertailija 
+     */ 
+    public static class Vertailija implements Comparator<Kirjailija> { 
+        private int k;  
+         
+        @SuppressWarnings("javadoc") 
+        public Vertailija(int k) { 
+            this.k = k; 
+        } 
+         
+        @Override 
+        public int compare(Kirjailija kirjailija1, Kirjailija kirjailija2) { 
+            return kirjailija1.getAvain(k).compareToIgnoreCase(kirjailija1.getAvain(k)); 
+        } 
+    } 
+     
+    
+    /** 
+     * Antaa k:n kentän sisällön merkkijonona 
+     * @param k monenenko kentän sisältö palautetaan 
+     * @return kentän sisältö merkkijonona 
+     */ 
+    public String getAvain(int k) { 
+        switch ( k ) { 
+        case 0: return "" + kirjailijaId; 
+        case 1: return "" + nimi.toUpperCase(); 
+        case 3: return "" + String.format("%4d", syntymaVuosi); 
+        case 4: return "" + suosikki; 
+        case 5: return "" + lisatiedot;
+        default: return ""; 
+        } 
+    } 
+
     
     /**
      * Palauttaa kirjailijan kenttien lukumäärän
