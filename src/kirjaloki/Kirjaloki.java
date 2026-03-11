@@ -23,7 +23,6 @@ import java.util.List;
  *  private Kirja margarita12; 
  *  private Kirja margarita23;
  *  
- *  @SuppressWarnings("javadoc")
  *  public void alustaKirjaloki() {
  *    kirjaloki = new Kirjaloki();
  *    kytomaki1 = new Kirjailija(); kytomaki1.vastaaKytomaki(); kytomaki1.rekisteroi();
@@ -65,7 +64,14 @@ public class Kirjaloki {
          * <pre name="test">
          *   #THROWS CloneNotSupportedException, SailoException
          *   alustaKirjaloki();
-         *   // TODO: tee testit kun etsi on korjattu
+         *   Kirjailija kirjailija3 = new Kirjailija(); kirjailija3.rekisteroi();
+         *   kirjailija3.aseta(1,"Susi Sepe");
+         *   kirjaloki.lisaa(kirjailija3);
+         *   Collection<Kirjailija> loytyneet = kirjaloki.etsi("*Susi*",1);
+         *   loytyneet.size() === 1;
+         *   Iterator<Kirjailija> it = loytyneet.iterator();
+         *   it.next() == kirjailija3 === true; 
+
          * </pre>
          */ 
         public Collection<Kirjailija> etsi(String hakuehto, int k) throws SailoException { 

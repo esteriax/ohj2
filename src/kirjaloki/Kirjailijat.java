@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import fi.jyu.mit.ohj2.WildChars;
+
 /**
  * @author heta
  * @version 19.2.2026
@@ -317,10 +319,10 @@ public class Kirjailijat implements Iterable<Kirjailija>{
 
 
     /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien kirjailijaten viitteet 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien kirjailijoiden viitteet 
      * @param hakuehto hakuehto 
      * @param k etsittävän kentän indeksi  
-     * @return tietorakenteen löytyneistä kirjailijaistä 
+     * @return tietorakenteen löytyneistä kirjailijailijoista
      * @example 
      * <pre name="test"> 
      * #THROWS SailoException  
@@ -331,15 +333,33 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      *   Kirjailija kirjailija5 = new Kirjailija(); kirjailija5.parse("4|Ankka Iines|030245-115V|Ankkakuja 9"); 
      *   Kirjailija kirjailija4 = new Kirjailija(); kirjailija4.parse("5|Ankka Roope|091007-408U|Ankkakuja 12"); 
      *   kirjailijat.lisaa(kirjailija1); kirjailijat.lisaa(kirjailija2); kirjailijat.lisaa(kirjailija3); kirjailijat.lisaa(kirjailija5); kirjailijat.lisaa(kirjailija4);
-     *   // TODO: toistaiseksi palauttaa kaikki kirjailijat 
+     *   List<Kirjailija> loytyneet;  
+     *   loytyneet = (List<Kirjailija>)kirjailijat.etsi("*s*",1);  
+     *   loytyneet.size() === 2;  
+     *   loytyneet.get(0) == kirjailija3 === true;  
+     *   loytyneet.get(1) == kirjailija4 === true;  
+     *     
+     *   loytyneet = (List<Kirjailija>)kirjailijat.etsi("*7-*",2);  
+     *   loytyneet.size() === 2;  
+     *   loytyneet.get(0) == kirjailija3 === true;  
+     *   loytyneet.get(1) == kirjailija5 === true; 
+     *     
+     *   loytyneet = (List<Kirjailija>)kirjailijat.etsi(null,-1);  
+     *   loytyneet.size() === 5;  
+
      * </pre> 
      */ 
-    @SuppressWarnings("unused")
     public Collection<Kirjailija> etsi(String hakuehto, int k) { 
+        String ehto = "*"; 
+        if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto; 
+        int hk = k; 
+        if ( hk < 0 ) hk = 1;
+
         Collection<Kirjailija> loytyneet = new ArrayList<Kirjailija>(); 
         for (Kirjailija kirjailija : this) { 
-            loytyneet.add(kirjailija);  
+            if (WildChars.onkoSamat(kirjailija.anna(hk), ehto)) loytyneet.add(kirjailija); 
         } 
+        //  TODO: lajittelua varten vertailija  
         return loytyneet; 
     }
     

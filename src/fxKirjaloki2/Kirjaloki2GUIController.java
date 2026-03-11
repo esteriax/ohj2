@@ -72,8 +72,7 @@ public class Kirjaloki2GUIController implements Initializable {
      * Antaa hakulaatikkoon syötetyn tekstin mukaisen hakutuloksen
      */
     @FXML private void handleHakuehto() {
-        if ( kirjailijaKohdalla != null )
-            hae(kirjailijaKohdalla.getKirjailijaId());    
+        hae(0);    
     }
     
     /*
@@ -179,6 +178,7 @@ public class Kirjaloki2GUIController implements Initializable {
     private Kirjaloki kirjaloki;
     private Kirjailija kirjailijaKohdalla;
     private String kirjalokinnimi = "Heta";
+    private static Kirjailija apukirjailija = new Kirjailija(); 
     private TextField muutokset[];
     private int kentta = 0; 
     
@@ -190,7 +190,13 @@ public class Kirjaloki2GUIController implements Initializable {
     protected void alusta() {
         chooserKirjailijat.clear();
         chooserKirjailijat.addSelectionListener(e -> naytaKirjailija());
-        muutokset = TietueDialogController.luoKentat(gridKirjailija, new Kirjailija()); 
+        cbKentat.clear(); 
+        for (int k = apukirjailija.ekaKentta(); k < apukirjailija.getKenttia(); k++) 
+            cbKentat.add(apukirjailija.getKysymys(k), null); 
+        cbKentat.getSelectionModel().select(0); 
+        
+        muutokset = TietueDialogController.luoKentat(gridKirjailija, apukirjailija); 
+ 
         for (TextField edit: muutokset)  
             if ( edit != null ) {  
                 edit.setEditable(false);  
@@ -233,6 +239,7 @@ public class Kirjaloki2GUIController implements Initializable {
     
     /**
      * Näytetään valitun kirjailijan kaikki kirjat taulukossa
+     * TODO pitäisi olla try catch-muttei toimi, haittaako?
      * @param kirjailija valittu kirjailija
      */
     private void naytaKirjat(Kirjailija kirjailija) {
@@ -242,7 +249,8 @@ public class Kirjaloki2GUIController implements Initializable {
         List<Kirja> kirjat = kirjaloki.annaKirjat(kirjailija);
         if ( kirjat.size() == 0 ) return;
         for (Kirja kirja: kirjat)
-            naytaKirja(kirja);
+            naytaKirja(kirja); 
+
     }
 
     /**
@@ -422,12 +430,16 @@ public class Kirjaloki2GUIController implements Initializable {
      * @param knro kirjailijan numero, joka aktivoidaan haun jälkeen
      */
     protected void hae(int knro) {
-        int k = cbKentat.getSelectionModel().getSelectedIndex();
+        int jnro = knro; // jnro jäsenen numero, joka aktivoidaan haun jälkeen 
+        if ( jnro <= 0 ) { 
+            Kirjailija kohdalla = kirjailijaKohdalla; 
+            if ( kohdalla != null ) jnro = kohdalla.getKirjailijaId(); 
+        }
+        
+        int k = cbKentat.getSelectionModel().getSelectedIndex() + apukirjailija.ekaKentta(); 
+
         String ehto = hakuehto.getText(); 
-        if (k > 0 || ehto.length() > 0)
-            naytaVirhe(String.format("Ei osata hakea (kenttä: %d, ehto: %s)", k, ehto));
-        else
-            naytaVirhe(null);
+        if (ehto.indexOf('*') < 0) ehto = "*" + ehto + "*"; 
         
         chooserKirjailijat.clear();
 
