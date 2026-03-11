@@ -188,7 +188,7 @@ public class TietueDialogController<TYPE extends Tietue> implements ModalControl
     public static<TYPE extends Tietue> TYPE kysyTietue(Stage modalityStage, TYPE oletus, int kentta) {
         return ModalController.<TYPE, TietueDialogController<TYPE>>showModal(
                 TietueDialogController.class.getResource("TietueDialogView.fxml"),
-                "Kerho",
+                "Kirjaloki",
                 modalityStage, oletus,
                 ctrl -> ctrl.setKentta(kentta) 
                 );

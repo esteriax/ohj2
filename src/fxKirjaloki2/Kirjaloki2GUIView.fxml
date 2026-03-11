@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="492.5" style="-fx-background-color: #ADD8E6" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjaloki2.Kirjaloki2GUIController">
+<BorderPane style="-fx-background-color: #ADD8E6" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKirjaloki2.Kirjaloki2GUIController">
     <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -76,7 +76,7 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.5024630541871922, 0.7733990147783252" maxHeight="424.0" maxWidth="200.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.5024630541871922, 0.7733990147783252" maxWidth="200.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <top>
@@ -89,11 +89,11 @@
                            <font>
                               <Font size="14.0" />
                            </font></Label>
-                        <TextField fx:id="hakuehto" maxWidth="200.0" minWidth="200.0" onAction="#handleHakuehto" prefWidth="200.0" promptText="hae...">
+                        <TextField fx:id="hakuehto" maxWidth="200.0" minWidth="200.0" onKeyReleased="#handleHakuehto" prefWidth="200.0" promptText="hae...">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin></TextField>
-                        <ComboBoxChooser fx:id="cbKentat" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" rivit="nimi&#10;kirjailija&#10;syntymävuosi&#10;suosikki&#10;julkaisuvuosi&#10;genre&#10;tähdet&#10;oma arvostelu&#10;lisätiedot">
+                        <ComboBoxChooser fx:id="cbKentat" maxWidth="200.0" minWidth="200.0" onAction="#handleHakuehto" prefWidth="200.0" rivit="nimi&#10;kirjailija&#10;syntymävuosi&#10;suosikki&#10;julkaisuvuosi&#10;genre&#10;tähdet&#10;oma arvostelu&#10;lisätiedot">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin>
@@ -221,7 +221,7 @@
                   </HBox>
                </bottom>
             </BorderPane>
-            <BorderPane maxWidth="580.0" prefWidth="580.0">
+            <BorderPane maxWidth="350.0" minWidth="350.0" prefWidth="350.0">
                <top>
                   <Label alignment="CENTER" maxWidth="350.0" minWidth="350.0" prefWidth="350.0" text="Kirjailijan kirjat" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
@@ -238,7 +238,7 @@
                <center>
                   <ScrollPane BorderPane.alignment="CENTER">
                      <content>
-                        <StringGrid fx:id="tableKirjat" editable="true" maxWidth="1.7976931348623157E308" rivit="nimi|julkaisuvuosi|lukupvm|genre|tähdet|lisätiedot&#10;Margarita|2020|1.2.2022|historiallinen fiktio|5/5|tykkäsin paljon&#10;" />
+                        <StringGrid fx:id="tableKirjat" editable="true" rivit="nimi|julkaisuvuosi|lukupvm|genre|tähdet|lisätiedot&#10;Margarita|2020|1.2.2022|historiallinen fiktio|5/5|tykkäsin paljon&#10;" />
                      </content>
                   </ScrollPane>
                </center>
