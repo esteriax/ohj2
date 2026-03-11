@@ -20,7 +20,7 @@ public class Kirja implements Cloneable, Tietue {
     private int kirjailijaId;
     private String nimi = "";
     //private String kirjailija = "";
-    private String julkaisuvuosi;
+    private String julkaisuvuosi = "";
     private String genre = "";
     private int tahdet;
     private String lukupvm = "";
@@ -169,8 +169,14 @@ public class Kirja implements Cloneable, Tietue {
                 tahdet = Mjonot.erota(sb, '$', tahdet);
                 return null;
             case 6:
-                lukupvm = st;
-                return null;
+                PaivaysTarkistus pvm = new PaivaysTarkistus();
+                try {
+                    if (pvm.tarkistaLukuPvm(st) == false) return "Tarkista lukupäivämäärä";
+                    lukupvm = st;
+                    return null;
+                } catch ( NumberFormatException ex ) {
+                    return "Julkaisuvuosi väärin " + ex.getMessage();
+                }
             case 7:
                 lisatiedot = st;
                 return null;

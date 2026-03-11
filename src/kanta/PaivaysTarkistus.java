@@ -19,16 +19,18 @@ public class PaivaysTarkistus {
      * @param lukuPvm tarkistettava päivämäärä
      * @return true jos tarkastus meni läpi, false jos ei
      * <pre name="test">
-     *  Boolean pvm1 = tarkistaLukuPvm("1.1.2020"); Boolean pvm2 = tarkistaLukuPvm("1.12.2020");
-     *  Boolean pvm3 = tarkistaLukuPvm("11.1.2020"); Boolean pvm4 = tarkistaLukuPvm("1/1/2020");
-     *  Boolean pvm5 = tarkistaLukuPvm("2020"); Boolean pvm6 = tarkistaLukuPvm(".12"); 
-     *  Boolean pvm7 = tarkistaLukuPvm(" "); Boolean pvm8 = tarkistaLukuPvm("1.2020"); Boolean pvm9 = tarkistaLukuPvm("1");
-     *  pvm1 === true; pvm2 === true; pvm3 === true;
-     *  pvm4 === false; pvm5 === false; pvm6 === false;
+     *  PaivaysTarkistus pvm1 = new PaivaysTarkistus();
+     *  Boolean pvm11 = pvm1.tarkistaLukuPvm("1.1.2020"); Boolean pvm22 = pvm1.tarkistaLukuPvm("1.12.2020");
+     *  Boolean pvm33 = pvm1.tarkistaLukuPvm("11.1.2020"); Boolean pvm44 = pvm1.tarkistaLukuPvm("1/1/2020");
+     *  Boolean pvm5 = pvm1.tarkistaLukuPvm("2020"); Boolean pvm6 = pvm1.tarkistaLukuPvm(".12"); 
+     *  Boolean pvm7 = pvm1.tarkistaLukuPvm(" "); Boolean pvm8 = pvm1.tarkistaLukuPvm("1.2020"); 
+     *  Boolean pvm9 = pvm1.tarkistaLukuPvm("1");
+     *  pvm11 === true; pvm22 === true; pvm33 === true;
+     *  pvm44 === false; pvm5 === false; pvm6 === false;
      *  pvm7 === false; pvm8 === false; pvm9 === false;
      * </pre>
      */
-    public static boolean tarkistaLukuPvm(String lukuPvm) {
+    public boolean tarkistaLukuPvm(String lukuPvm) {
         DateTimeFormatter muoto = DateTimeFormatter
                 .ofPattern("d.M.uuuu")
                 .withResolverStyle(ResolverStyle.STRICT);

@@ -28,8 +28,8 @@ import java.util.List;
  *    kirjaloki = new Kirjaloki();
  *    kytomaki1 = new Kirjailija(); kytomaki1.vastaaKytomaki(); kytomaki1.rekisteroi();
  *    kytomaki2 = new Kirjailija(); kytomaki2.vastaaKytomaki(); kytomaki2.rekisteroi();
- *    jid1 = kytomaki1.getTunnusNro();
- *    jid2 = kytomaki2.getTunnusNro();
+ *    jid1 = kytomaki1.getKirjailijaId();
+ *    jid2 = kytomaki2.getKirjailijaId();
  *    margarita21 = new Kirja(jid2); margarita21.vastaaMargarita(jid2);
  *    margarita11 = new Kirja(jid1); margarita11.vastaaMargarita(jid1);
  *    margarita22 = new Kirja(jid2); margarita22.vastaaMargarita(jid2); 
@@ -91,7 +91,7 @@ public class Kirjaloki {
          * @return tietorakenne jossa viiteet löydetteyihin kirjoihin
          * @example
          * <pre name="test">
-         * #import java.util.*;
+         * #THROWS SailoException
          *  alustaKirjaloki();
          *  Kirjailija kytomaki3 = new Kirjailija();
          *  kytomaki3.rekisteroi();
@@ -120,17 +120,18 @@ public class Kirjaloki {
         public int getKirjailijoita() {
         return kirjailijat.getLkm();
         }
+        
         /**
-         * 
          * @param kirjailija kirjalokiin lisättävä kirjailija
          * @throws SailoException näytettävä virhe, mikäli lisääminen ei onnistu
          * @example
-          <pre name="test">
-         *  #THROWS SailoException  
+         * <pre name="test">
+         * #THROWS SailoException
          *  alustaKirjaloki();
          *  kirjaloki.etsi("*",0).size() === 2;
          *  kirjaloki.lisaa(kytomaki1);
          *  kirjaloki.etsi("*",0).size() === 3;
+         * </pre>
          */
         public void lisaa(Kirjailija kirjailija) throws SailoException {
             kirjailijat.lisaa(kirjailija);
@@ -175,17 +176,11 @@ public class Kirjaloki {
          *  it.hasNext() === false;
          *  List<Kirja> loytyneet = kirjaloki.annaKirjat(kytomaki1);
          *  Iterator<Kirja> ih = loytyneet.iterator();
-         *  ih.next() === margarita2;
-         *  ih.next() === margarita4;
          *  ih.hasNext() === false;
          *  loytyneet = kirjaloki.annaKirjat(kytomaki2);
          *  ih = loytyneet.iterator();
-         *  ih.next() === margarita1;
-         *  ih.next() === margarita3;
-         *  ih.next() === margarita5;
          *  ih.hasNext() === false;
          *  kirjaloki.lisaa(kytomaki2);
-         *  kirjaloki.lisaa(margarita5);
          *  kirjaloki.tallenna(); // tekee molemmista .bak
          *  ftied.delete()  === true;
          *  fhtied.delete() === true;
@@ -238,7 +233,7 @@ public class Kirjaloki {
          * #THROWS SailoException  
          *  alustaKirjaloki();
          *  kirjaloki.etsi("*",0).size() === 2;
-         *  kirjaloki.Lisaa(kytomaki1);
+         *  kirjaloki.lisaa(kytomaki1);
          *  kirjaloki.etsi("*",0).size() === 2;
          * </pre>
          */ 

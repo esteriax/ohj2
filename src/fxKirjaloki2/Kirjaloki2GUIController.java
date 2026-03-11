@@ -82,7 +82,8 @@ public class Kirjaloki2GUIController implements Initializable {
     
     @FXML private void handleTarkistaLukuPvm() {
         String ehto = lukuPvm.getText(); 
-        if ( ehto.isEmpty() | PaivaysTarkistus.tarkistaLukuPvm(ehto) == true)
+        PaivaysTarkistus pvm = new PaivaysTarkistus();
+        if ( ehto.isEmpty() | pvm.tarkistaLukuPvm(ehto) == true)
             naytaVirhe(null);
         else
             naytaVirhe("Korjaa päivämäärä: " + ehto);         
