@@ -308,15 +308,11 @@ public class Kirjaloki2GUIController implements Initializable {
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(text)) {
             os.println("Tulostetaan kaikki kirjailijat");
             
-            Collection<Kirjailija> kirjailijat = kirjaloki.etsi("", -1); 
-            for (Kirjailija kirjailija:kirjailijat) { 
+            for (Kirjailija kirjailija: chooserKirjailijat.getObjects()) { 
                 tulosta(os, kirjailija);
                 os.println("\n\n");
-            }
-        } catch (SailoException ex) { 
-            Dialogs.showMessageDialog("Kirjailijan hakemisessa ongelmia! " + ex.getMessage()); 
-        }
-        
+            } 
+        }   
     }
 
 
