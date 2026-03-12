@@ -167,6 +167,7 @@ public class Kirja implements Cloneable, Tietue {
                 return null;
             case 5:
                 tahdet = Mjonot.erota(sb, '$', tahdet);
+                if (tahdet > 5 || tahdet < 1) return "Anna tähdet asteikolla 1-5";
                 return null;
             case 6:
                 PaivaysTarkistus pvm = new PaivaysTarkistus();

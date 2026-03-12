@@ -13,6 +13,19 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${dir.jarfile}/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/org.eclipse.fx.ide.css.jfx8_3.8.0.202204150904.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/junit-platform-commons_1.14.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/junit-platform-engine_1.14.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/junit-platform-launcher_1.14.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/junit-platform-runner_1.14.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/junit-platform-suite-api_1.14.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/junit-platform-suite-engine_1.14.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/junit-platform-suite-commons_1.14.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/junit-vintage-engine_5.14.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/org.opentest4j_1.3.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/org.apiguardian.api_1.1.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/org.junit_4.13.2.v20240929-1000.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Applications/Eclipse.app/Contents/Eclipse/plugins/org.hamcrest_3.0.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/heta/devel/jar/Music.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/heta/devel/jar/Graphics.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/Users/heta/devel/jar/Ali.jar"/>
