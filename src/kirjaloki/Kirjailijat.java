@@ -47,6 +47,35 @@ public class Kirjailijat implements Iterable<Kirjailija>{
         return alkiot[i];
     }
 
+    /** 
+     * Poistaa kirjailijan jolla on valittu tunnusnumero  
+     * @param id poistettavan kirjailijan tunnusnumero 
+     * @return 1 jos poistettiin, 0 jos ei löydy 
+     * @example 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     * Kirjailijaet kirjailijat = new Kirjailijaet(); 
+     * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija(), kytomaki3 = new Kirjailija(); 
+     * kytomaki1.rekisteroi(); kytomaki2.rekisteroi(); kytomaki3.rekisteroi(); 
+     * int id1 = kytomaki1.getKirjailijaId(); 
+     * kirjailijat.lisaa(kytomaki1); kirjailijat.lisaa(kytomaki2); kirjailijat.lisaa(kytomaki3); 
+     * kirjailijat.poista(id1+1) === 1; 
+     * kirjailijat.annaId(id1+1) === null; kirjailijat.getLkm() === 2; 
+     * kirjailijat.poista(id1) === 1; kirjailijat.getLkm() === 1; 
+     * kirjailijat.poista(id1+3) === 0; kirjailijat.getLkm() === 1; 
+     * </pre> 
+     *  
+     */ 
+    public int poista(int id) { 
+        int ind = etsiId(id); 
+        if (ind < 0) return 0; 
+        lkm--; 
+        for (int i = ind; i < lkm; i++) 
+            alkiot[i] = alkiot[i + 1]; 
+        alkiot[lkm] = null; 
+        muutettu = true; 
+        return 1; 
+    } 
 
     
     /**
@@ -248,16 +277,16 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * 
      * StringBuffer ids = new StringBuffer(30);
      * for (Kirjailija kirjailija:kirjailijat)   // Kokeillaan for-silmukan toimintaa
-     *   ids.append(" "+kirjailija.vastaaKirjailijaId());           
+     *   ids.append(" "+kirjailija.vastaaKytomaki());           
      * 
-     * String tulos = " " + kytomaki1.vastaaKirjailijaId() + " " + kytomaki2.vastaaKirjailijaId() + " " + kytomaki1.vastaaKirjailijaId();
+     * String tulos = " " + kytomaki1.getKirjailijaId() + " " + kytomaki2.getKirjailijaId() + " " + kytomaki1.getKirjailijaId();
      * 
      * ids.toString() === tulos; 
      * 
      * ids = new StringBuffer(30);
      * for (Iterator<Kirjailija>  i=kirjailijat.iterator(); i.hasNext(); ) { // ja iteraattorin toimintaa
      *   Kirjailija kirjailija = i.next();
-     *   ids.append(" " + kirjailija.vastaaKirjailijaId());           
+     *   ids.append(" " + kirjailija.vastaaKytomaki());           
      * }
      * 
      * ids.toString() === tulos;
@@ -356,7 +385,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
         String ehto = "*"; 
         if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto; 
         int hk = k; 
-        if ( hk < 0 ) hk = 1;
+        if ( hk < 0 ) hk = 0;
 
         List<Kirjailija> loytyneet = new ArrayList<Kirjailija>(); 
         for (Kirjailija kirjailija : this) { 
@@ -365,6 +394,52 @@ public class Kirjailijat implements Iterable<Kirjailija>{
         Collections.sort(loytyneet, new Kirjailija.Vertailija(hk)); 
         return loytyneet; 
     }
+    
+    /** 
+     * Etsii kirjailijan id:n perusteella 
+     * @param id tunnusnumero, jonka mukaan etsitään 
+     * @return kirjailija jolla etsittävä id tai null 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     * Kirjailijat kirjailijat = new Kirjailijaet(); 
+     * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija(), kytomaki3 = new Kirjailija(); 
+     * kytomaki1.rekisteroi(); kytomaki2.rekisteroi(); kytomaki3.rekisteroi(); 
+     * int id1 = kytomaki1.getKirjailijaId(); 
+     * kirjailijat.lisaa(kytomaki1); kirjailijat.lisaa(kytomaki2); kirjailijat.lisaa(kytomaki3); 
+     * kirjailijat.annaId(id1  ) == kytomaki1 === true; 
+     * kirjailijat.annaId(id1+1) == kytomaki2 === true; 
+     * kirjailijat.annaId(id1+2) == kytomaki3 === true; 
+     * </pre> 
+     */ 
+    public Kirjailija annaId(int id) { 
+        for (Kirjailija kirjailija : this) { 
+            if (id == kirjailija.getKirjailijaId()) return kirjailija; 
+        } 
+        return null; 
+    } 
+
+
+    /** 
+     * Etsii kirjailijan id:n perusteella 
+     * @param id tunnusnumero, jonka mukaan etsitään 
+     * @return löytyneen kirjailijan indeksi tai -1 jos ei löydy 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     * Kirjailijaet kirjailijat = new Kirjailijaet(); 
+     * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija(), kytomaki3 = new Kirjailija(); 
+     * kytomaki1.rekisteroi(); kytomaki2.rekisteroi(); kytomaki3.rekisteroi(); 
+     * int id1 = kytomaki1.getKirjailijaId(); 
+     * kirjailijat.lisaa(kytomaki1); kirjailijat.lisaa(kytomaki2); kirjailijat.lisaa(kytomaki3); 
+     * kirjailijat.etsiId(id1+1) === 1; 
+     * kirjailijat.etsiId(id1+2) === 2; 
+     * </pre> 
+     */ 
+    public int etsiId(int id) { 
+        for (int i = 0; i < lkm; i++) 
+            if (id == alkiot[i].getKirjailijaId()) return i; 
+        return -1; 
+    } 
+
     
     /**
      * Korvaa kirjailijan tietorakenteessa.  Ottaa kirjailijan omistukseensa.
@@ -376,21 +451,21 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * #THROWS SailoException,CloneNotSupportedException
      * #PACKAGEIMPORT
      * Kirjailijat kirjailijat = new Kirjailijaet();
-     * Kirjailija aku1 = new Kirjailija(), aku2 = new Kirjailija();
-     * aku1.rekisteroi(); aku2.rekisteroi();
+     * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija();
+     * kytomaki1.rekisteroi(); kytomaki2.rekisteroi();
      * kirjailijat.getLkm() === 0;
-     * kirjailijat.korvaaTaiLisaa(aku1); kirjailijat.getLkm() === 1;
-     * kirjailijat.korvaaTaiLisaa(aku2); kirjailijat.getLkm() === 2;
-     * Kirjailija aku3 = aku1.clone();
-     * aku3.aseta(3,"kkk");
+     * kirjailijat.korvaaTaiLisaa(kytomaki1); kirjailijat.getLkm() === 1;
+     * kirjailijat.korvaaTaiLisaa(kytomaki2); kirjailijat.getLkm() === 2;
+     * Kirjailija kytomaki3 = kytomaki1.clone();
+     * kytomaki3.aseta(3,"kkk");
      * Iterator<Kirjailija> it = kirjailijat.iterator();
-     * it.next() == aku1 === true;
-     * kirjailijat.korvaaTaiLisaa(aku3); kirjailijat.getLkm() === 2;
+     * it.next() == kytomaki1 === true;
+     * kirjailijat.korvaaTaiLisaa(kytomaki3); kirjailijat.getLkm() === 2;
      * it = kirjailijat.iterator();
      * Kirjailija j0 = it.next();
-     * j0 === aku3;
-     * j0 == aku3 === true;
-     * j0 == aku1 === false;
+     * j0 === kytomaki3;
+     * j0 == kytomaki3 === true;
+     * j0 == kytomaki1 === false;
      * </pre>
      */
     public void korvaaTaiLisaa(Kirjailija kirjailija) throws SailoException {

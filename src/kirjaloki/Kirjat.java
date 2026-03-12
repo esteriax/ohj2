@@ -29,6 +29,79 @@ public class Kirjat implements Iterable<Kirja> {
      */
     public Kirjat() {
     }
+    
+    /**
+     * Poistaa valitun kirjan
+     * @param kirja poistettava kirja
+     * @return tosi jos löytyi poistettava tietue 
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     *  Kirjat  = new Kirjat();
+     *  Kirja margarita21 = new Kirja(); margarita21.vastaaMargarita(2);
+     *  Kirja margarita11 = new Kirja(); margarita11.vastaaMargarita(1);
+     *  Kirja margarita22 = new Kirja(); margarita22.vastaaMargarita(2); 
+     *  Kirja margarita12 = new Kirja(); margarita12.vastaaMargarita(1); 
+     *  Kirja margarita23 = new Kirja(); margarita23.vastaaMargarita(2); 
+     *  kirjat.lisaa(margarita21);
+     *  kirjat.lisaa(margarita11);
+     *  kirjat.lisaa(margarita22);
+     *  kirjat.lisaa(margarita12);
+     *  kirjat.poista(margarita23) === false;  kirjat.getLkm() === 4;
+     *  kirjat.poista(margarita11) === true;   kirjat.getLkm() === 3;
+     *  List<Kirja> h = kirjat.annaKirjat(1);
+     *  h.size() === 1; 
+     *  h.get(0) === margarita12;
+     * </pre>
+     */
+    public boolean poista(Kirja kirja) {
+        boolean ret = alkiot.remove(kirja);
+        if (ret) muutettu = true;
+        return ret;
+    }
+
+    
+    /**
+     * Poistaa kaikki tietyn tietyn kirjailijan kirjat
+     * @param tunnusNro viite siihen, mihin liittyvät tietueet poistetaan
+     * @return montako poistettiin 
+     * @example
+     * <pre name="test">
+     *  Kirjat kirjat = new Kirjat();
+     *  Kirja margarita21 = new Kirja(); margarita21.vastaaMargarita(2);
+     *  Kirja margarita11 = new Kirja(); margarita11.vastaaMargarita(1);
+     *  Kirja margarita22 = new Kirja(); margarita22.vastaaMargarita(2); 
+     *  Kirja margarita12 = new Kirja(); margarita12.vastaaMargarita(1); 
+     *  Kirja margarita23 = new Kirja(); margarita23.vastaaMargarita(2); 
+     *  kirjat.lisaa(margarita21);
+     *  kirjat.lisaa(margarita11);
+     *  kirjat.lisaa(margarita22);
+     *  kirjat.lisaa(margarita12);
+     *  kirjat.lisaa(margarita23);
+     *  kirjat.poistaKirjailijanKirjat(2) === 3;  kirjat.getLkm() === 2;
+     *  kirjat.poistaKirjailijanKirjat(3) === 0;  kirjat.getLkm() === 2;
+     *  List<Kirja> h = kirjat.annaKirjat(2);
+     *  h.size() === 0; 
+     *  h = kirjat.annaKirjat(1);
+     *  h.get(0) === margarita11;
+     *  h.get(1) === margarita12;
+     * </pre>
+     */
+    public int poistaKirjailijanKirjat(int tunnusNro) {
+        int n = 0;
+        for (Iterator<Kirja> it = alkiot.iterator(); it.hasNext();) {
+            Kirja kirja = it.next();
+            if ( kirja.getKirjailijaId() == tunnusNro ) {
+                it.remove();
+                n++;
+            }
+        }
+        if (n > 0) muutettu = true;
+        return n;
+    }
+
+
 
 
     /**
@@ -55,7 +128,7 @@ public class Kirjat implements Iterable<Kirja> {
      *  Kirja kirja2 = new Kirja(); kirja2.vastaaMargarita(1);
      *  Kirja kirja3 = new Kirja(); kirja3.vastaaMargarita(2); 
      *  Kirja kirja4 = new Kirja(); kirja4.vastaaMargarita(1); 
-     *  Kirja pitsi23 = new Kirja(); pitsi23.vastaaMargarita(2); 
+     *  Kirja margarita23 = new Kirja(); margarita23.vastaaMargarita(2); 
      *  String tiedNimi = "testiheta";
      *  File ftied = new File(tiedNimi+".dat");
      *  ftied.delete();
@@ -64,7 +137,7 @@ public class Kirjat implements Iterable<Kirja> {
      *  kirjat.lisaa(kirja2);
      *  kirjat.lisaa(kirja3);
      *  kirjat.lisaa(kirja4);
-     *  kirjat.lisaa(pitsi23);
+     *  kirjat.lisaa(margarita23);
      *  kirjat.tallenna();
      *  kirjat = new Kirjat();
      *  kirjat.lueTiedostosta(tiedNimi);
@@ -73,9 +146,9 @@ public class Kirjat implements Iterable<Kirja> {
      *  i.next().toString() === kirja2.toString();
      *  i.next().toString() === kirja3.toString();
      *  i.next().toString() === kirja4.toString();
-     *  i.next().toString() === pitsi23.toString();
+     *  i.next().toString() === margarita23.toString();
      *  i.hasNext() === false;
-     *  kirjat.lisaa(pitsi23);
+     *  kirjat.lisaa(margarita23);
      *  kirjat.tallenna();
      *  ftied.delete() === true;
      *  File fbak = new File(tiedNimi+".bak");
@@ -267,22 +340,22 @@ public class Kirjat implements Iterable<Kirja> {
      * <pre name="test">
      * #THROWS SailoException,CloneNotSupportedException
      * #PACKAGEIMPORT
-     * Harrastukset kirjat = new Harrastukset();
+     * Kirjat kirjat = new Kirjat();
      * Kirja har1 = new Kirja(), har2 = new Kirja();
      * har1.rekisteroi(); har2.rekisteroi();
      * kirjat.getLkm() === 0;
      * kirjat.korvaaTaiLisaa(har1); kirjat.getLkm() === 1;
      * kirjat.korvaaTaiLisaa(har2); kirjat.getLkm() === 2;
-     * Kirja har3 = har1.clone();
-     * har3.aseta(2,"kkk");
+     * Kirja kirja3 = kirja1.clone();
+     * kirja3.aseta(2,"kkk");
      * Iterator<Kirja> i2=kirjat.iterator();
-     * i2.next() === har1;
-     * kirjat.korvaaTaiLisaa(har3); kirjat.getLkm() === 2;
+     * i2.next() === kirja1;
+     * kirjat.korvaaTaiLisaa(kirja3); kirjat.getLkm() === 2;
      * i2=kirjat.iterator();
      * Kirja h = i2.next();
-     * h === har3;
-     * h == har3 === true;
-     * h == har1 === false;
+     * h === kirja3;
+     * h == kirja3 === true;
+     * h == kirja1 === false;
      * </pre>
      */ 
     public void korvaaTaiLisaa(Kirja kirja) throws SailoException {

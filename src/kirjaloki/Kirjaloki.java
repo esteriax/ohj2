@@ -53,6 +53,47 @@ public class Kirjaloki {
     private Kirjailijat kirjailijat = new Kirjailijat();
     private Kirjat kirjat = new Kirjat();
     
+    /**
+     * * Poistaa kirjailijoista ja kirjoista kirjailijan tiedot 
+     * @param kirjailija joka poistetaan
+     * @return montako kirjailijaa poistettiin
+     * @example
+     * <pre name="test">
+     * #THROWS Exception
+     *   alustaKirjaloki();
+     *   kirjaloki.etsi("*",0).size() === 2;
+     *   kirjaloki.annaKirjat(kytomaki1).size() === 2;
+     *   kirjaloki.poista(kytomaki1) === 1;
+     *   kirjaloki.etsi("*",0).size() === 1;
+     *   kirjaloki.annaKirjat(kytomaki1).size() === 0;
+     *   kirjaloki.annaKirjat(kytomaki2).size() === 3;
+     * </pre>
+     */
+    public int poista(Kirjailija kirjailija) {
+        if ( kirjailija == null ) return 0;
+        int ret = kirjailijat.poista(kirjailija.getKirjailijaId()); 
+        kirjat.poistaKirjailijanKirjat(kirjailija.getKirjailijaId()); 
+        return ret; 
+    }
+    
+    /** 
+     * Poistaa tämän kirjan 
+     * @param kirja poistettava kirja 
+     * @example
+     * <pre name="test">
+     * #THROWS Exception
+     *   alustaKirjaloki();
+     *   kirjaloki.annaKirjat(kytomaki1).size() === 2;
+     *   kirjaloki.poistaKirja(kytomaki1);
+     *   kirjaloki.annaKirjat(kytomaki1).size() === 1;
+     */ 
+    public void poistaKirja(Kirja kirja) { 
+        kirjat.poista(kirja); 
+    } 
+
+
+
+    
     
         /** 
          * Palauttaa "taulukossa" hkytomakiehtoon vastaavien kirjailijoiden viitteet 

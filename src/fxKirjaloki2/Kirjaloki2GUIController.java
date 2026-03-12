@@ -138,11 +138,11 @@ public class Kirjaloki2GUIController implements Initializable {
     }
     
     @FXML private void handlePoistaKirja() {
-        eiToimi();
+        poistaKirja();
     }
     
     @FXML private void handlePoistaKirjailija() {
-        eiToimi();
+        poistaKirjailija();
     }
     
     
@@ -204,7 +204,7 @@ public class Kirjaloki2GUIController implements Initializable {
                 edit.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(edit,kentta));  
                 edit.setOnKeyPressed( e -> {if ( e.getCode() == KeyCode.F2 ) muokkaaKirjailija(kentta);}); 
             }    
-     // alustetaan harrastustaulukon otsikot 
+     // alustetaan kirjataulukon otsikot 
         int eka = apukirja.ekaKentta(); 
         int lkm = apukirja.getKenttia(); 
         String[] headings = new String[lkm-eka]; 
@@ -228,7 +228,7 @@ public class Kirjaloki2GUIController implements Initializable {
 
     
     /**
-     * Näyttää listasta valitun jäsenen tiedot tekstikenttiin. 
+     * Näyttää listasta valitun kirjailijan tiedot tekstikenttiin. 
      */
     protected void naytaKirjailija() {
         kirjailijaKohdalla = chooserKirjailijat.getSelectedObject();
@@ -422,6 +422,38 @@ public class Kirjaloki2GUIController implements Initializable {
             Dialogs.showMessageDialog("Ongelmia lisäämisessä: " + e.getMessage());
         }
     }
+    
+    /**
+     * Poistetaan kirjataulukosta valitulla kohdalla oleva kirja. 
+     */
+    private void poistaKirja() {
+        int rivi = tableKirjat.getRowNr();
+        if ( rivi < 0 ) return;
+        Kirja kirja = tableKirjat.getObject();
+        if ( kirja == null ) return;
+        kirjaloki.poistaKirja(kirja);
+        naytaKirjat(kirjailijaKohdalla);
+        int kirjoja = tableKirjat.getItems().size(); 
+        if ( rivi >= kirjoja ) rivi = kirjoja -1;
+        tableKirjat.getFocusModel().focus(rivi);
+        tableKirjat.getSelectionModel().select(rivi);
+    }
+
+
+    /*
+     * Poistetaan listalta valittu kirjailija
+     */
+    private void poistaKirjailija() {
+        Kirjailija kirjailija = kirjailijaKohdalla;
+        if ( kirjailija == null ) return;
+        if ( !Dialogs.showQuestionDialog("Poisto", "Poistetaanko kirjailija: " + kirjailija.getNimi(), "Kyllä", "Ei") )
+            return;
+        kirjaloki.poista(kirjailija);
+        int index = chooserKirjailijat.getSelectedIndex();
+        hae(0);
+        chooserKirjailijat.setSelectedIndex(index);
+    }
+
 
 
     
@@ -430,7 +462,7 @@ public class Kirjaloki2GUIController implements Initializable {
      * @param knro kirjailijan numero, joka aktivoidaan haun jälkeen
      */
     protected void hae(int knro) {
-        int jnro = knro; // jnro jäsenen numero, joka aktivoidaan haun jälkeen 
+        int jnro = knro; // jnro kirjailijan numero, joka aktivoidaan haun jälkeen 
         if ( jnro <= 0 ) { 
             Kirjailija kohdalla = kirjailijaKohdalla; 
             if ( kohdalla != null ) jnro = kohdalla.getKirjailijaId(); 
@@ -456,7 +488,7 @@ public class Kirjaloki2GUIController implements Initializable {
         } catch (SailoException ex) {
             Dialogs.showMessageDialog("Kirjailijan hakemisessa ongelmia " + ex.getMessage());
         }
-        chooserKirjailijat.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää jäsenen
+        chooserKirjailijat.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää kirjailijaen
 
     }
 
