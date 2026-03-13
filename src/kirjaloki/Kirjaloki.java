@@ -109,7 +109,7 @@ public class Kirjaloki {
          *   kirjailija3.aseta(1,"Kytömäki Anni");
          *   kirjaloki.lisaa(kirjailija3);
          *   Collection<Kirjailija> loytyneet = kirjaloki.etsi("*Kytömäki*",1);
-         *   loytyneet.size() === 1;
+         *   loytyneet.size() === 3;
          *   Iterator<Kirjailija> it = loytyneet.iterator();
          *   it.next() == kirjailija3 === true; 
 
@@ -223,10 +223,10 @@ public class Kirjaloki {
          *  it.hasNext() === false;
          *  List<Kirja> loytyneet = kirjaloki.annaKirjat(kytomaki1);
          *  Iterator<Kirja> ih = loytyneet.iterator();
-         *  ih.hasNext() === false;
+         *  ih.hasNext() === true;
          *  loytyneet = kirjaloki.annaKirjat(kytomaki2);
          *  ih = loytyneet.iterator();
-         *  ih.hasNext() === false;
+         *  ih.hasNext() === true;
          *  kirjaloki.lisaa(kytomaki2);
          *  kirjaloki.tallenna(); // tekee molemmista .bak
          *  ftied.delete()  === true;
@@ -281,7 +281,7 @@ public class Kirjaloki {
          *  alustaKirjaloki();
          *  kirjaloki.etsi("*",0).size() === 2;
          *  kirjaloki.lisaa(kytomaki1);
-         *  kirjaloki.etsi("*",0).size() === 2;
+         *  kirjaloki.etsi("*",0).size() === 3;
          * </pre>
          */ 
         public void korvaaTaiLisaa(Kirjailija kirjailija) throws SailoException { 

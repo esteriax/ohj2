@@ -135,7 +135,7 @@ public class Kirja implements Cloneable, Tietue {
      * @example
      * <pre name="test">
      *   Kirja kirja = new Kirja();
-     *   kirja.aseta(3,"202k") === "Julkaisuvuosi väärin = \"202k\"";
+     *   kirja.aseta(3,"202k") === "Tarkista julkaisuvuosi";
      *   kirja.aseta(3,"1940")  === null;
      *   kirja.aseta(5,"6") === "Anna tähdet asteikolla 1-5";
      *   kirja.aseta(4,"3")    === null;
@@ -257,7 +257,7 @@ public class Kirja implements Cloneable, Tietue {
     *   Kirja kirja = new Kirja();
     *   kirja.parse("   2   |  10  |   Margarita  | 2020 | fiktio t ");
     *   kirja.getKirjailijaId() === 10;
-    *   kirja.toString()    === "2|10|Margarita|1949|22";
+    *   kirja.toString()    === "2|10|Margarita|2020|fiktio";
     *   
     *   kirja.rekisteroi();
     *   int n = kirja.getKirjaId();

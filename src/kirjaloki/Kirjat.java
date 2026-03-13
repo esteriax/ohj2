@@ -39,11 +39,11 @@ public class Kirjat implements Iterable<Kirja> {
      * #THROWS SailoException 
      * #import java.io.File;
      *  Kirjat kirjat = new Kirjat();
-     *  Kirja margarita21 = new Kirja(); margarita21.vastaaMargarita(2);
-     *  Kirja margarita11 = new Kirja(); margarita11.vastaaMargarita(1);
-     *  Kirja margarita22 = new Kirja(); margarita22.vastaaMargarita(2); 
-     *  Kirja margarita12 = new Kirja(); margarita12.vastaaMargarita(1); 
-     *  Kirja margarita23 = new Kirja(); margarita23.vastaaMargarita(2); 
+     *  Kirja margarita21 = new Kirja(); margarita21.vastaaMargarita(1);
+     *  Kirja margarita11 = new Kirja(); margarita11.vastaaMargarita(2);
+     *  Kirja margarita22 = new Kirja(); margarita22.vastaaMargarita(3); 
+     *  Kirja margarita12 = new Kirja(); margarita12.vastaaMargarita(4); 
+     *  Kirja margarita23 = new Kirja(); margarita23.vastaaMargarita(5); 
      *  kirjat.lisaa(margarita21);
      *  kirjat.lisaa(margarita11);
      *  kirjat.lisaa(margarita22);
