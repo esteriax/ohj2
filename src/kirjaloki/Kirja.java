@@ -255,16 +255,16 @@ public class Kirja implements Cloneable, Tietue {
     * @example
     * <pre name="test">
     *   Kirja kirja = new Kirja();
-    *   kirja.parse("   2   |  10  |   Margarita  | 2020 | fiktio t ");
+    *   kirja.parse("   2   |  10  |   Margarita  | 2020 | fiktio | 5 | 1.1.2020 | suosikki ");
     *   kirja.getKirjailijaId() === 10;
-    *   kirja.toString()    === "2|10|Margarita|2020|fiktio";
+    *   kirja.toString()    === "2|10|Margarita|2020|fiktio|5|1.1.2020|suosikki";
     *   
     *   kirja.rekisteroi();
     *   int n = kirja.getKirjaId();
     *   kirja.parse(""+(n+20));
     *   kirja.rekisteroi();
     *   kirja.getKirjaId() === n+20+1;
-    *   kirja.toString()     === "" + (n+20+1) + "|10|Margarita|2020|fiktio";
+    *   kirja.toString()     === "" + (n+20+1) + "|10|Margarita|2020|fiktio|5|1.1.2020|suosikki";
     * </pre>
     */
    public void parse(String rivi) {

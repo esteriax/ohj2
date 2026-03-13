@@ -151,7 +151,6 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      *  ftied.delete() === true;
      *  File fbak = new File(tiedNimi+".bak");
      *  fbak.delete() === true;
-     *  dir.delete() === true;
      * </pre>
      */
     public void lueTiedostosta(String tiedosto) throws SailoException {

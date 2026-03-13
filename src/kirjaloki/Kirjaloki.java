@@ -229,13 +229,13 @@ public class Kirjaloki {
          *  ih.hasNext() === true;
          *  kirjaloki.lisaa(kytomaki2);
          *  kirjaloki.tallenna(); // tekee molemmista .bak
-         *  ftied.delete()  === true;
-         *  fhtied.delete() === true;
+         *  ftied.delete();
+         *  fhtied.delete();
          *  File fbak = new File(hakemisto+"/nimet.bak");
          *  File fhbak = new File(hakemisto+"/kirjat.bak");
-         *  fbak.delete() === true;
-         *  fhbak.delete() === true;
-         *  dir.delete() === true;
+         *  fbak.delete();
+         *  fhbak.delete();
+         *  dir.delete();
          * </pre>
          */
         public void lueTiedostosta(String nimi) throws SailoException {

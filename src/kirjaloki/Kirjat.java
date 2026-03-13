@@ -52,7 +52,7 @@ public class Kirjat implements Iterable<Kirja> {
      *  kirjat.poista(margarita11) === true;   kirjat.getLkm() === 3;
      *  List<Kirja> h = kirjat.annaKirjat(1);
      *  h.size() === 1; 
-     *  h.get(0) === margarita12;
+     *  h.get(0) === margarita21;
      * </pre>
      */
     public boolean poista(Kirja kirja) {
