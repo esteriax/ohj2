@@ -111,8 +111,9 @@ public class Kirjaloki {
          *   Collection<Kirjailija> loytyneet = kirjaloki.etsi("*Kytömäki*",1);
          *   loytyneet.size() === 3;
          *   Iterator<Kirjailija> it = loytyneet.iterator();
+         *   it.next() == kirjailija3 === false; 
+         *   it.next() == kirjailija3 === false; 
          *   it.next() == kirjailija3 === true; 
-
          * </pre>
          */ 
         public Collection<Kirjailija> etsi(String hakuehto, int k) throws SailoException { 
