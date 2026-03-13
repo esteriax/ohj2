@@ -84,7 +84,7 @@ public class Kirjaloki {
      * #THROWS Exception
      *   alustaKirjaloki();
      *   kirjaloki.annaKirjat(kytomaki1).size() === 2;
-     *   kirjaloki.poistaKirja(kytomaki1);
+     *   kirjaloki.poistaKirja(margarita11);
      *   kirjaloki.annaKirjat(kytomaki1).size() === 1;
      */ 
     public void poistaKirja(Kirja kirja) { 
@@ -96,7 +96,7 @@ public class Kirjaloki {
     
     
         /** 
-         * Palauttaa "taulukossa" hkytomakiehtoon vastaavien kirjailijoiden viitteet 
+         * Palauttaa "taulukossa" hakuehdossa vastaavien kirjailijoiden viitteet 
          * @param hakuehto ehto jonka mukaan haetaan
          * @param k etsittävän kentän indeksi  
          * @return tietorakenteen löytyneistä kirjailijoista 
@@ -106,9 +106,9 @@ public class Kirjaloki {
          *   #THROWS CloneNotSupportedException, SailoException
          *   alustaKirjaloki();
          *   Kirjailija kirjailija3 = new Kirjailija(); kirjailija3.rekisteroi();
-         *   kirjailija3.aseta(1,"Susi Sepe");
+         *   kirjailija3.aseta(1,"Kytömäki Anni");
          *   kirjaloki.lisaa(kirjailija3);
-         *   Collection<Kirjailija> loytyneet = kirjaloki.etsi("*Susi*",1);
+         *   Collection<Kirjailija> loytyneet = kirjaloki.etsi("*Kytömäki*",1);
          *   loytyneet.size() === 1;
          *   Iterator<Kirjailija> it = loytyneet.iterator();
          *   it.next() == kirjailija3 === true; 

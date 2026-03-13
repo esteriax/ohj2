@@ -88,13 +88,16 @@ public class Kirja implements Cloneable, Tietue {
      * @return valitun kentän sisältö
      * @example
      * <pre name="test">
-     *   Kirja har = new Kirja();
-     *   har.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
-     *   har.anna(0) === "2";   
-     *   har.anna(1) === "10";   
-     *   har.anna(2) === "Kalastus";   
-     *   har.anna(3) === "1949";   
-     *   har.anna(4) === "22";   
+     *   Kirja kirja = new Kirja();
+     *   kirja.parse("   2   |  10  |   Margarita  | 1980 | fiktio | 5 | 1.1.2020 | suosikki ");
+     *   kirja.anna(0) === "2";   
+     *   kirja.anna(1) === "10";   
+     *   kirja.anna(2) === "Margarita";   
+     *   kirja.anna(3) === "1980";   
+     *   kirja.anna(4) === "fiktio";   
+     *   kirja.anna(5) === "5";
+     *   kirja.anna(6) === "1.1.2020"; 
+     *   kirja.anna(7) === "suosikki";       
      *   
      * </pre>
      */
@@ -132,10 +135,10 @@ public class Kirja implements Cloneable, Tietue {
      * @example
      * <pre name="test">
      *   Kirja kirja = new Kirja();
-     *   har.aseta(3,"kissa") === "Aloitusvuosi väärin jono = \"kissa\"";
-     *   har.aseta(3,"1940")  === null;
-     *   har.aseta(4,"kissa") === "Viikkotunnit väärin jono = \"kissa\"";
-     *   har.aseta(4,"20")    === null;
+     *   kirja.aseta(3,"202k") === "Julkaisuvuosi väärin = \"202k\"";
+     *   kirja.aseta(3,"1940")  === null;
+     *   kirja.aseta(5,"6") === "Anna tähdet asteikolla 1-5";
+     *   kirja.aseta(4,"3")    === null;
      *   
      * </pre>
      */
@@ -194,12 +197,12 @@ public class Kirja implements Cloneable, Tietue {
      * @example
      * <pre name="test">
      * #THROWS CloneNotSupportedException 
-     *   Kirja har = new Kirja();
-     *   har.parse("   2   |  10  |   Kalastus  | 1949 | 22 t ");
-     *   Kirja kopio = har.clone();
-     *   kopio.toString() === har.toString();
-     *   har.parse("   1   |  11  |   Uinti  | 1949 | 22 t ");
-     *   kopio.toString().equals(har.toString()) === false;
+     *   Kirja kirja = new Kirja();
+     *   kirja.parse("   2   |  10  |   Margarita  | 1980 | fiktio | 5 | 1.1.2020 | suosikki ");
+     *   Kirja kopio = kirja.clone();
+     *   kopio.toString() === kirja.toString();
+     *   kirja.parse("   3   |  10  |   Margarita  | 1980 | fiktio | 5 | 1.1.2020 | suosikki ");
+     *   kopio.toString().equals(kirja.toString()) === false;
      * </pre>
      */
     @Override
@@ -226,8 +229,8 @@ public class Kirja implements Cloneable, Tietue {
     * @example
     * <pre name="test">
     *   Kirja kirja = new Kirja();
-    *   kirja.parse("   2   |  10  |   Knimistus  | 1949 | 22 t ");
-    *   kirja.toString()    === "2|10|Knimistus|1949|22";
+    *   kirja.parse("   2   |  10  |   Margarita  | 1980 | fiktio | 5 | 1.1.2020 | suosikki ");
+    *   kirja.toString()    === "2|10|Margarita|1980|fiktio|5|1.1.2020|suosikki";
     * </pre>
     */
    @Override
@@ -252,16 +255,16 @@ public class Kirja implements Cloneable, Tietue {
     * @example
     * <pre name="test">
     *   Kirja kirja = new Kirja();
-    *   kirja.parse("   2   |  10  |   Knimistus  | 1949 | 22 t ");
-    *   kirja.getJasenNro() === 10;
-    *   kirja.toString()    === "2|10|Knimistus|1949|22";
+    *   kirja.parse("   2   |  10  |   Margarita  | 2020 | fiktio t ");
+    *   kirja.getKirjailijaId() === 10;
+    *   kirja.toString()    === "2|10|Margarita|1949|22";
     *   
     *   kirja.rekisteroi();
     *   int n = kirja.getKirjaId();
     *   kirja.parse(""+(n+20));
     *   kirja.rekisteroi();
     *   kirja.getKirjaId() === n+20+1;
-    *   kirja.toString()     === "" + (n+20+1) + "|10|Knimistus|1949|22";
+    *   kirja.toString()     === "" + (n+20+1) + "|10|Margarita|2020|fiktio";
     * </pre>
     */
    public void parse(String rivi) {
@@ -390,9 +393,9 @@ public class Kirja implements Cloneable, Tietue {
      */
     public static void main(String[] args) {
         
-        Kirja har = new Kirja();
-        har.vastaaMargarita(2);
-        har.tulosta(System.out);
+        Kirja kirja = new Kirja();
+        kirja.vastaaMargarita(2);
+        kirja.tulosta(System.out);
         
         
         Kirja margarita = new Kirja();

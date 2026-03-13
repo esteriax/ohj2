@@ -2,11 +2,16 @@
  * 
  */
 package kanta;
+import kirjaloki.Kirja;
 
 /**
  * Rajapinta tietueelle johon voidaan taulukon avulla rakentaa "attribuutit".
  * @author heta
  * @version 11.3.2026
+ * @example
+ * <pre name="test">
+ * #import kirjaloki.Kirja;
+ * </pre>
  *
  */
 public interface Tietue {

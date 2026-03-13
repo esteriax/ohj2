@@ -54,7 +54,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * @example 
      * <pre name="test"> 
      * #THROWS SailoException  
-     * Kirjailijaet kirjailijat = new Kirjailijaet(); 
+     * Kirjailijat kirjailijat = new Kirjailijat(); 
      * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija(), kytomaki3 = new Kirjailija(); 
      * kytomaki1.rekisteroi(); kytomaki2.rekisteroi(); kytomaki3.rekisteroi(); 
      * int id1 = kytomaki1.getKirjailijaId(); 
@@ -93,17 +93,17 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * <pre name="test">
      * #THROWS SailoException 
      * Kirjailijat kirjailijat = new Kirjailijat();
-     * Kirjailija kytomaki = new Kirjailija(), kytomaki2 = new Kirjailija();
+     * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija(), kytomaki3 = new Kirjailija();
      * kirjailijat.getLkm() === 0;
-     * kirjailijat.lisaa(kytomaki); kirjailijat.getLkm() === 1;
+     * kirjailijat.lisaa(kytomaki1); kirjailijat.getLkm() === 1;
      * kirjailijat.lisaa(kytomaki2); kirjailijat.getLkm() === 2;
-     * kirjailijat.lisaa(kytomaki); kirjailijat.getLkm() === 3;
+     * kirjailijat.lisaa(kytomaki3); kirjailijat.getLkm() === 3;
      * Iterator<Kirjailija> it = kirjailijat.iterator(); 
      * it.next() === kytomaki1;
      * it.next() === kytomaki2; 
      * it.next() === kytomaki3;  
-     * kirjailijat.lisaa(kytomaki); kirjailijat.getLkm() === 4;
-     * kirjailijat.lisaa(kytomaki); kirjailijat.getLkm() === 5;
+     * kirjailijat.lisaa(kytomaki1); kirjailijat.getLkm() === 4;
+     * kirjailijat.lisaa(kytomaki2); kirjailijat.getLkm() === 5;
      * </pre>
      */
 
@@ -260,7 +260,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
     }
 
     /**
-     * Luokka kirjailijaten iteroimiseksi.
+     * Luokka kirjailijoiden iteroimiseksi.
      * @example
      * <pre name="test">
      * #THROWS SailoException 
@@ -277,7 +277,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * 
      * StringBuffer ids = new StringBuffer(30);
      * for (Kirjailija kirjailija:kirjailijat)   // Kokeillaan for-silmukan toimintaa
-     *   ids.append(" "+kirjailija.vastaaKytomaki());           
+     *   ids.append(" " + kirjailija.getKirjailijaId());           
      * 
      * String tulos = " " + kytomaki1.getKirjailijaId() + " " + kytomaki2.getKirjailijaId() + " " + kytomaki1.getKirjailijaId();
      * 
@@ -286,7 +286,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * ids = new StringBuffer(30);
      * for (Iterator<Kirjailija>  i=kirjailijat.iterator(); i.hasNext(); ) { // ja iteraattorin toimintaa
      *   Kirjailija kirjailija = i.next();
-     *   ids.append(" " + kirjailija.vastaaKytomaki());           
+     *   ids.append(" " + kirjailija.getKirjailijaId());           
      * }
      * 
      * ids.toString() === tulos;
@@ -300,7 +300,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      *  
      * </pre>
      */
-    public class KirjailijaetIterator implements Iterator<Kirjailija> {
+    public class KirjailijatIterator implements Iterator<Kirjailija> {
         private int kohdalla = 0;
 
 
@@ -346,41 +346,39 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      */
     @Override
     public Iterator<Kirjailija> iterator() {
-        return new KirjailijaetIterator();
+        return new KirjailijatIterator();
     }
 
 
     /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien kirjailijoiden viitteet 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien jäsenten viitteet 
      * @param hakuehto hakuehto 
      * @param k etsittävän kentän indeksi  
-     * @return tietorakenteen löytyneistä kirjailijailijoista
+     * @return tietorakenteen löytyneistä jäsenistä 
      * @example 
      * <pre name="test"> 
      * #THROWS SailoException  
      *   Kirjailijat kirjailijat = new Kirjailijat(); 
-     *   Kirjailija kirjailija1 = new Kirjailija(); kirjailija1.parse("1|Ankka Aku|030201-115H|Paratiisitie 13|"); 
-     *   Kirjailija kirjailija2 = new Kirjailija(); kirjailija2.parse("2|Ankka Tupu||030552-123B|"); 
-     *   Kirjailija kirjailija3 = new Kirjailija(); kirjailija3.parse("3|Susi Sepe|121237-121V||131313|Perämetsä"); 
-     *   Kirjailija kirjailija5 = new Kirjailija(); kirjailija5.parse("4|Ankka Iines|030245-115V|Ankkakuja 9"); 
-     *   Kirjailija kirjailija4 = new Kirjailija(); kirjailija4.parse("5|Ankka Roope|091007-408U|Ankkakuja 12"); 
-     *   kirjailijat.lisaa(kirjailija1); kirjailijat.lisaa(kirjailija2); kirjailijat.lisaa(kirjailija3); kirjailijat.lisaa(kirjailija5); kirjailijat.lisaa(kirjailija4);
+     *   Kirjailija kirjailija1 = new Kirjailija(); kirjailija1.parse("1|Testi Kirjailija1|2001|ei|ammatiltaan myös kokki"); 
+     *   Kirjailija kirjailija2 = new Kirjailija(); kirjailija2.parse("2|Testi Kirjailija2||2001|tietokirjailija"); 
+     *   Kirjailija kirjailija3 = new Kirjailija(); kirjailija3.parse("3|Kirjailija Kirjailija1|2003||ei|klassikkokirjailija"); 
+     *   Kirjailija kirjailija4 = new Kirjailija(); kirjailija4.parse("4|Kirjailija Kirjailija2|2003|kyllä|kirjoittaa fiktiota"); 
+     *   Kirjailija kirjailija5 = new Kirjailija(); kirjailija5.parse("5|Kirjailija Kirjailija3|2000|ei|testi"); 
+     *   kirjailijat.lisaa(kirjailija1); kirjailijat.lisaa(kirjailija2); kirjailijat.lisaa(kirjailija3); kirjailijat.lisaa(kirjailija4); kirjailijat.lisaa(kirjailija5);
      *   List<Kirjailija> loytyneet;  
      *   loytyneet = (List<Kirjailija>)kirjailijat.etsi("*s*",1);  
-     *   loytyneet.size() === 2;  
-     *   loytyneet.get(0) == kirjailija4 === true;  
-     *   loytyneet.get(1) == kirjailija3 === true;  
+     *   loytyneet.size() === 2;   
+     *   loytyneet.get(0) == kirjailija1 === true;
+     *   loytyneet.get(1) == kirjailija2 === true;  
      *     
-     *   loytyneet = (List<Kirjailija>)kirjailijat.etsi("*7-*",2);  
+     *   loytyneet = (List<Kirjailija>)kirjailijat.etsi("*3*",2);  
      *   loytyneet.size() === 2;  
-     *   loytyneet.get(0) == kirjailija5 === true;  
-     *   loytyneet.get(1) == kirjailija3 === true; 
-     *     
-     *   loytyneet = (List<Kirjailija>)kirjailijat.etsi(null,-1);  
-     *   loytyneet.size() === 5;  
-
+     *   loytyneet.get(0) == kirjailija3 === true;  
+     *   loytyneet.get(1) == kirjailija4 === true; 
+     *    
      * </pre> 
      */ 
+
     public Collection<Kirjailija> etsi(String hakuehto, int k) { 
         String ehto = "*"; 
         if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto; 
@@ -401,7 +399,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * @return kirjailija jolla etsittävä id tai null 
      * <pre name="test"> 
      * #THROWS SailoException  
-     * Kirjailijat kirjailijat = new Kirjailijaet(); 
+     * Kirjailijat kirjailijat = new Kirjailijat(); 
      * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija(), kytomaki3 = new Kirjailija(); 
      * kytomaki1.rekisteroi(); kytomaki2.rekisteroi(); kytomaki3.rekisteroi(); 
      * int id1 = kytomaki1.getKirjailijaId(); 
@@ -425,7 +423,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * @return löytyneen kirjailijan indeksi tai -1 jos ei löydy 
      * <pre name="test"> 
      * #THROWS SailoException  
-     * Kirjailijaet kirjailijat = new Kirjailijaet(); 
+     * Kirjailijat kirjailijat = new Kirjailijat(); 
      * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija(), kytomaki3 = new Kirjailija(); 
      * kytomaki1.rekisteroi(); kytomaki2.rekisteroi(); kytomaki3.rekisteroi(); 
      * int id1 = kytomaki1.getKirjailijaId(); 
@@ -450,7 +448,7 @@ public class Kirjailijat implements Iterable<Kirjailija>{
      * <pre name="test">
      * #THROWS SailoException,CloneNotSupportedException
      * #PACKAGEIMPORT
-     * Kirjailijat kirjailijat = new Kirjailijaet();
+     * Kirjailijat kirjailijat = new Kirjailijat();
      * Kirjailija kytomaki1 = new Kirjailija(), kytomaki2 = new Kirjailija();
      * kytomaki1.rekisteroi(); kytomaki2.rekisteroi();
      * kirjailijat.getLkm() === 0;

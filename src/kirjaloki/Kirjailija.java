@@ -110,12 +110,12 @@ public class Kirjailija implements Cloneable, Tietue {
      * @example
      * <pre name="test">
      *   Kirjailija kirjailija = new Kirjailija();
-     *   kirjailija.aseta(1,"Ankka Aku") === null;
-     *   kirjailija.aseta(2,"kissa") =R= "Hetu liian lyhyt"
-     *   kirjailija.aseta(2,"030201-1111") === "Tarkistusmerkin kuuluisi olla C"; 
-     *   kirjailija.aseta(2,"030201-111C") === null; 
-     *   kirjailija.aseta(9,"kissa") === "Liittymisvuosi väärin jono = \"kissa\"";
-     *   kirjailija.aseta(9,"1940") === null;
+     *   kirjailija.aseta(1,"Anni Kytömäki") === null;
+     *   kirjailija.aseta(2,"198") =R= "Tarkista syntymävuosi"
+     *   kirjailija.aseta(2,"2600") =R= "Tarkista syntymävuosi"
+     *   kirjailija.aseta(2,"1980") === null; 
+     *   kirjailija.aseta(3,"kyllä") === null;
+     *   kirjailija.aseta(4,"Finlandia-palkittu") === null;
      * </pre>
 
      */
@@ -319,11 +319,11 @@ public class Kirjailija implements Cloneable, Tietue {
       * @example
       * <pre name="test">
       *   Kirjailija kirjailija1 = new Kirjailija();
-      *   kirjailija1.parse("   3  |  Ankka Aku   | 030201-111C");
+      *   kirjailija1.parse("   3  |  Anni Kytömäki   | 1980");
       *   Kirjailija kirjailija2 = new Kirjailija();
-      *   kirjailija2.parse("   3  |  Ankka Aku   | 030201-111C");
+      *   kirjailija2.parse("   3  |  Anni Kytömäki   | 1980");
       *   Kirjailija kirjailija3 = new Kirjailija();
-      *   kirjailija3.parse("   3  |  Ankka Aku   | 030201-115H");
+      *   kirjailija3.parse("   3  |  Ankka Aku   | 1981");
       *   
       *   kirjailija1.equals(kirjailija2) === true;
       *   kirjailija2.equals(kirjailija1) === true;
@@ -354,10 +354,10 @@ public class Kirjailija implements Cloneable, Tietue {
       * <pre name="test">
       * #THROWS CloneNotSupportedException 
       *   Kirjailija Kirjailija = new Kirjailija();
-      *   Kirjailija.parse("   3  |  Ankka Aku   | 123");
+      *   Kirjailija.parse("   3  |  Anni Kytömäki   | 1980");
       *   Kirjailija kopio = Kirjailija.clone();
       *   kopio.toString() === Kirjailija.toString();
-      *   Kirjailija.parse("   4  |  Ankka Tupu   | 123");
+      *   Kirjailija.parse("   4  |  Anni Kytövuori   | 1980");
       *   kopio.toString().equals(Kirjailija.toString()) === false;
       * </pre>
       */

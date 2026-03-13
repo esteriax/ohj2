@@ -38,7 +38,7 @@ public class Kirjat implements Iterable<Kirja> {
      * <pre name="test">
      * #THROWS SailoException 
      * #import java.io.File;
-     *  Kirjat  = new Kirjat();
+     *  Kirjat kirjat = new Kirjat();
      *  Kirja margarita21 = new Kirja(); margarita21.vastaaMargarita(2);
      *  Kirja margarita11 = new Kirja(); margarita11.vastaaMargarita(1);
      *  Kirja margarita22 = new Kirja(); margarita22.vastaaMargarita(2); 
@@ -341,11 +341,11 @@ public class Kirjat implements Iterable<Kirja> {
      * #THROWS SailoException,CloneNotSupportedException
      * #PACKAGEIMPORT
      * Kirjat kirjat = new Kirjat();
-     * Kirja har1 = new Kirja(), har2 = new Kirja();
-     * har1.rekisteroi(); har2.rekisteroi();
+     * Kirja kirja1 = new Kirja(), kirja2 = new Kirja();
+     * kirja1.rekisteroi(); kirja2.rekisteroi();
      * kirjat.getLkm() === 0;
-     * kirjat.korvaaTaiLisaa(har1); kirjat.getLkm() === 1;
-     * kirjat.korvaaTaiLisaa(har2); kirjat.getLkm() === 2;
+     * kirjat.korvaaTaiLisaa(kirja1); kirjat.getLkm() === 1;
+     * kirjat.korvaaTaiLisaa(kirja2); kirjat.getLkm() === 2;
      * Kirja kirja3 = kirja1.clone();
      * kirja3.aseta(2,"kkk");
      * Iterator<Kirja> i2=kirjat.iterator();

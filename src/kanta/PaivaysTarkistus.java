@@ -78,8 +78,11 @@ public class PaivaysTarkistus {
      */
     public static void main(String[] args) {
         int tamaVuosi = LocalDateTime.now().getYear();
+        int tamaPvm = LocalDateTime.now().getDayOfMonth();
         //String vuosi = "2222";
         
+        System.out.println(tamaVuosi);
+        System.out.println(tamaPvm);
         System.out.println(tarkistaVuosi(tamaVuosi));
         //System.out.println(tarkistaVuosi(vuosi));
     }
